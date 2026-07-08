@@ -1,0 +1,173 @@
+.track {
+  position: relative;
+  height: calc(100dvh + var(--hero-scroll-px, 7040px));
+  isolation: isolate;
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #0a0806;
+}
+
+.heroComplete {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.heroComplete .viewport {
+  display: none !important;
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(18, 10, 6, 0.78) 0%,
+    rgba(18, 10, 6, 0.52) 32%,
+    rgba(18, 10, 6, 0.22) 58%,
+    rgba(18, 10, 6, 0.06) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(28px, 4vw, 48px) clamp(24px, 5vw, 64px);
+}
+
+.logo {
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(14px, 1.4vw, 18px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(248, 245, 235, 0.96);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 36px);
+}
+
+.navLink {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(248, 245, 235, 0.88);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.navLink:hover {
+  color: rgba(248, 245, 235, 1);
+}
+
+.content {
+  position: absolute;
+  z-index: 3;
+  left: clamp(24px, 5vw, 64px);
+  bottom: clamp(48px, 10vh, 120px);
+  max-width: min(560px, 88vw);
+}
+
+.headline {
+  margin: 0 0 clamp(20px, 3vh, 32px);
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(42px, 5.8vw, 82px);
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: rgba(248, 245, 235, 0.96);
+}
+
+.headlineLine {
+  display: block;
+  will-change: opacity;
+}
+
+.body {
+  margin: 0;
+  max-width: 440px;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 1.65;
+  color: rgba(248, 245, 235, 0.82);
+  will-change: opacity;
+}
+
+.scrollCue {
+  position: absolute;
+  z-index: 3;
+  right: clamp(24px, 5vw, 64px);
+  bottom: clamp(28px, 4vh, 48px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: rgba(248, 245, 235, 0.92);
+  pointer-events: none;
+}
+
+.scrollCueText {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.scrollCueArrow {
+  animation: scrollCueBounce 2.4s ease-in-out infinite;
+}
+
+@keyframes scrollCueBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.72;
+  }
+  50% {
+    transform: translateY(5px);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    display: none;
+  }
+
+  .content {
+    bottom: clamp(36px, 8vh, 80px);
+  }
+}
