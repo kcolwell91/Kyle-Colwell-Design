@@ -1,0 +1,66 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.root.isVisible {
+  opacity: 1;
+}
+
+.seed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: #101010;
+  border-radius: 46% 54% 52% 48% / 48% 45% 55% 52%;
+  will-change: transform;
+  transition: background 0.25s ease;
+}
+
+.ringWrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  will-change: transform, width, height;
+}
+
+.ringSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #101010;
+  transition: color 0.25s ease;
+}
+
+.label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #101010;
+  opacity: 0;
+  transition: color 0.25s ease;
+}
+
+.root.isInteractive .seed {
+  background: #b42318;
+}
+
+.root.isInteractive .ringSvg,
+.root.isInteractive .label {
+  color: #b42318;
+}

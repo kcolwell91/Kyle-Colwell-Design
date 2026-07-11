@@ -2,24 +2,45 @@
 
 import { useEffect, useRef } from 'react';
 import styles from './CinematicHero.module.css';
+import { HERO_SCROLL_READY_EVENT } from '@/components/ScrollTriggerManager';
 
 const HERO_VIDEO_MP4 = '/videos/hero.mp4';
 const HERO_VIDEO_MOV = '/videos/hero.mov';
 const HERO_VIDEO_DURATION = 22;
-const SCROLL_PX_PER_VIDEO_SECOND = 320;
-
-const NAV_LINKS = [
-  { label: 'Philosophy', href: '#who-i-am' },
-  { label: 'Manifesto', href: '#what-i-do' },
-  { label: 'Disciplines', href: '#disciplines' },
-  { label: 'Worlds', href: '#selected-worlds' },
-  { label: 'Work together', href: '#contact' },
-] as const;
+const SCROLL_PX_PER_VIDEO_SECOND = 360;
+const BOX_MORPH_START = 0.58;
+const BOX_FRAME_WIDTH = 666;
+const BOX_ASPECT = 16 / 10;
+const BOX_MAT_PADDING = 20;
+const VIDEO_SMOOTHING = 0.14;
+const SURFACE_COLOR = { r: 240, g: 233, b: 223 };
+const HERO_BG_COLOR = { r: 10, g: 8, b: 6 };
 
 function fadeRange(progress: number, start: number, end: number) {
   if (progress <= start) return 1;
   if (progress >= end) return 0;
   return 1 - (progress - start) / (end - start);
+}
+
+function dramaticFade(progress: number, start: number, end: number) {
+  const linear = fadeRange(progress, start, end);
+  return linear * linear * linear;
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t;
+}
+
+function lerpRgb(
+  from: { r: number; g: number; b: number },
+  to: { r: number; g: number; b: number },
+  t: number
+) {
+  return `rgb(${Math.round(lerp(from.r, to.r, t))}, ${Math.round(lerp(from.g, to.g, t))}, ${Math.round(lerp(from.b, to.b, t))})`;
 }
 
 function isVideoReady(video: HTMLVideoElement) {
@@ -30,23 +51,36 @@ function isVideoReady(video: HTMLVideoElement) {
 export default function CinematicHero() {
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
+  const frameShellRef = useRef<HTMLDivElement>(null);
+  const frameMatRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const scrollCueRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const line1Ref = useRef<HTMLSpanElement>(null);
   const line2Ref = useRef<HTMLSpanElement>(null);
   const line3Ref = useRef<HTMLSpanElement>(null);
-  const bodyRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     const track = trackRef.current;
     const viewport = viewportRef.current;
+    const frameShell = frameShellRef.current;
+    const frameMat = frameMatRef.current;
+    const overlay = overlayRef.current;
+    const content = contentRef.current;
+    const scrollCue = scrollCueRef.current;
     const video = videoRef.current;
-    if (!track || !viewport || !video) return;
+    if (!track || !viewport || !frameShell || !frameMat || !overlay || !content || !scrollCue || !video) {
+      return;
+    }
 
     let mounted = true;
     let scrollReady = false;
     let usingFallback = false;
     let gsapCtx: { revert: () => void } | null = null;
     let heroTrigger: { kill: () => void } | null = null;
+    let targetVideoTime = 0;
+    let videoRafId: number | null = null;
 
     const getDuration = () =>
       isVideoReady(video) ? video.duration : HERO_VIDEO_DURATION;
@@ -56,40 +90,69 @@ export default function CinematicHero() {
       track.style.setProperty('--hero-scroll-px', `${scrollPx}px`);
     };
 
+    const smoothVideoFrame = () => {
+      if (!isVideoReady(video)) {
+        videoRafId = null;
+        return;
+      }
+
+      const delta = targetVideoTime - video.currentTime;
+      if (Math.abs(delta) > 0.015) {
+        video.currentTime += delta * VIDEO_SMOOTHING;
+        videoRafId = requestAnimationFrame(smoothVideoFrame);
+        return;
+      }
+
+      video.currentTime = targetVideoTime;
+      videoRafId = null;
+    };
+
     const scrubVideo = (progress: number) => {
       if (!isVideoReady(video)) return;
-      const clamped = Math.min(Math.max(progress, 0), 1);
-      video.currentTime = clamped * video.duration;
+      const videoProgress = clamp(progress / BOX_MORPH_START, 0, 1);
+      targetVideoTime = videoProgress * video.duration;
+      if (videoRafId === null) {
+        videoRafId = requestAnimationFrame(smoothVideoFrame);
+      }
     };
 
-    const updateOverlay = (p: number) => {
+    const updateHeadline = (p: number, uiFade: number) => {
       if (line1Ref.current) {
-        line1Ref.current.style.opacity = String(fadeRange(p, 0.04, 0.12));
+        line1Ref.current.style.opacity = String(dramaticFade(p, 0.1, 0.24) * uiFade);
       }
       if (line2Ref.current) {
-        line2Ref.current.style.opacity = String(fadeRange(p, 0.1, 0.18));
+        line2Ref.current.style.opacity = String(dramaticFade(p, 0.05, 0.16) * uiFade);
       }
       if (line3Ref.current) {
-        line3Ref.current.style.opacity = String(fadeRange(p, 0.16, 0.24));
-      }
-      if (bodyRef.current) {
-        bodyRef.current.style.opacity = String(fadeRange(p, 0.22, 0.32));
+        line3Ref.current.style.opacity = String(dramaticFade(p, 0.01, 0.08) * uiFade);
       }
     };
 
-    const hideHero = () => {
-      track.classList.add(styles.heroComplete);
-      viewport.style.display = 'none';
-      video.pause();
-      video.style.display = 'none';
-    };
+    const updateBoxMorph = (progress: number) => {
+      const boxT = clamp((progress - BOX_MORPH_START) / (1 - BOX_MORPH_START), 0, 1);
+      const eased = boxT < 0.5 ? 2 * boxT * boxT : 1 - Math.pow(-2 * boxT + 2, 2) / 2;
+      const uiFade = 1 - clamp(boxT * 1.35, 0, 1);
 
-    const showHero = () => {
-      track.classList.remove(styles.heroComplete);
-      viewport.style.display = '';
-      video.style.display = '';
-      video.pause();
-      video.currentTime = 0;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const mediaW = Math.min(BOX_FRAME_WIDTH, vw * 0.88);
+      const mediaH = mediaW / BOX_ASPECT;
+      const matPad = BOX_MAT_PADDING * eased;
+      const targetW = mediaW + matPad * 2;
+      const targetH = mediaH + matPad * 2;
+
+      frameShell.style.width = `${lerp(vw, targetW, eased)}px`;
+      frameShell.style.height = `${lerp(vh, targetH, eased)}px`;
+      frameMat.style.padding = `${matPad}px`;
+      frameMat.style.borderRadius = `${lerp(0, 2, eased)}px`;
+      frameMat.style.boxShadow = `0 ${lerp(0, 24, eased)}px ${lerp(0, 64, eased)}px rgba(26, 22, 18, ${lerp(0, 0.1, eased)})`;
+
+      viewport.style.background = lerpRgb(HERO_BG_COLOR, SURFACE_COLOR, eased);
+      overlay.style.opacity = String(lerp(1, 0, eased));
+      content.style.opacity = String(uiFade);
+      scrollCue.style.opacity = String(uiFade);
+
+      updateHeadline(progress, uiFade);
     };
 
     const setupScrollTrigger = async () => {
@@ -97,7 +160,7 @@ export default function CinematicHero() {
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
 
-      if (!mounted || !isVideoReady(video)) return;
+      if (!mounted) return;
 
       setTrackHeight();
       gsapCtx?.revert();
@@ -112,40 +175,45 @@ export default function CinematicHero() {
           pin: viewport,
           pinSpacing: true,
           pinReparent: false,
-          scrub: true,
+          scrub: 1.1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             if (!self.isActive) return;
             scrubVideo(self.progress);
-            updateOverlay(self.progress);
+            updateBoxMorph(self.progress);
           },
           onLeave: () => {
             if (isVideoReady(video)) {
               video.currentTime = video.duration;
             }
-            hideHero();
-            void import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => ScrollTrigger.refresh());
+            updateBoxMorph(1);
+            video.pause();
           },
-          onEnterBack: () => {
-            showHero();
-            scrubVideo(0);
-            updateOverlay(0);
+          onEnterBack: (self) => {
+            scrubVideo(self.progress);
+            updateBoxMorph(self.progress);
           },
         });
 
         scrubVideo(0);
-        updateOverlay(0);
+        updateBoxMorph(0);
         ScrollTrigger.refresh();
+        window.dispatchEvent(new Event(HERO_SCROLL_READY_EVENT));
       }, track);
     };
 
-    const onVideoReady = () => {
-      if (!mounted || scrollReady || !isVideoReady(video)) return;
+    const initScrollTrigger = () => {
+      if (!mounted || scrollReady) return;
       scrollReady = true;
       video.pause();
       video.currentTime = 0;
       void setupScrollTrigger();
+    };
+
+    const onVideoReady = () => {
+      if (!mounted || scrollReady || !isVideoReady(video)) return;
+      initScrollTrigger();
     };
 
     const onVideoError = () => {
@@ -169,9 +237,17 @@ export default function CinematicHero() {
       onVideoReady();
     }
 
+    const fallbackTimer = window.setTimeout(() => {
+      if (!mounted || scrollReady) return;
+      usingFallback = true;
+      initScrollTrigger();
+    }, 2000);
+
     const onResize = async () => {
       setTrackHeight();
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      const hero = ScrollTrigger.getById('hero-video');
+      updateBoxMorph(hero?.progress ?? 0);
       ScrollTrigger.refresh();
     };
 
@@ -179,10 +255,12 @@ export default function CinematicHero() {
 
     return () => {
       mounted = false;
+      window.clearTimeout(fallbackTimer);
       video.removeEventListener('loadedmetadata', onVideoReady);
       video.removeEventListener('durationchange', onVideoReady);
       video.removeEventListener('error', onVideoError);
       window.removeEventListener('resize', onResize);
+      if (videoRafId !== null) cancelAnimationFrame(videoRafId);
       heroTrigger?.kill();
       gsapCtx?.revert();
     };
@@ -191,33 +269,26 @@ export default function CinematicHero() {
   return (
     <div ref={trackRef} id="hero" className={styles.track} aria-label="Hero">
       <div ref={viewportRef} className={styles.viewport}>
-        <video
-          ref={videoRef}
-          id="heroVideo"
-          className={styles.video}
-          src={HERO_VIDEO_MP4}
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-        />
+        <div className={styles.stage}>
+          <div ref={frameShellRef} className={styles.frameShell}>
+            <div ref={frameMatRef} className={styles.frameMat}>
+              <video
+                ref={videoRef}
+                id="heroVideo"
+                className={styles.video}
+                src={HERO_VIDEO_MP4}
+                muted
+                playsInline
+                preload="auto"
+                aria-hidden="true"
+              />
+            </div>
+          </div>
+        </div>
 
-        <div className={styles.overlay} aria-hidden="true" />
+        <div ref={overlayRef} className={styles.overlay} aria-hidden="true" />
 
-        <header className={styles.header}>
-          <a href="#" className={styles.logo}>
-            Kyle Colwell
-          </a>
-          <nav className={styles.nav} aria-label="Primary">
-            {NAV_LINKS.map(({ label, href }) => (
-              <a key={label} href={href} className={styles.navLink}>
-                {label}
-              </a>
-            ))}
-          </nav>
-        </header>
-
-        <div className={styles.content}>
+        <div ref={contentRef} className={styles.content}>
           <h1 className={styles.headline}>
             <span ref={line1Ref} className={styles.headlineLine}>
               Regenerative
@@ -229,14 +300,9 @@ export default function CinematicHero() {
               Creative Director
             </span>
           </h1>
-          <p ref={bodyRef} className={styles.body}>
-            I design places, brands, and experiences that people don&apos;t just
-            see—they feel. Inspired by living systems, crafted for lasting
-            impact.
-          </p>
         </div>
 
-        <div className={styles.scrollCue} aria-hidden="true">
+        <div ref={scrollCueRef} className={styles.scrollCue} aria-hidden="true">
           <span className={styles.scrollCueText}>Scroll to discover</span>
           <svg
             className={styles.scrollCueArrow}

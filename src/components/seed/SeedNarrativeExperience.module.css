@@ -1,0 +1,80 @@
+.canvasShell {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: transparent;
+}
+
+.canvasStage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.canvasInner {
+  will-change: transform;
+  transition: transform 0.12s linear;
+}
+
+.frameCanvas {
+  display: block;
+  width: min(92vmin, calc(var(--seed-model-height, 44vh) * 1.35));
+  height: var(--seed-model-height, 44vh);
+  max-width: 92vw;
+  object-fit: contain;
+  background: transparent;
+}
+
+.orbitCanvasWrap,
+.glbCanvas {
+  display: block;
+  width: min(92vmin, calc(var(--seed-model-height, 28vh) * 1.35));
+  height: var(--seed-model-height, 28vh);
+  max-width: 46vw;
+  background: transparent !important;
+}
+
+.interstitialTrack {
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+  background: transparent;
+}
+
+.idleInterstitial {
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+  background: transparent;
+}
+
+.idleStage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.scrubInterstitial {
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+  background: transparent;
+}
+
+@media (max-width: 768px) {
+  .frameCanvas {
+    width: min(90vmin, calc(var(--seed-model-height, 40vh) * 1.2));
+    height: min(var(--seed-model-height, 40vh), 46vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .canvasInner {
+    transition: none;
+  }
+}

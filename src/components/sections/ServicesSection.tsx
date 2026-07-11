@@ -1,107 +1,103 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { useCinematicSequence } from '@/hooks/useCinematicSequence';
+import { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import { useSectionEntrance } from '@/hooks/useSectionEntrance';
+import ServicesClosingSection from '@/components/sections/ServicesClosingSection';
 import styles from './sections.module.css';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const SERVICES = [
   {
     title: 'Creative Direction',
-    desc: 'For founders, visionaries, and brands ready to translate their essence into a visual and experiential world.',
+    desc: 'For founders, developers, and visionaries creating places people remember.',
   },
   {
-    title: 'Spatial & Interior Concepts',
-    desc: 'For retreats, homes, hospitality spaces, and regenerative environments that need atmosphere, story, and soul.',
+    title: 'Signature Brand Experience',
+    desc: 'A complete creative partnership from strategy to story to execution.',
   },
   {
-    title: 'Brand World Building',
-    desc: 'For projects that need identity, messaging, imagery, website direction, and a cohesive creative ecosystem.',
-  },
-  {
-    title: 'Invest in Regenerative Living',
-    desc: 'For land, retreat, wellness, and design projects seeking a more beautiful and living-system-aligned direction.',
+    title: 'Hospitality & Regenerative Design',
+    desc: 'Creative direction for retreats, boutique hospitality, and places rooted in nature.',
   },
 ] as const;
 
 export default function ServicesSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
   const sectionRef = useRef<HTMLElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  const headlineRef = useRef<HTMLHeadingElement>(null);
-  const row1Ref = useRef<HTMLDivElement>(null);
-  const row2Ref = useRef<HTMLDivElement>(null);
-  const row3Ref = useRef<HTMLDivElement>(null);
-  const row4Ref = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLAnchorElement>(null);
+  useSectionEntrance(contentRef);
 
-  useCinematicSequence({
-    sectionRef,
-    itemRefs: [headlineRef, row1Ref, row2Ref, row3Ref, row4Ref, ctaRef],
-  });
+  useGSAP(
+    () => {
+      const section = sectionRef.current;
+      const frame = frameRef.current;
+      const texture = frame?.querySelector<HTMLElement>('[data-services-texture]');
+      if (!section || !frame || !texture) return;
 
-  const rowRefs = [row1Ref, row2Ref, row3Ref, row4Ref];
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return;
+
+      gsap.fromTo(
+        texture,
+        { yPercent: 3 },
+        {
+          yPercent: -5,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 3.2,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+    },
+    { scope: sectionRef }
+  );
 
   return (
     <section
       ref={sectionRef}
-      className={`${styles.cinematicSection} pinned-section`}
+      className={styles.servicesSection}
       id="contact"
-      data-cinematic
+      aria-label="Ways to Work Together"
     >
-      <div className={`${styles.cinematicPin} ${styles.services}`}>
-        <div className={`${styles.cinematicContent} ${styles.servicesInner}`}>
-          <h2 ref={headlineRef} className={`${styles.cinematicItem} ${styles.servicesHeadline}`}>
-            Ways to Work Together
-          </h2>
+      <div ref={frameRef} className={styles.servicesFrame}>
+        <div
+          className={styles.servicesTexture}
+          data-services-texture
+          aria-hidden="true"
+        />
+        <div ref={contentRef} className={styles.servicesBoxInner}>
+          <header className={styles.servicesBoxHeader}>
+            <p className={styles.servicesEyebrow}>Ways to Work Together</p>
+          </header>
 
-          <div className={styles.serviceList}>
-            {SERVICES.map((service, i) => {
-              const isOpen = openIndex === i;
-              return (
-                <div
-                  key={service.title}
-                  ref={rowRefs[i]}
-                  className={`${styles.cinematicItem} ${styles.serviceRow}`}
-                >
-                  <button
-                    type="button"
-                    className={styles.serviceButton}
-                    onClick={() => setOpenIndex(isOpen ? null : i)}
-                    aria-expanded={isOpen}
-                  >
-                    <span className={styles.serviceIndex}>
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <h3 className={styles.serviceTitle}>{service.title}</h3>
-                    <span
-                      className={`${styles.serviceToggle} ${isOpen ? styles.serviceToggleOpen : ''}`}
-                      aria-hidden="true"
-                    >
-                      +
-                    </span>
-                  </button>
-                  {isOpen && (
-                    <div className={styles.serviceBody}>
-                      <div className={styles.serviceBodyInner}>
-                        <p className={styles.serviceDesc}>{service.desc}</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          <a
-            ref={ctaRef}
-            href="mailto:studio@kylecolwell.com"
-            className={`${styles.cinematicItem} ${styles.servicesCta}`}
-          >
-            Begin a Conversation
-          </a>
+          <ul className={styles.servicesOfferings}>
+            {SERVICES.map((service, index) => (
+              <li key={service.title} className={styles.serviceOffering}>
+                <p className={styles.serviceOfferingIndex}>
+                  {String(index + 1).padStart(2, '0')} —
+                </p>
+                <h3 className={`${styles.revealText} ${styles.serviceOfferingTitle}`}>
+                  {service.title}
+                </h3>
+                <p className={`${styles.philosophyBodyReveal} ${styles.serviceOfferingDesc}`}>
+                  {service.desc}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
+
+      <ServicesClosingSection />
     </section>
   );
 }

@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
+import OrganicCursor from '@/components/OrganicCursor';
+import ScrollTriggerManager from '@/components/ScrollTriggerManager';
+import SiteNav from '@/components/SiteNav';
 import './globals.css';
 
 const cormorant = Cormorant_Garamond({
@@ -27,8 +30,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable} h-full`}>
-      <body className="min-h-full antialiased">{children}</body>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${cormorant.variable} ${inter.variable} h-full`}
+    >
+      <body className="min-h-full antialiased">
+        <OrganicCursor />
+        <ScrollTriggerManager />
+        <SiteNav />
+        {children}
+      </body>
     </html>
   );
 }

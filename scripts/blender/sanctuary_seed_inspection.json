@@ -1,0 +1,1827 @@
+{
+  "blend_file": "/Users/kyle/Desktop/sanctuary/sanctuary-prototype-v02-animation.blend",
+  "scene_name": "Scene",
+  "frame_start": 1,
+  "frame_end": 600,
+  "frame_current": 600,
+  "fps": 24,
+  "collections": [
+    {
+      "name": "00_MASTER",
+      "objects": [
+        "MASTER_Camera",
+        "LIGHT_Key"
+      ],
+      "hide_viewport": false,
+      "hide_render": false,
+      "children": [
+        "01_SEED",
+        "02_ROOTS",
+        "03_STRUCTURE",
+        "04_TREE",
+        "05_WATER"
+      ]
+    },
+    {
+      "name": "01_SEED",
+      "objects": [
+        "SEED_Core",
+        "SEED_Petal_01",
+        "HINGE_Petal_01",
+        "SEED_Petal_02",
+        "HINGE_Petal_02",
+        "SEED_Petal_03",
+        "HINGE_Petal_03",
+        "SEED_Petal_04",
+        "HINGE_Petal_04",
+        "SEED_Petal_05",
+        "HINGE_Petal_05"
+      ],
+      "hide_viewport": false,
+      "hide_render": false,
+      "children": []
+    },
+    {
+      "name": "02_ROOTS",
+      "objects": [],
+      "hide_viewport": false,
+      "hide_render": false,
+      "children": []
+    },
+    {
+      "name": "03_STRUCTURE",
+      "objects": [],
+      "hide_viewport": false,
+      "hide_render": false,
+      "children": []
+    },
+    {
+      "name": "04_TREE",
+      "objects": [],
+      "hide_viewport": false,
+      "hide_render": false,
+      "children": []
+    },
+    {
+      "name": "05_WATER",
+      "objects": [],
+      "hide_viewport": false,
+      "hide_render": false,
+      "children": []
+    },
+    {
+      "name": "Collection",
+      "objects": [
+        "ROOT_Down_01",
+        "ROOT_Down_02",
+        "ROOT_Down_03",
+        "ROOT_Down_04",
+        "ROOT_Down_05",
+        "GROUND_ContactShadow",
+        "DUST_Motes"
+      ],
+      "hide_viewport": false,
+      "hide_render": false,
+      "children": []
+    }
+  ],
+  "classification": {
+    "seed_body": [
+      "SEED_Core"
+    ],
+    "roots": [],
+    "flower_petals": [
+      "SEED_Petal_01",
+      "SEED_Petal_02",
+      "SEED_Petal_03",
+      "SEED_Petal_04",
+      "SEED_Petal_05"
+    ],
+    "ground_disc": [
+      "GROUND_ContactShadow"
+    ],
+    "cameras": [
+      "MASTER_Camera"
+    ],
+    "lights": [
+      "LIGHT_Fill",
+      "LIGHT_Key",
+      "LIGHT_Rim"
+    ],
+    "armatures": [],
+    "particles": [],
+    "other_meshes": [
+      "DUST_Motes"
+    ],
+    "empties": [
+      "HINGE_Petal_01",
+      "HINGE_Petal_02",
+      "HINGE_Petal_03",
+      "HINGE_Petal_04",
+      "HINGE_Petal_05"
+    ],
+    "other": [
+      "BEVEL_RootProfile (CURVE)",
+      "ROOT_Down_01 (CURVE)",
+      "ROOT_Down_02 (CURVE)",
+      "ROOT_Down_03 (CURVE)",
+      "ROOT_Down_04 (CURVE)",
+      "ROOT_Down_05 (CURVE)",
+      "ROOT_Secondary_01_01 (CURVE)",
+      "ROOT_Secondary_01_02 (CURVE)",
+      "ROOT_Secondary_02_01 (CURVE)",
+      "ROOT_Secondary_02_02 (CURVE)",
+      "ROOT_Secondary_03_01 (CURVE)",
+      "ROOT_Secondary_03_02 (CURVE)",
+      "ROOT_Secondary_04_01 (CURVE)",
+      "ROOT_Secondary_04_02 (CURVE)",
+      "ROOT_Secondary_05_01 (CURVE)",
+      "ROOT_Secondary_05_02 (CURVE)",
+      "ROOT_Tertiary_01_01 (CURVE)",
+      "ROOT_Tertiary_01_02 (CURVE)",
+      "ROOT_Tertiary_02_01 (CURVE)",
+      "ROOT_Tertiary_02_02 (CURVE)",
+      "ROOT_Tertiary_03_01 (CURVE)",
+      "ROOT_Tertiary_03_02 (CURVE)",
+      "ROOT_Tertiary_04_01 (CURVE)",
+      "ROOT_Tertiary_04_02 (CURVE)",
+      "ROOT_Tertiary_05_01 (CURVE)",
+      "ROOT_Tertiary_05_02 (CURVE)"
+    ]
+  },
+  "all_objects": [
+    {
+      "name": "BEVEL_RootProfile",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": false,
+      "hide_viewport": true,
+      "hide_render": true,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "DUST_Motes",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": true,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "verts": 1458,
+      "faces": 2880,
+      "materials": [
+        "MAT_DustMote"
+      ],
+      "modifiers": [],
+      "shape_keys": [],
+      "vertex_groups": [],
+      "bounds_world": {
+        "x": [
+          -0.1079,
+          0.3657
+        ],
+        "y": [
+          -0.3012,
+          0.273
+        ],
+        "z": [
+          -0.1082,
+          0.8753
+        ]
+      },
+      "constraints": []
+    },
+    {
+      "name": "GROUND_ContactShadow",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": true,
+      "location": [
+        0.0,
+        0.0,
+        -0.78
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "verts": 32,
+      "faces": 1,
+      "materials": [
+        "MAT_ContactShadow"
+      ],
+      "modifiers": [],
+      "shape_keys": [],
+      "vertex_groups": [],
+      "bounds_world": {
+        "x": [
+          -1.6,
+          1.6
+        ],
+        "y": [
+          -1.6,
+          1.6
+        ],
+        "z": [
+          -0.78,
+          -0.78
+        ]
+      },
+      "constraints": []
+    },
+    {
+      "name": "HINGE_Petal_01",
+      "type": "EMPTY",
+      "parent": null,
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        -0.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "animation": {
+        "action": "HINGE_Petal_01Action.001",
+        "nla_tracks": 0,
+        "fcurve_paths": [
+          "rotation_euler"
+        ],
+        "fcurve_count": 3
+      }
+    },
+    {
+      "name": "HINGE_Petal_02",
+      "type": "EMPTY",
+      "parent": null,
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        -0.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "animation": {
+        "action": "HINGE_Petal_02Action.001",
+        "nla_tracks": 0,
+        "fcurve_paths": [
+          "rotation_euler"
+        ],
+        "fcurve_count": 3
+      }
+    },
+    {
+      "name": "HINGE_Petal_03",
+      "type": "EMPTY",
+      "parent": null,
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        -0.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "animation": {
+        "action": "HINGE_Petal_03Action.001",
+        "nla_tracks": 0,
+        "fcurve_paths": [
+          "rotation_euler"
+        ],
+        "fcurve_count": 3
+      }
+    },
+    {
+      "name": "HINGE_Petal_04",
+      "type": "EMPTY",
+      "parent": null,
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        -0.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "animation": {
+        "action": "HINGE_Petal_04Action.001",
+        "nla_tracks": 0,
+        "fcurve_paths": [
+          "rotation_euler"
+        ],
+        "fcurve_count": 3
+      }
+    },
+    {
+      "name": "HINGE_Petal_05",
+      "type": "EMPTY",
+      "parent": null,
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        -0.5
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": [],
+      "animation": {
+        "action": "HINGE_Petal_05Action.001",
+        "nla_tracks": 0,
+        "fcurve_paths": [
+          "rotation_euler"
+        ],
+        "fcurve_count": 3
+      }
+    },
+    {
+      "name": "LIGHT_Fill",
+      "type": "LIGHT",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        2.8,
+        -1.8,
+        0.9
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "light_type": "AREA",
+      "energy": 20.0,
+      "constraints": []
+    },
+    {
+      "name": "LIGHT_Key",
+      "type": "LIGHT",
+      "parent": null,
+      "collections": [
+        "00_MASTER"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        -2.4,
+        -3.2,
+        3.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "light_type": "AREA",
+      "energy": 120.0,
+      "constraints": []
+    },
+    {
+      "name": "LIGHT_Rim",
+      "type": "LIGHT",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.3,
+        3.0,
+        2.2
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "light_type": "AREA",
+      "energy": 45.0,
+      "constraints": []
+    },
+    {
+      "name": "MASTER_Camera",
+      "type": "CAMERA",
+      "parent": null,
+      "collections": [
+        "00_MASTER"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        4.5934,
+        -4.3746,
+        4.5698
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "lens": 55.0,
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Down_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Down_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Down_03",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Down_04",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Down_05",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_01_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_01_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_02_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_02_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_03_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_03_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_04_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_04_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_05_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Secondary_05_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_01_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_01_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_02_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_02_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_03_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_03_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_04_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_04_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_05_01",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "ROOT_Tertiary_05_02",
+      "type": "CURVE",
+      "parent": null,
+      "collections": [
+        "Scene Collection"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "constraints": []
+    },
+    {
+      "name": "SEED_Core",
+      "type": "MESH",
+      "parent": null,
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        0.14,
+        0.14,
+        0.14
+      ],
+      "verts": 57626,
+      "faces": 57625,
+      "materials": [
+        "MAT_Seed_Bone"
+      ],
+      "modifiers": [
+        {
+          "name": "Subdiv_Smooth",
+          "type": "SUBSURF",
+          "show_viewport": true
+        }
+      ],
+      "shape_keys": [],
+      "vertex_groups": [],
+      "bounds_world": {
+        "x": [
+          -0.0394,
+          0.0403
+        ],
+        "y": [
+          -0.0402,
+          0.0398
+        ],
+        "z": [
+          -0.0881,
+          0.0988
+        ]
+      },
+      "constraints": [],
+      "animation": {
+        "action": "SEED_CoreAction.001",
+        "nla_tracks": 0,
+        "fcurve_paths": [
+          "scale"
+        ],
+        "fcurve_count": 3
+      }
+    },
+    {
+      "name": "SEED_Petal_01",
+      "type": "MESH",
+      "parent": "HINGE_Petal_01",
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "verts": 749,
+      "faces": 748,
+      "materials": [
+        "MAT_Seed_Bone"
+      ],
+      "modifiers": [],
+      "shape_keys": [],
+      "vertex_groups": [],
+      "bounds_world": {
+        "x": [
+          0.0001,
+          0.3541
+        ],
+        "y": [
+          -0.8632,
+          0.0024
+        ],
+        "z": [
+          -0.5077,
+          0.3659
+        ]
+      },
+      "constraints": []
+    },
+    {
+      "name": "SEED_Petal_02",
+      "type": "MESH",
+      "parent": "HINGE_Petal_02",
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "verts": 793,
+      "faces": 792,
+      "materials": [
+        "MAT_Seed_Bone"
+      ],
+      "modifiers": [],
+      "shape_keys": [],
+      "vertex_groups": [],
+      "bounds_world": {
+        "x": [
+          0.0148,
+          0.9058
+        ],
+        "y": [
+          -0.2365,
+          0.2531
+        ],
+        "z": [
+          -0.5089,
+          0.2979
+        ]
+      },
+      "constraints": []
+    },
+    {
+      "name": "SEED_Petal_03",
+      "type": "MESH",
+      "parent": "HINGE_Petal_03",
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "verts": 881,
+      "faces": 880,
+      "materials": [
+        "MAT_Seed_Bone"
+      ],
+      "modifiers": [],
+      "shape_keys": [],
+      "vertex_groups": [],
+      "bounds_world": {
+        "x": [
+          -0.132,
+          0.5564
+        ],
+        "y": [
+          0.0165,
+          0.7997
+        ],
+        "z": [
+          -0.5242,
+          0.2398
+        ]
+      },
+      "constraints": []
+    },
+    {
+      "name": "SEED_Petal_04",
+      "type": "MESH",
+      "parent": "HINGE_Petal_04",
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "verts": 1057,
+      "faces": 1056,
+      "materials": [
+        "MAT_Seed_Bone"
+      ],
+      "modifiers": [],
+      "shape_keys": [],
+      "vertex_groups": [],
+      "bounds_world": {
+        "x": [
+          -0.5087,
+          -0.0119
+        ],
+        "y": [
+          -0.066,
+          0.809
+        ],
+        "z": [
+          -0.5107,
+          0.279
+        ]
+      },
+      "constraints": []
+    },
+    {
+      "name": "SEED_Petal_05",
+      "type": "MESH",
+      "parent": "HINGE_Petal_05",
+      "collections": [
+        "01_SEED"
+      ],
+      "visible": true,
+      "hide_viewport": false,
+      "hide_render": false,
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "verts": 881,
+      "faces": 880,
+      "materials": [
+        "MAT_Seed_Bone"
+      ],
+      "modifiers": [],
+      "shape_keys": [],
+      "vertex_groups": [],
+      "bounds_world": {
+        "x": [
+          -0.8546,
+          0.033
+        ],
+        "y": [
+          -0.4371,
+          -0.0062
+        ],
+        "z": [
+          -0.5073,
+          0.3499
+        ]
+      },
+      "constraints": []
+    }
+  ],
+  "actions": [
+    {
+      "name": "HINGE_Petal_01Action.001",
+      "fcurves": 3,
+      "frame_range": [
+        1,
+        600
+      ],
+      "data_paths_sample": [
+        "rotation_euler"
+      ],
+      "assigned_to": [
+        "HINGE_Petal_01"
+      ]
+    },
+    {
+      "name": "HINGE_Petal_02Action.001",
+      "fcurves": 3,
+      "frame_range": [
+        1,
+        600
+      ],
+      "data_paths_sample": [
+        "rotation_euler"
+      ],
+      "assigned_to": [
+        "HINGE_Petal_02"
+      ]
+    },
+    {
+      "name": "HINGE_Petal_03Action.001",
+      "fcurves": 3,
+      "frame_range": [
+        1,
+        600
+      ],
+      "data_paths_sample": [
+        "rotation_euler"
+      ],
+      "assigned_to": [
+        "HINGE_Petal_03"
+      ]
+    },
+    {
+      "name": "HINGE_Petal_04Action.001",
+      "fcurves": 3,
+      "frame_range": [
+        1,
+        600
+      ],
+      "data_paths_sample": [
+        "rotation_euler"
+      ],
+      "assigned_to": [
+        "HINGE_Petal_04"
+      ]
+    },
+    {
+      "name": "HINGE_Petal_05Action.001",
+      "fcurves": 3,
+      "frame_range": [
+        1,
+        600
+      ],
+      "data_paths_sample": [
+        "rotation_euler"
+      ],
+      "assigned_to": [
+        "HINGE_Petal_05"
+      ]
+    },
+    {
+      "name": "ROOT_Down_01_curveAction.001",
+      "fcurves": 1,
+      "frame_range": [
+        180,
+        369
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Down_02_curveAction",
+      "fcurves": 1,
+      "frame_range": [
+        198,
+        381
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Down_03_curveAction",
+      "fcurves": 1,
+      "frame_range": [
+        188,
+        385
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Down_04_curveAction",
+      "fcurves": 1,
+      "frame_range": [
+        207,
+        375
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Down_05_curveAction",
+      "fcurves": 1,
+      "frame_range": [
+        184,
+        365
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_01_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        232,
+        295
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_01_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        322,
+        385
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_02_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        250,
+        315
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_02_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        337,
+        397
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_03_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        237,
+        320
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_03_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        337,
+        412
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_04_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        251,
+        313
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_04_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        338,
+        420
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_05_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        234,
+        300
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Secondary_05_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        323,
+        388
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_01_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        271,
+        297
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_01_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        363,
+        388
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_02_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        287,
+        318
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_02_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        377,
+        401
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_03_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        302,
+        330
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_03_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        394,
+        418
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_04_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        282,
+        317
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_04_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        379,
+        415
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_05_01Action",
+      "fcurves": 1,
+      "frame_range": [
+        278,
+        312
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "ROOT_Tertiary_05_02Action",
+      "fcurves": 1,
+      "frame_range": [
+        375,
+        413
+      ],
+      "data_paths_sample": [
+        "bevel_factor_end"
+      ],
+      "assigned_to": []
+    },
+    {
+      "name": "SEED_CoreAction.001",
+      "fcurves": 3,
+      "frame_range": [
+        1,
+        600
+      ],
+      "data_paths_sample": [
+        "scale"
+      ],
+      "assigned_to": [
+        "SEED_Core"
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "name": "MAT_ContactShadow",
+      "users": 1
+    },
+    {
+      "name": "MAT_DustMote",
+      "users": 1
+    },
+    {
+      "name": "MAT_Root_Bone",
+      "users": 25
+    },
+    {
+      "name": "MAT_Seed_Bone",
+      "users": 6
+    }
+  ],
+  "key_frame_visibility": [
+    {
+      "frame": 1,
+      "visible_seed": [
+        "SEED_Core"
+      ],
+      "visible_roots": [],
+      "visible_petals": [
+        "SEED_Petal_01",
+        "SEED_Petal_02",
+        "SEED_Petal_03",
+        "SEED_Petal_04",
+        "SEED_Petal_05"
+      ]
+    },
+    {
+      "frame": 156,
+      "visible_seed": [
+        "SEED_Core"
+      ],
+      "visible_roots": [],
+      "visible_petals": [
+        "SEED_Petal_01",
+        "SEED_Petal_02",
+        "SEED_Petal_03",
+        "SEED_Petal_04",
+        "SEED_Petal_05"
+      ]
+    },
+    {
+      "frame": 200,
+      "visible_seed": [
+        "SEED_Core"
+      ],
+      "visible_roots": [],
+      "visible_petals": [
+        "SEED_Petal_01",
+        "SEED_Petal_02",
+        "SEED_Petal_03",
+        "SEED_Petal_04",
+        "SEED_Petal_05"
+      ]
+    },
+    {
+      "frame": 409,
+      "visible_seed": [
+        "SEED_Core"
+      ],
+      "visible_roots": [],
+      "visible_petals": [
+        "SEED_Petal_01",
+        "SEED_Petal_02",
+        "SEED_Petal_03",
+        "SEED_Petal_04",
+        "SEED_Petal_05"
+      ]
+    },
+    {
+      "frame": 529,
+      "visible_seed": [
+        "SEED_Core"
+      ],
+      "visible_roots": [],
+      "visible_petals": [
+        "SEED_Petal_01",
+        "SEED_Petal_02",
+        "SEED_Petal_03",
+        "SEED_Petal_04",
+        "SEED_Petal_05"
+      ]
+    },
+    {
+      "frame": 600,
+      "visible_seed": [
+        "SEED_Core"
+      ],
+      "visible_roots": [],
+      "visible_petals": [
+        "SEED_Petal_01",
+        "SEED_Petal_02",
+        "SEED_Petal_03",
+        "SEED_Petal_04",
+        "SEED_Petal_05"
+      ]
+    }
+  ]
+}

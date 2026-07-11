@@ -1,0 +1,32 @@
+.divider {
+  position: relative;
+  background: var(--surface);
+}
+
+.orbitTrack {
+  position: relative;
+  width: 100%;
+}
+
+.orbitSticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.orbitViewport {
+  width: min(calc(var(--seed-static-height, 114vh) * 1.35), 48vmin);
+  height: min(var(--seed-static-height, 114vh), 52vh);
+  max-width: 52vw;
+}
+
+@media (max-width: 768px) {
+  .orbitViewport {
+    width: min(var(--seed-static-height, 100vh), 44vmin);
+    height: min(var(--seed-static-height, 100vh), 36vh);
+  }
+}

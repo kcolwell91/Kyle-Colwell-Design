@@ -1,0 +1,342 @@
+.story {
+  background: var(--surface);
+  color: var(--ink);
+  overflow-x: clip;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(24px, 4vw, 40px) clamp(20px, 5vw, 72px);
+  pointer-events: none;
+}
+
+.navLink,
+.navIndex {
+  pointer-events: auto;
+}
+
+.navLink {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(247, 242, 234, 0.82);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.navLink:hover {
+  color: #f7f2ea;
+}
+
+.navIndex {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: rgba(247, 242, 234, 0.72);
+}
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: flex-end;
+  background: #14110e;
+}
+
+.heroMedia {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
+.heroScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 8, 6, 0.18) 0%,
+    rgba(12, 8, 6, 0.06) 38%,
+    rgba(12, 8, 6, 0.82) 100%
+  );
+  pointer-events: none;
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vh, 96px) clamp(20px, 5vw, 72px) clamp(56px, 10vh, 112px);
+}
+
+.heroEyebrow {
+  margin: 0 0 20px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(247, 242, 234, 0.68);
+}
+
+.heroTitle {
+  margin: 0;
+  max-width: 12ch;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(56px, 10vw, 120px);
+  line-height: 0.92;
+  letter-spacing: 0.08em;
+  color: #f7f2ea;
+}
+
+.heroSubtitle {
+  margin: clamp(20px, 3vh, 28px) 0 0;
+  max-width: 28ch;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.35;
+  color: rgba(247, 242, 234, 0.88);
+  text-wrap: balance;
+}
+
+.section,
+.sectionMuted,
+.sectionDark {
+  padding: clamp(80px, 13vh, 152px) 0;
+}
+
+.sectionMuted {
+  background: #ebe3d6;
+}
+
+.sectionDark {
+  background: #14110e;
+  color: #f7f2ea;
+}
+
+.sectionInner {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 72px);
+}
+
+.sectionInnerWide {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 72px);
+}
+
+.kicker {
+  margin: 0 0 24px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+
+.kickerCenter {
+  margin: 0 0 clamp(28px, 4vh, 40px);
+  text-align: center;
+}
+
+.statement {
+  margin: 0 auto;
+  max-width: 20ch;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(32px, 4.8vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.prose {
+  margin: 0;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.68;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.proseCenter {
+  margin: 0 auto clamp(48px, 7vh, 72px);
+  max-width: 52ch;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.68;
+  color: var(--muted);
+  text-align: center;
+  text-wrap: pretty;
+}
+
+.split,
+.splitReverse {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 88px);
+  align-items: center;
+}
+
+.splitCopy {
+  padding-top: clamp(8px, 1.5vh, 16px);
+}
+
+.matFrame {
+  margin: 0;
+  width: min(100%, 480px);
+}
+
+.matFrameSmall {
+  width: min(100%, 300px);
+  justify-self: center;
+}
+
+.photoMat {
+  padding: clamp(14px, 2.2vw, 22px);
+  background: #f7f2ea;
+  box-shadow: 0 20px 56px rgba(26, 22, 18, 0.08);
+  line-height: 0;
+}
+
+.photoMatImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+
+.videoFrame {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: transparent;
+}
+
+.videoBelow {
+  position: relative;
+  margin: 0;
+  width: min(100%, 1040px);
+  aspect-ratio: 16 / 9;
+  min-height: clamp(360px, 52vh, 620px);
+  overflow: hidden;
+  background: transparent;
+}
+
+.mediaVideo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  vertical-align: top;
+}
+
+.digitalStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(48px, 7vh, 80px);
+}
+
+.digitalCopy {
+  max-width: 42ch;
+  text-align: center;
+}
+
+.sectionInnerWide .matFrame {
+  width: 100%;
+}
+
+.closingInner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.closingLine {
+  margin: 0;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1.12;
+  letter-spacing: -0.018em;
+  color: #f7f2ea;
+  text-wrap: balance;
+}
+
+.closingCta {
+  display: inline-flex;
+  margin-top: clamp(32px, 5vh, 48px);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(247, 242, 234, 0.62);
+  transition: color 0.45s ease;
+}
+
+.closingCta:hover {
+  color: #f7f2ea;
+}
+
+@media (max-width: 900px) {
+  .split,
+  .splitReverse {
+    grid-template-columns: 1fr;
+  }
+
+  .splitReverse {
+    direction: rtl;
+  }
+
+  .splitReverse > * {
+    direction: ltr;
+  }
+
+  .matFrameSmall {
+    width: min(100%, 280px);
+  }
+
+  .heroTitle {
+    max-width: none;
+    letter-spacing: 0.06em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closingCta {
+    transition: none;
+  }
+}

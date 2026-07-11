@@ -1,0 +1,304 @@
+.page {
+  background: #f7f3ec;
+  color: var(--ink);
+  overflow-x: clip;
+  padding-bottom: clamp(112px, 16vh, 180px);
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: clamp(28px, 4vw, 48px) clamp(24px, 5vw, 80px);
+  border-bottom: 1px solid rgba(26, 22, 18, 0.08);
+}
+
+.headerMark {
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(13px, 1.2vw, 16px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  text-align: center;
+  color: rgba(26, 22, 18, 0.72);
+}
+
+.backLink,
+.backLinkMuted,
+.footerLink {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.backLink {
+  color: var(--ink);
+}
+
+.backLink:hover,
+.footerLink:hover {
+  color: var(--burgundy);
+}
+
+.backLinkMuted {
+  justify-self: end;
+  color: var(--muted);
+}
+
+.backLinkMuted:hover {
+  color: var(--ink);
+}
+
+.intro {
+  padding: clamp(64px, 10vh, 120px) clamp(24px, 5vw, 80px) clamp(96px, 14vh, 160px);
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 24px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(52px, 7.5vw, 104px);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.dek {
+  margin: clamp(28px, 4vh, 40px) auto 0;
+  max-width: 34rem;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.chapter,
+.chapterAlt {
+  padding: clamp(88px, 12vh, 144px) 0;
+}
+
+.chapterAlt {
+  background: #efe8dc;
+}
+
+.chapterInner {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 80px);
+}
+
+.chapterFeatured .chapterInner {
+  width: min(1280px, 100%);
+  padding: 0 clamp(20px, 4vw, 56px);
+}
+
+.chapterFeatured .gridSingle {
+  max-width: 100%;
+}
+
+.chapterBedrooms .chapterInner {
+  width: min(1720px, 100%);
+  padding: 0 clamp(12px, 2vw, 32px);
+}
+
+.chapterBedrooms .grid {
+  gap: clamp(56px, 7vh, 104px) clamp(44px, 4.5vw, 80px);
+}
+
+.chapterBathrooms .chapterInner,
+.chapterLiving .chapterInner {
+  width: min(1520px, 100%);
+  padding: 0 clamp(16px, 3vw, 40px);
+}
+
+.chapterBathrooms .grid,
+.chapterLiving .grid {
+  gap: clamp(52px, 6.5vh, 96px) clamp(44px, 4vw, 72px);
+}
+
+.chapterKitchens .chapterInner {
+  width: min(1520px, 100%);
+  padding: 0 clamp(16px, 3vw, 40px);
+}
+
+.chapterKitchens .gridSingle {
+  max-width: calc((100% - clamp(44px, 4vw, 72px)) / 2);
+  margin: 0;
+}
+
+.chapterHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: clamp(56px, 8vh, 96px);
+  max-width: 28rem;
+}
+
+.chapterAlt .chapterHeader {
+  margin-left: auto;
+  text-align: right;
+  align-items: flex-end;
+}
+
+.chapterIndex {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  color: var(--bronze);
+}
+
+.chapterTitle {
+  margin: 0;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(28px, 3.5vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(48px, 6vw, 88px) clamp(40px, 5vw, 72px);
+  align-items: start;
+}
+
+.gridSingle {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: min(960px, 100%);
+  margin: 0 auto;
+}
+
+.gridStagger .card:nth-child(even) {
+  margin-top: clamp(56px, 9vh, 104px);
+}
+
+.card {
+  margin: 0;
+}
+
+.imageFrame {
+  padding: clamp(10px, 1.2vw, 14px);
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.05),
+    0 8px 24px rgba(26, 22, 18, 0.06),
+    0 24px 56px rgba(26, 22, 18, 0.05);
+  transition:
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.imageMat {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: #ece6dc;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .imageFrame {
+    transform: translateY(-4px);
+    box-shadow:
+      0 2px 4px rgba(26, 22, 18, 0.06),
+      0 14px 32px rgba(26, 22, 18, 0.08),
+      0 32px 72px rgba(26, 22, 18, 0.07);
+  }
+
+  .card:hover .image {
+    transform: scale(1.025);
+  }
+}
+
+.footer {
+  text-align: center;
+  padding: clamp(64px, 10vh, 104px) clamp(24px, 5vw, 80px) 0;
+  border-top: 1px solid rgba(26, 22, 18, 0.08);
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.footerEyebrow {
+  margin: 0 0 20px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--bronze);
+}
+
+.footerLink {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+}
+
+@media (max-width: 768px) {
+  .header {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .backLinkMuted {
+    justify-self: center;
+  }
+
+  .chapterHeader,
+  .chapterAlt .chapterHeader {
+    margin-left: 0;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .grid,
+  .gridSingle {
+    grid-template-columns: 1fr;
+    max-width: 100%;
+  }
+
+  .gridStagger .card:nth-child(even) {
+    margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imageFrame,
+  .image {
+    transition: none;
+  }
+
+  .card:hover .imageFrame,
+  .card:hover .image {
+    transform: none;
+  }
+}

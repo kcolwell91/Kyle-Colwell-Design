@@ -1,0 +1,116 @@
+.page {
+  min-height: 100dvh;
+  background: var(--surface);
+  padding: clamp(32px, 5vw, 56px) clamp(20px, 5vw, 72px) clamp(64px, 10vh, 120px);
+}
+
+.header {
+  max-width: 960px;
+  margin: 0 auto clamp(32px, 5vh, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.backLink {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.backLink:hover {
+  color: var(--ink);
+}
+
+.index {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: var(--bronze);
+}
+
+.article {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.mediaFrame {
+  overflow: hidden;
+  background: #1a1612;
+  line-height: 0;
+}
+
+.media {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.copy {
+  padding-top: clamp(32px, 5vh, 48px);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(36px, 5vw, 72px);
+  line-height: 0.98;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.summary {
+  margin: clamp(20px, 3vh, 28px) 0 0;
+  max-width: 58ch;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(20px, 2.2vw, 28px);
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.partnerInquiry {
+  margin-top: clamp(36px, 5vh, 52px);
+  padding-top: clamp(28px, 4vh, 36px);
+  border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  max-width: 48ch;
+}
+
+.partnerCopy {
+  margin: 0;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.partnerLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  margin-top: clamp(16px, 2.5vh, 22px);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.partnerLink:hover {
+  color: var(--bronze);
+}

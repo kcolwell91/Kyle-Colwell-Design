@@ -10,26 +10,42 @@
   height: 100dvh;
   overflow: hidden;
   background: #0a0806;
+  will-change: background-color;
 }
 
-.heroComplete {
-  visibility: hidden;
-  pointer-events: none;
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
 }
 
-.heroComplete .viewport {
-  display: none !important;
+.frameShell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  will-change: width, height;
+}
+
+.frameMat {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  padding: 0;
+  box-shadow: 0 24px 64px rgba(26, 22, 18, 0);
+  will-change: padding, box-shadow, border-radius;
 }
 
 .video {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
   pointer-events: none;
-  z-index: 0;
 }
 
 .overlay {
@@ -44,50 +60,7 @@
   );
   pointer-events: none;
   z-index: 2;
-}
-
-.header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: clamp(28px, 4vw, 48px) clamp(24px, 5vw, 64px);
-}
-
-.logo {
-  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
-  font-weight: 300;
-  font-size: clamp(14px, 1.4vw, 18px);
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(248, 245, 235, 0.96);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.nav {
-  display: flex;
-  align-items: center;
-  gap: clamp(16px, 2.4vw, 36px);
-}
-
-.navLink {
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(248, 245, 235, 0.88);
-  text-decoration: none;
-  transition: color 0.25s ease;
-}
-
-.navLink:hover {
-  color: rgba(248, 245, 235, 1);
+  will-change: opacity;
 }
 
 .content {
@@ -96,6 +69,7 @@
   left: clamp(24px, 5vw, 64px);
   bottom: clamp(48px, 10vh, 120px);
   max-width: min(560px, 88vw);
+  will-change: opacity;
 }
 
 .headline {
@@ -113,17 +87,6 @@
   will-change: opacity;
 }
 
-.body {
-  margin: 0;
-  max-width: 440px;
-  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
-  font-weight: 300;
-  font-size: clamp(16px, 1.35vw, 19px);
-  line-height: 1.65;
-  color: rgba(248, 245, 235, 0.82);
-  will-change: opacity;
-}
-
 .scrollCue {
   position: absolute;
   z-index: 3;
@@ -135,6 +98,7 @@
   gap: 14px;
   color: rgba(248, 245, 235, 0.92);
   pointer-events: none;
+  will-change: opacity;
 }
 
 .scrollCueText {
@@ -163,10 +127,6 @@
 }
 
 @media (max-width: 768px) {
-  .nav {
-    display: none;
-  }
-
   .content {
     bottom: clamp(36px, 8vh, 80px);
   }

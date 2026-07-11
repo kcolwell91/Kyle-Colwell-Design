@@ -1,0 +1,71 @@
+{
+  "blend_file": "/Users/kyle/Desktop/sanctuary/sanctuary-prototype-v02-animation.blend",
+  "reference_frame": 156,
+  "source_object": "SEED_Core",
+  "collections_created": [
+    "SEED_ORIGINAL_REFERENCE",
+    "SEED_MASTER"
+  ],
+  "reference_duplicates": [
+    "REF_SEED_Core.001",
+    "REF_SEED_Petal_01.001",
+    "REF_HINGE_Petal_01.001",
+    "REF_SEED_Petal_02.001",
+    "REF_HINGE_Petal_02.001",
+    "REF_SEED_Petal_03.001",
+    "REF_HINGE_Petal_03.001",
+    "REF_SEED_Petal_04.001",
+    "REF_HINGE_Petal_04.001",
+    "REF_SEED_Petal_05.001",
+    "REF_HINGE_Petal_05.001"
+  ],
+  "master_object": "SEED_Master_Body",
+  "operations": {
+    "pre_trim_mesh": {
+      "verts": 57626,
+      "faces": 57625
+    },
+    "trim_leg": {
+      "faces_deleted": 14117,
+      "verts_deleted": 0,
+      "fraction": 0.28,
+      "z_min": -0.62907,
+      "z_max": 0.70577,
+      "height": 1.33484,
+      "vert_threshold": -0.25532
+    },
+    "cap_and_taper_base": {
+      "boundary_edges_before": 344,
+      "holes_filled": true,
+      "bevel_edges": 9996
+    },
+    "mesh_cleanup": {
+      "verts_before": 118202,
+      "verts_after": 116930,
+      "verts_merged": 1272
+    },
+    "final_mesh": {
+      "verts": 116930,
+      "faces": 118212,
+      "bounds_local": {
+        "x": [
+          -0.08141,
+          0.08141
+        ],
+        "y": [
+          -0.08192,
+          0.08192
+        ],
+        "z": [
+          -0.13748,
+          0.13748
+        ]
+      },
+      "materials": [
+        "MAT_Seed_Bone",
+        "MAT_Seed_Bone"
+      ],
+      "modifiers": []
+    }
+  }
+}

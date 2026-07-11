@@ -1,0 +1,87 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(20px, 3vw, 36px) clamp(24px, 5vw, 64px);
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid rgba(26, 22, 18, 0.07);
+  box-shadow: 0 8px 32px rgba(26, 22, 18, 0.04);
+  pointer-events: none;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease,
+    visibility 0.5s ease;
+}
+
+.headerHidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.logo,
+.navLink {
+  pointer-events: auto;
+}
+
+.logo {
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(14px, 1.4vw, 18px);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: rgba(26, 22, 18, 0.82);
+  transition: color 0.25s ease;
+}
+
+.logo:hover {
+  color: rgba(26, 22, 18, 0.96);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: clamp(10px, 1.8vw, 36px);
+  max-width: min(72vw, 760px);
+}
+
+.navLink {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: clamp(9px, 0.85vw, 11px);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(26, 22, 18, 0.62);
+  transition: color 0.25s ease;
+}
+
+.navLink:hover {
+  color: rgba(26, 22, 18, 0.92);
+}
+
+@media (max-width: 640px) {
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .nav {
+    max-width: 100%;
+    gap: 10px 14px;
+  }
+}
