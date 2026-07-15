@@ -1,8 +1,9 @@
 import IntroSection from '@/components/sections/IntroSection';
 import CinematicHero from '@/components/CinematicHero';
-import ManifestoSection from '@/components/sections/ManifestoSection';
 import PhilosophySection from '@/components/sections/PhilosophySection';
+import SanctuaryTransition from '@/components/sections/SanctuaryTransition';
 import SelectedWorldsSection from '@/components/sections/SelectedWorldsSection';
+import ScrollSpinModelSection from '@/components/sections/ScrollSpinModelSection';
 import ServicesSection from '@/components/sections/ServicesSection';
 import SiteFooter from '@/components/SiteFooter';
 import styles from '@/components/sections/sections.module.css';
@@ -15,9 +16,10 @@ export default function Home() {
       </div>
       <main className={styles.mainStory}>
         <IntroSection />
-        <ManifestoSection />
+        <SanctuaryTransition />
         <PhilosophySection />
         <SelectedWorldsSection />
+        <ScrollSpinModelSection />
         <ServicesSection />
       </main>
       <SiteFooter />

@@ -2,18 +2,26 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import { useEditorialReveal } from '@/hooks/useEditorialReveal';
 import {
   WEBSITE_DEV_CLOSING,
   WEBSITE_DEV_CRAFT,
   WEBSITE_DEV_HERO,
-  WEBSITE_DEV_INDEX,
   WEBSITE_DEV_OUTCOMES,
   WEBSITE_DEV_PILLARS,
   WEBSITE_DEV_STATEMENT,
   WEBSITE_DEV_VISION,
 } from '@/data/websiteDevelopmentStory';
 import styles from './WebsiteDevelopmentStory.module.css';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
+const HERO_FRAME_WIDTH = 720;
+const HERO_FRAME_ASPECT = 16 / 10;
+const HERO_MAT_PADDING = 20;
 
 type PlaceholderProps = {
   label: string;
@@ -47,37 +55,195 @@ function MediaPlaceholder({
 
 export default function WebsiteDevelopmentStory() {
   const rootRef = useRef<HTMLElement>(null);
+  const heroTrackRef = useRef<HTMLElement>(null);
+  const heroViewportRef = useRef<HTMLDivElement>(null);
+  const heroFrameRef = useRef<HTMLDivElement>(null);
+  const heroMatRef = useRef<HTMLDivElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const heroScrimRef = useRef<HTMLDivElement>(null);
+  const heroCopyRef = useRef<HTMLDivElement>(null);
+  const returnLinkRef = useRef<HTMLAnchorElement>(null);
+  const visionSectionRef = useRef<HTMLElement>(null);
   useEditorialReveal(rootRef);
+
+  useGSAP(
+    () => {
+      const returnLink = returnLinkRef.current;
+      const visionSection = visionSectionRef.current;
+      if (!returnLink || !visionSection) return;
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return;
+
+      gsap.fromTo(
+        returnLink,
+        { opacity: 0.76 },
+        {
+          opacity: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: visionSection,
+            start: 'top 92%',
+            end: 'top 72%',
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+            onLeave: () => {
+              returnLink.style.pointerEvents = 'none';
+            },
+            onEnterBack: () => {
+              returnLink.style.pointerEvents = 'auto';
+            },
+          },
+        }
+      );
+    },
+    { scope: rootRef }
+  );
+
+  useGSAP(
+    () => {
+      const viewport = heroViewportRef.current;
+      const frame = heroFrameRef.current;
+      const mat = heroMatRef.current;
+      const video = heroVideoRef.current;
+      const scrim = heroScrimRef.current;
+      const copy = heroCopyRef.current;
+      if (!viewport || !frame || !mat || !video || !scrim || !copy) return;
+
+      let framed = false;
+
+      const getFrameDimensions = () => {
+        const viewportWidth = window.innerWidth;
+        const mediaWidth = Math.min(HERO_FRAME_WIDTH, viewportWidth * 0.88);
+        const mediaHeight = mediaWidth / HERO_FRAME_ASPECT;
+        return {
+          width: mediaWidth + HERO_MAT_PADDING * 2,
+          height: mediaHeight + HERO_MAT_PADDING * 2,
+        };
+      };
+
+      const showFramedVideo = () => {
+        if (framed) return;
+        framed = true;
+        const dimensions = getFrameDimensions();
+
+        gsap
+          .timeline({ defaults: { ease: 'power3.inOut' } })
+          .to(copy, { opacity: 0, duration: 0.8 }, 0)
+          .to(scrim, { opacity: 0, duration: 1.4 }, 0)
+          .to(viewport, { backgroundColor: '#f0e9df', duration: 2.6 }, 0)
+          .to(
+            frame,
+            {
+              width: dimensions.width,
+              height: dimensions.height,
+              duration: 2.6,
+            },
+            0
+          )
+          .to(
+            mat,
+            {
+              padding: HERO_MAT_PADDING,
+              boxShadow: '0 24px 64px rgba(26, 22, 18, 0.12)',
+              duration: 2.6,
+            },
+            0
+          );
+      };
+
+      video.muted = true;
+      video.playsInline = true;
+      video.loop = false;
+
+      gsap.set(frame, { width: '100%', height: '100%' });
+      gsap.set(mat, { padding: 0, boxShadow: '0 24px 64px rgba(26, 22, 18, 0)' });
+      gsap.set(viewport, { backgroundColor: '#14110e' });
+      gsap.set([scrim, copy], { opacity: 1 });
+
+      const startPlayback = () => {
+        video.currentTime = 0;
+        void video.play().catch(() => {
+          // The autoplay attribute provides the same muted fallback path.
+        });
+      };
+
+      const onResize = () => {
+        if (!framed) return;
+        gsap.set(frame, getFrameDimensions());
+      };
+
+      video.addEventListener('ended', showFramedVideo);
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        startPlayback();
+      } else {
+        video.addEventListener('canplay', startPlayback, { once: true });
+      }
+      window.addEventListener('resize', onResize);
+
+      return () => {
+        video.removeEventListener('ended', showFramedVideo);
+        video.removeEventListener('canplay', startPlayback);
+        window.removeEventListener('resize', onResize);
+      };
+    },
+    { scope: heroTrackRef }
+  );
 
   return (
     <main ref={rootRef} className={styles.story}>
-      <nav className={styles.nav} aria-label="Project navigation">
-        <Link href="/#selected-worlds" className={styles.navLink}>
-          ← Selected Worlds
-        </Link>
-        <span className={styles.navIndex}>{WEBSITE_DEV_INDEX}</span>
-      </nav>
+      <Link ref={returnLinkRef} href="/#selected-worlds" className={styles.returnLink}>
+        <span className={styles.returnArrow} aria-hidden="true">
+          ←
+        </span>
+        <span>Return to Selected Worlds</span>
+      </Link>
 
-      <section className={styles.hero} aria-label="Website development hero">
-        <div className={styles.heroMedia}>
-          <MediaPlaceholder
-            label="Opening experience"
-            caption="Replace with hero motion, depth, or first-load sequence"
-            aspect="16 / 10"
-            fullBleed
-          />
-          <div className={styles.heroScrim} aria-hidden="true" />
-        </div>
-        <div className={styles.heroCopy} data-editorial-reveal>
-          <p className={styles.heroEyebrow}>{WEBSITE_DEV_HERO.eyebrow}</p>
-          <h1 className={styles.heroTitle}>{WEBSITE_DEV_HERO.title}</h1>
+      <section
+        ref={heroTrackRef}
+        className={styles.hero}
+        aria-label="Website development hero"
+      >
+        <div ref={heroViewportRef} className={styles.heroViewport}>
+          <div className={styles.heroStage}>
+            <div ref={heroFrameRef} className={styles.heroFrame}>
+              <div ref={heroMatRef} className={styles.heroMat}>
+                <div className={styles.heroMedia}>
+                  <video
+                    ref={heroVideoRef}
+                    className={styles.heroVisual}
+                    autoPlay
+                    muted
+                    playsInline
+                    preload="auto"
+                    poster="/work/website-development/hero.png"
+                    aria-hidden="true"
+                  >
+                    <source
+                      src="/work/website-development/hero-20260714.mp4"
+                      type="video/mp4"
+                    />
+                  </video>
+                  <div ref={heroScrimRef} className={styles.heroScrim} aria-hidden="true" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div ref={heroCopyRef} className={styles.heroCopy}>
+            <p className={styles.heroEyebrow}>{WEBSITE_DEV_HERO.eyebrow}</p>
+            <h1 className={styles.heroTitle}>{WEBSITE_DEV_HERO.title}</h1>
+          </div>
         </div>
       </section>
 
-      <section className={styles.section} aria-label="The first heartbeat">
+      <section
+        ref={visionSectionRef}
+        className={`${styles.section} ${styles.visionSection}`}
+        aria-label="The first heartbeat"
+      >
         <div className={styles.sectionInner}>
-          <div className={styles.split}>
-            <div className={styles.splitCopy}>
+          <div className={styles.visionLayout}>
+            <div className={`${styles.splitCopy} ${styles.visionCopy}`}>
               <p className={styles.kicker} data-editorial-reveal>
                 {WEBSITE_DEV_VISION.kicker}
               </p>
@@ -87,11 +253,23 @@ export default function WebsiteDevelopmentStory() {
                 ))}
               </div>
             </div>
-            <MediaPlaceholder
-              label={WEBSITE_DEV_VISION.placeholder.label}
-              caption={WEBSITE_DEV_VISION.placeholder.caption}
-              aspect={WEBSITE_DEV_VISION.placeholder.aspect}
-            />
+            <figure
+              className={styles.storyMedia}
+              style={{ aspectRatio: WEBSITE_DEV_VISION.placeholder.aspect }}
+              data-editorial-reveal
+            >
+              <video
+                className={styles.storyVideo}
+                src="/work/website-development/first-heartbeat.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="The first heartbeat website experience"
+              />
+              <div className={styles.videoTextCover} aria-hidden="true" />
+            </figure>
           </div>
         </div>
       </section>

@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { HERO_SCROLL_READY_EVENT } from '@/components/ScrollTriggerManager';
 import { NAV_LINKS } from '@/data/siteNav';
 import styles from './SiteNav.module.css';
 
 export default function SiteNav() {
+  const pathname = usePathname();
   const [heroActive, setHeroActive] = useState(true);
 
   useEffect(() => {
@@ -44,6 +46,8 @@ export default function SiteNav() {
       window.removeEventListener(HERO_SCROLL_READY_EVENT, attach);
     };
   }, []);
+
+  if (pathname === '/work/website-development') return null;
 
   return (
     <header

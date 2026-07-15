@@ -4,6 +4,39 @@
   overflow-x: clip;
 }
 
+.returnLink {
+  position: fixed;
+  top: clamp(24px, 4vw, 40px);
+  left: clamp(20px, 5vw, 72px);
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #ffffff;
+  opacity: 0.76;
+  mix-blend-mode: difference;
+}
+
+.returnLink:hover {
+  opacity: 1;
+}
+
+.returnArrow {
+  font-size: 14px;
+  letter-spacing: 0;
+  transition: transform 0.35s ease;
+}
+
+.returnLink:hover .returnArrow {
+  transform: translateX(-3px);
+}
+
 .nav {
   position: fixed;
   top: 0;
@@ -47,17 +80,59 @@
 
 .hero {
   position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  align-items: flex-end;
+  height: 100dvh;
+  background: var(--surface);
+  isolation: isolate;
+}
+
+.heroViewport {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
   background: #14110e;
+  will-change: background-color;
+}
+
+.heroStage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroFrame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  will-change: width, height;
+}
+
+.heroMat {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0;
+  background: #ffffff;
+  box-shadow: 0 24px 64px rgba(26, 22, 18, 0);
+  will-change: padding, box-shadow;
 }
 
 .heroMedia {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
+}
+
+.heroVisual {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 45%;
 }
 
 .heroMedia .placeholder {
@@ -72,6 +147,7 @@
 .heroScrim {
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: linear-gradient(
     180deg,
     rgba(12, 8, 6, 0.2) 0%,
@@ -79,15 +155,20 @@
     rgba(12, 8, 6, 0.78) 100%
   );
   pointer-events: none;
+  will-change: opacity;
 }
 
 .heroCopy {
-  position: relative;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 2;
   width: 100%;
   max-width: 980px;
   margin: 0 auto;
   padding: clamp(48px, 8vh, 96px) clamp(20px, 5vw, 72px) clamp(56px, 10vh, 112px);
+  will-change: opacity;
 }
 
 .heroEyebrow {
@@ -125,6 +206,24 @@
 .sectionDark {
   background: #14110e;
   color: #f7f2ea;
+}
+
+.visionSection {
+  background:
+    radial-gradient(
+      ellipse 46% 42% at 68% 72%,
+      rgba(151, 124, 91, 0.34) 0%,
+      rgba(66, 56, 47, 0.2) 42%,
+      transparent 74%
+    ),
+    radial-gradient(ellipse 100% 72% at 50% 78%, #24211e 0%, #11100f 68%, #0b0a09 100%);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.visionSection .kicker,
+.visionSection .prose {
+  color: #ffffff;
 }
 
 .sectionInner {
@@ -194,6 +293,42 @@
 
 .splitCopy {
   padding-top: clamp(8px, 1.5vh, 16px);
+}
+
+.visionLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(56px, 8vh, 96px);
+}
+
+.visionCopy {
+  width: min(880px, 100%);
+}
+
+.storyMedia {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.storyVideo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.videoTextCover {
+  position: absolute;
+  top: 58%;
+  bottom: 4%;
+  left: 6%;
+  width: 31%;
+  background: #0b0a09;
+  pointer-events: none;
 }
 
 .placeholder {

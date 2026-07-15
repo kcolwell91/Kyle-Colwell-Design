@@ -1,13 +1,17 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import styles from './CinematicHero.module.css';
 import { HERO_SCROLL_READY_EVENT } from '@/components/ScrollTriggerManager';
 
 const HERO_VIDEO_MP4 = '/videos/hero.mp4';
 const HERO_VIDEO_MOV = '/videos/hero.mov';
+const HERO_POSTER = '/hero-poster.JPEG';
 const HERO_VIDEO_DURATION = 22;
 const SCROLL_PX_PER_VIDEO_SECOND = 360;
+const MOBILE_SCROLL_PX_PER_VIDEO_SECOND = 120;
+const POSTER_FADE_END = 0.015;
 const BOX_MORPH_START = 0.58;
 const BOX_FRAME_WIDTH = 666;
 const BOX_ASPECT = 16 / 10;
@@ -57,6 +61,7 @@ export default function CinematicHero() {
   const contentRef = useRef<HTMLDivElement>(null);
   const scrollCueRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const posterRef = useRef<HTMLDivElement>(null);
   const line1Ref = useRef<HTMLSpanElement>(null);
   const line2Ref = useRef<HTMLSpanElement>(null);
   const line3Ref = useRef<HTMLSpanElement>(null);
@@ -70,7 +75,18 @@ export default function CinematicHero() {
     const content = contentRef.current;
     const scrollCue = scrollCueRef.current;
     const video = videoRef.current;
-    if (!track || !viewport || !frameShell || !frameMat || !overlay || !content || !scrollCue || !video) {
+    const poster = posterRef.current;
+    if (
+      !track ||
+      !viewport ||
+      !frameShell ||
+      !frameMat ||
+      !overlay ||
+      !content ||
+      !scrollCue ||
+      !video ||
+      !poster
+    ) {
       return;
     }
 
@@ -81,12 +97,15 @@ export default function CinematicHero() {
     let heroTrigger: { kill: () => void } | null = null;
     let targetVideoTime = 0;
     let videoRafId: number | null = null;
+    let mobileMode = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
 
     const getDuration = () =>
       isVideoReady(video) ? video.duration : HERO_VIDEO_DURATION;
 
     const setTrackHeight = () => {
-      const scrollPx = getDuration() * SCROLL_PX_PER_VIDEO_SECOND;
+      const scrollPx =
+        getDuration() *
+        (mobileMode ? MOBILE_SCROLL_PX_PER_VIDEO_SECOND : SCROLL_PX_PER_VIDEO_SECOND);
       track.style.setProperty('--hero-scroll-px', `${scrollPx}px`);
     };
 
@@ -107,7 +126,20 @@ export default function CinematicHero() {
       videoRafId = null;
     };
 
+    const startMobilePlayback = () => {
+      if (!mobileMode) return;
+      video.loop = true;
+      void video.play().catch(() => {
+        // Muted inline playback is supported on modern mobile browsers;
+        // the poster remains visible if a browser still blocks playback.
+      });
+    };
+
     const scrubVideo = (progress: number) => {
+      const posterFade = clamp(progress / POSTER_FADE_END, 0, 1);
+      poster.style.opacity = String(1 - posterFade);
+
+      if (mobileMode) return;
       if (!isVideoReady(video)) return;
       const videoProgress = clamp(progress / BOX_MORPH_START, 0, 1);
       targetVideoTime = videoProgress * video.duration;
@@ -184,15 +216,27 @@ export default function CinematicHero() {
             updateBoxMorph(self.progress);
           },
           onLeave: () => {
-            if (isVideoReady(video)) {
+            if (!mobileMode && isVideoReady(video)) {
               video.currentTime = video.duration;
             }
             updateBoxMorph(1);
             video.pause();
           },
           onEnterBack: (self) => {
-            scrubVideo(self.progress);
+            if (mobileMode) {
+              startMobilePlayback();
+            } else {
+              scrubVideo(self.progress);
+            }
             updateBoxMorph(self.progress);
+          },
+          onLeaveBack: () => {
+            video.pause();
+            if (mobileMode && isVideoReady(video)) {
+              video.currentTime = 0;
+            }
+            scrubVideo(0);
+            updateBoxMorph(0);
           },
         });
 
@@ -206,8 +250,12 @@ export default function CinematicHero() {
     const initScrollTrigger = () => {
       if (!mounted || scrollReady) return;
       scrollReady = true;
-      video.pause();
-      video.currentTime = 0;
+      if (mobileMode) {
+        startMobilePlayback();
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
       void setupScrollTrigger();
     };
 
@@ -244,6 +292,21 @@ export default function CinematicHero() {
     }, 2000);
 
     const onResize = async () => {
+      const nextMobileMode = window.matchMedia(
+        '(max-width: 768px), (pointer: coarse)'
+      ).matches;
+      if (nextMobileMode !== mobileMode) {
+        mobileMode = nextMobileMode;
+        video.loop = mobileMode;
+        if (mobileMode) {
+          startMobilePlayback();
+        } else {
+          video.pause();
+        }
+        await setupScrollTrigger();
+        return;
+      }
+
       setTrackHeight();
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       const hero = ScrollTrigger.getById('hero-video');
@@ -272,16 +335,30 @@ export default function CinematicHero() {
         <div className={styles.stage}>
           <div ref={frameShellRef} className={styles.frameShell}>
             <div ref={frameMatRef} className={styles.frameMat}>
-              <video
-                ref={videoRef}
-                id="heroVideo"
-                className={styles.video}
-                src={HERO_VIDEO_MP4}
-                muted
-                playsInline
-                preload="auto"
-                aria-hidden="true"
-              />
+              <div className={styles.mediaLayer}>
+                <video
+                  ref={videoRef}
+                  id="heroVideo"
+                  className={styles.video}
+                  src={HERO_VIDEO_MP4}
+                  muted
+                  playsInline
+                  preload="auto"
+                  aria-hidden="true"
+                />
+                <div ref={posterRef} className={styles.poster}>
+                  <Image
+                    src={HERO_POSTER}
+                    alt=""
+                    fill
+                    preload
+                    unoptimized
+                    sizes="100vw"
+                    className={styles.posterImage}
+                    aria-hidden="true"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

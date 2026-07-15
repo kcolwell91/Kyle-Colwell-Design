@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PROJECTS, type Project } from '@/data/projects';
-import { useSectionEntrance } from '@/hooks/useSectionEntrance';
+import { useWorldsBeigeReveal } from '@/hooks/useWorldsBeigeReveal';
 import styles from './sections.module.css';
 
 const FLOAT_CLASSES = {
@@ -54,7 +54,10 @@ function ProjectCard({ project }: { project: Project }) {
 
 export default function SelectedWorldsSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  useSectionEntrance(sectionRef);
+  const beigeRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useWorldsBeigeReveal(sectionRef, beigeRef, contentRef);
 
   return (
     <section
@@ -63,7 +66,8 @@ export default function SelectedWorldsSection() {
       id="selected-worlds"
       aria-label="Selected Worlds"
     >
-      <div className={styles.worldsInner}>
+      <div ref={beigeRef} className={styles.worldsBeigeLayer} aria-hidden="true" />
+      <div ref={contentRef} className={styles.worldsInner}>
         <h2 className={`${styles.revealText} ${styles.worldsTitle}`}>Selected Worlds</h2>
         <div className={styles.worldsGrid}>
           {PROJECTS.map((project) => (

@@ -40,6 +40,10 @@ export default function PhilosophySection({
 
   useScrollWordReveal(sectionRef, contentRef, {
     fadeZone: philosophyRevealFadeZone(TOTAL_WORD_COUNT),
+    palette: 'white',
+    progressOffset: 0.12,
+    scrollStart: 'top bottom',
+    scrollEnd: 'bottom 12%',
   });
 
   return (
