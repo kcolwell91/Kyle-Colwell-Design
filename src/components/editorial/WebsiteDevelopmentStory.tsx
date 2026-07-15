@@ -10,6 +10,7 @@ import {
   WEBSITE_DEV_CLOSING,
   WEBSITE_DEV_CRAFT,
   WEBSITE_DEV_HERO,
+  WEBSITE_DEV_HERO_VIDEO,
   WEBSITE_DEV_OUTCOMES,
   WEBSITE_DEV_PILLARS,
   WEBSITE_DEV_STATEMENT,
@@ -216,11 +217,11 @@ export default function WebsiteDevelopmentStory() {
                     muted
                     playsInline
                     preload="auto"
-                    poster="/work/website-development/hero.png"
+                    poster={WEBSITE_DEV_HERO_VIDEO.poster}
                     aria-hidden="true"
                   >
                     <source
-                      src="/work/website-development/hero-20260714.mp4"
+                      src={WEBSITE_DEV_HERO_VIDEO.src}
                       type="video/mp4"
                     />
                   </video>

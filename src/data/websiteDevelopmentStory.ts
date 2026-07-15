@@ -1,5 +1,10 @@
 export const WEBSITE_DEV_INDEX = '02';
 
+export const WEBSITE_DEV_HERO_VIDEO = {
+  src: '/work/website-development/hero-20260714.mp4',
+  poster: '/work/anna-naturalista.png',
+} as const;
+
 export const WEBSITE_DEV_HERO = {
   eyebrow: 'Website Development',
   title: 'Every great business deserves a digital home worth walking into.',

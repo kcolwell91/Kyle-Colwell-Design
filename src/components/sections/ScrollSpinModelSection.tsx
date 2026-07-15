@@ -75,7 +75,7 @@ export default function ScrollSpinModelSection() {
       timeline.fromTo(
         coralPanel,
         { xPercent: -100 },
-        { xPercent: 0, duration: 0.3, ease: 'none' },
+        { xPercent: 0, duration: 0.66, ease: 'none' },
         0.34
       );
       timeline.to(

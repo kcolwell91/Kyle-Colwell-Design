@@ -2,6 +2,8 @@
   position: relative;
   z-index: 2;
   isolation: isolate;
+  width: 100%;
+  overflow: hidden;
   padding: 0;
   background: var(--surface);
   box-sizing: border-box;
@@ -27,7 +29,7 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: transparent;
+  background: var(--surface);
 }
 
 .whitePanel {
@@ -45,7 +47,7 @@
   inset: 0;
   z-index: 3;
   background: #dca08c;
-  box-shadow: 70px 0 120px rgba(220, 160, 140, 0.5);
+  box-shadow: 70px 0 120px rgba(220, 160, 140, 0.35);
   will-change: transform;
   pointer-events: none;
 }
@@ -139,10 +141,12 @@
   }
 
   .caption {
-    left: auto;
-    right: clamp(14px, 4vw, 24px);
-    top: 68%;
-    width: min(29vw, 150px);
+    left: 50%;
+    right: auto;
+    top: clamp(36px, 8vh, 64px);
+    width: min(72vw, 320px);
+    transform: translateX(-50%);
+    text-align: center;
     font-size: clamp(9px, 2.7vw, 12px);
   }
 }

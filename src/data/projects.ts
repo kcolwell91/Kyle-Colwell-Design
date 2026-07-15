@@ -36,7 +36,7 @@ export const PROJECTS: Project[] = [
     media: {
       type: 'video',
       src: '/work/hawaiian-airbnb.mov',
-      poster: '/work/biophilic-retreat.png',
+      poster: '/work/volcano-house/lanai.png',
     },
     summary:
       'A biophilic hospitality environment shaped around light, material warmth, and the rhythm of the island — designed to feel like a five-star retreat rooted in place.',

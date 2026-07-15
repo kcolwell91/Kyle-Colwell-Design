@@ -3,6 +3,7 @@
   position: relative;
   z-index: 1;
   isolation: isolate;
+  width: 100%;
   overflow: clip;
 }
 
@@ -10,6 +11,8 @@
   position: relative;
   z-index: 20;
   isolation: isolate;
+  width: 100%;
+  overflow-x: clip;
   background: var(--surface);
 }
 

@@ -70,6 +70,7 @@ export default function SanctuaryTransition() {
     let ctx: { revert: () => void } | null = null;
     let trigger: { kill: () => void; progress: number } | null = null;
     let mediaUnlocked = false;
+    let unlockPromise: Promise<void> | null = null;
 
     const getDuration = () => (isVideoReady(video) ? video.duration : FALLBACK_DURATION);
 
@@ -85,24 +86,46 @@ export default function SanctuaryTransition() {
       poster.style.opacity = '0';
     };
 
-    const unlockMedia = () => {
+    const unlockMedia = async () => {
       if (mediaUnlocked) return;
-      mediaUnlocked = true;
-      void video
-        .play()
-        .then(() => {
+      if (unlockPromise) {
+        await unlockPromise;
+        return;
+      }
+
+      unlockPromise = (async () => {
+        try {
+          await video.play();
           video.pause();
           video.currentTime = 0;
-        })
-        .catch(() => {
+          mediaUnlocked = true;
+        } catch {
           mediaUnlocked = false;
+        } finally {
+          unlockPromise = null;
+        }
+      })();
+
+      await unlockPromise;
+    };
+
+    const seekVideo = (videoTime: number) => {
+      if (!isVideoReady(video)) return;
+      if (Math.abs(video.currentTime - videoTime) <= 0.001) return;
+
+      video.currentTime = videoTime;
+      if (Math.abs(video.currentTime - videoTime) > 0.05 && !mediaUnlocked) {
+        void unlockMedia().then(() => {
+          video.currentTime = videoTime;
         });
+      }
     };
 
     const primeFirstFrame = () => {
       if (!isVideoReady(video)) return;
-      video.currentTime = 0.001;
-      hidePoster();
+      if (video.currentTime < 0.001) {
+        video.currentTime = 0.001;
+      }
     };
 
     const update = (progress: number) => {
@@ -111,10 +134,13 @@ export default function SanctuaryTransition() {
       const videoTime = scrubT * duration;
 
       if (isVideoReady(video)) {
-        if (scrubT > 0.001) hidePoster();
-        if (Math.abs(video.currentTime - videoTime) > 0.001) {
-          video.currentTime = videoTime;
+        if (scrubT > 0.001) {
+          hidePoster();
+          void unlockMedia();
+        } else {
+          poster.style.opacity = '1';
         }
+        seekVideo(videoTime);
       }
 
       const revealStart = duration - REVEAL_SECONDS;
@@ -154,18 +180,25 @@ export default function SanctuaryTransition() {
       }, track);
     };
 
-    const initScroll = () => {
+    const initScroll = async () => {
       if (!mounted || scrollReady) return;
       scrollReady = true;
-      unlockMedia();
+      void unlockMedia();
       primeFirstFrame();
       video.pause();
-      void setup();
+      await setup();
     };
 
     const onReady = () => {
       if (!mounted || scrollReady || !isVideoReady(video)) return;
-      initScroll();
+      void initScroll();
+    };
+
+    const onFirstInteraction = () => {
+      if (mediaUnlocked) return;
+      void unlockMedia().then(() => {
+        if (trigger) update(trigger.progress);
+      });
     };
 
     const onLoadedData = () => {
@@ -194,8 +227,12 @@ export default function SanctuaryTransition() {
 
     const fallbackTimer = window.setTimeout(() => {
       if (!mounted || scrollReady) return;
-      initScroll();
+      void initScroll();
     }, 2500);
+
+    window.addEventListener('wheel', onFirstInteraction, { once: true, passive: true });
+    window.addEventListener('scroll', onFirstInteraction, { once: true, passive: true });
+    window.addEventListener('touchstart', onFirstInteraction, { once: true, passive: true });
 
     const refresh = () => {
       setTrackHeight();

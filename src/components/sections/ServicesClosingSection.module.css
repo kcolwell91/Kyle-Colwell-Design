@@ -28,7 +28,7 @@
 
 .radialLight {
   position: absolute;
-  inset: -10% -5%;
+  inset: -10% 0;
   background: radial-gradient(
     ellipse 65% 50% at 50% 28%,
     rgba(255, 252, 247, 0.42) 0%,

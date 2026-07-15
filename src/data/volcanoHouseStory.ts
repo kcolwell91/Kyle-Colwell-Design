@@ -1,6 +1,6 @@
 export const VOLCANO_HOUSE_VIDEO = {
   src: '/work/hawaiian-airbnb.mov',
-  poster: '/work/biophilic-retreat.png',
+  poster: '/work/volcano-house/lanai.png',
 } as const;
 
 export const VOLCANO_HOUSE_IMAGES = {
