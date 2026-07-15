@@ -117,9 +117,26 @@ export default function InteriorDesignPortfolio() {
       })}
 
       <footer className={styles.footer} data-editorial-reveal>
-        <p className={styles.footerEyebrow}>Work together</p>
-        <Link href="/#contact" className={styles.footerLink}>
-          Begin a project →
+        <p className={styles.footerEyebrow}>Original Art</p>
+        <div className={styles.footerDivider} aria-hidden="true" />
+        <div className={styles.footerCtaWrap}>
+          <Link
+            href="/portfolio/art"
+            className={styles.footerCta}
+            aria-label="View the original paintings and murals portfolio"
+          >
+            <span className={styles.footerCtaText}>
+              <span className={styles.footerCtaLinePrimary}>Paintings &amp; murals</span>
+              <span className={styles.footerCtaLineSecondary}>privately commissioned</span>
+            </span>
+            <span className={styles.footerCtaArrow} aria-hidden="true">
+              →
+            </span>
+            <span className={styles.footerCtaUnderline} aria-hidden="true" />
+          </Link>
+        </div>
+        <Link href="/#selected-worlds" className={styles.footerBack}>
+          ← Go back
         </Link>
       </footer>
     </main>

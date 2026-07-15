@@ -25,8 +25,7 @@
 }
 
 .backLink,
-.backLinkMuted,
-.footerLink {
+.backLinkMuted {
   font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 10px;
   font-weight: 500;
@@ -40,8 +39,7 @@
   color: var(--ink);
 }
 
-.backLink:hover,
-.footerLink:hover {
+.backLink:hover {
   color: var(--burgundy);
 }
 
@@ -251,18 +249,39 @@
   .card:hover .imageCropLeft {
     transform: scale(1.1);
   }
+
+  .footerCta:hover {
+    color: var(--burgundy);
+  }
+
+  .footerCta:hover .footerCtaLineSecondary {
+    color: color-mix(in srgb, var(--burgundy) 72%, var(--bronze));
+  }
+
+  .footerCta:hover .footerCtaArrow {
+    transform: translateX(8px);
+  }
+
+  .footerCta:hover .footerCtaUnderline {
+    transform: scaleX(1);
+    opacity: 0.65;
+  }
+
+  .footerBack:hover {
+    color: var(--ink);
+  }
 }
 
 .footer {
   text-align: center;
-  padding: clamp(64px, 10vh, 104px) clamp(24px, 5vw, 80px) 0;
+  padding: clamp(80px, 12vh, 128px) clamp(24px, 5vw, 80px) 0;
   border-top: 1px solid rgba(26, 22, 18, 0.08);
   max-width: 1240px;
   margin: 0 auto;
 }
 
 .footerEyebrow {
-  margin: 0 0 20px;
+  margin: 0 0 clamp(32px, 4.5vh, 48px);
   font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 10px;
   font-weight: 500;
@@ -271,9 +290,102 @@
   color: var(--bronze);
 }
 
-.footerLink {
-  font-size: 11px;
-  letter-spacing: 0.22em;
+.footerDivider {
+  width: min(120px, 22vw);
+  height: 1px;
+  margin: 0 auto clamp(40px, 5.5vh, 56px);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(138, 115, 88, 0.42) 18%,
+    rgba(138, 115, 88, 0.42) 82%,
+    transparent 100%
+  );
+}
+
+.footerCtaWrap {
+  max-width: min(42rem, 100%);
+  margin: 0 auto;
+}
+
+.footerCta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 3vw, 36px);
+  padding: 0.2em 0.08em 0.72em;
+  text-decoration: none;
+  color: var(--ink);
+  transition: color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footerCtaText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 1vh, 10px);
+  text-align: center;
+}
+
+.footerCtaLinePrimary {
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(44px, 6.5vw, 84px);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.footerCtaLineSecondary {
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(22px, 2.8vw, 34px);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+  color: var(--bronze);
+  transition: color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footerCtaArrow {
+  flex-shrink: 0;
+  align-self: center;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 1;
+  transform: translateX(0);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footerCtaUnderline {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 0.1em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.14);
+  transform-origin: center center;
+  opacity: 0.32;
+  transition:
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footerBack {
+  display: inline-block;
+  margin: clamp(44px, 6vh, 64px) 0 0;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--muted);
+  transition: color 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -307,16 +419,36 @@
   .gridStagger .card:nth-child(even) {
     margin-top: 0;
   }
+
+  .footerCta {
+    flex-direction: column;
+    gap: clamp(16px, 3vh, 24px);
+  }
+
+  .footerCtaArrow {
+    font-size: clamp(28px, 8vw, 40px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .imageFrame,
-  .image {
+  .image,
+  .footerCta,
+  .footerCtaArrow,
+  .footerCtaLineSecondary,
+  .footerCtaUnderline,
+  .footerBack {
     transition: none;
   }
 
   .card:hover .imageFrame,
-  .card:hover .image {
+  .card:hover .image,
+  .footerCta:hover .footerCtaArrow {
     transform: none;
+  }
+
+  .footerCta:hover .footerCtaUnderline {
+    transform: scaleX(0.18);
+    opacity: 0.35;
   }
 }

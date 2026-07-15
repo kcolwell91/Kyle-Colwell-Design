@@ -52,7 +52,11 @@ export const INTERIOR_PORTFOLIO_CHAPTERS: PortfolioChapter[] = [
       { src: INTERIOR_PORTFOLIO_IMAGES.bedroomPlumeria, alt: 'Bedroom with plumeria mural and forest view' },
       { src: INTERIOR_PORTFOLIO_IMAGES.bedroomJungleMural, alt: 'Bedroom with jungle mural and garden doors' },
       { src: INTERIOR_PORTFOLIO_IMAGES.bedroomMuralRoundPillow, alt: 'Bedroom nook with mural and round pillow' },
-      { src: INTERIOR_PORTFOLIO_IMAGES.bedroomTropicalHula, alt: 'Tropical bedroom with hula art' },
+      {
+        src: INTERIOR_PORTFOLIO_IMAGES.bedroomTropicalHula,
+        alt: 'Tropical bedroom with hula art',
+        position: 'center 15%',
+      },
       { src: INTERIOR_PORTFOLIO_IMAGES.bedroomBurgundyZebra, alt: 'Burgundy bedroom with velvet drapes' },
       { src: INTERIOR_PORTFOLIO_IMAGES.bedroomCoastalCanopy, alt: 'Coastal bedroom with lace canopy' },
       { src: INTERIOR_PORTFOLIO_IMAGES.bedroomSheerCanopy, alt: 'Serene bedroom framed by sheer canopy curtains' },
@@ -81,7 +85,11 @@ export const INTERIOR_PORTFOLIO_CHAPTERS: PortfolioChapter[] = [
     images: [
       { src: INTERIOR_PORTFOLIO_IMAGES.livingArtwork, alt: 'Living room with large-scale artwork' },
       { src: INTERIOR_PORTFOLIO_IMAGES.livingEmeraldGreen, alt: 'Emerald green living room with mustard sofa' },
-      { src: INTERIOR_PORTFOLIO_IMAGES.diningBirdOfParadiseMural, alt: 'Dining room with bird of paradise mural and emerald seating' },
+      {
+        src: INTERIOR_PORTFOLIO_IMAGES.diningBirdOfParadiseMural,
+        alt: 'Dining room with bird of paradise mural and emerald seating',
+        position: 'center 12%',
+      },
     ],
   },
   {
