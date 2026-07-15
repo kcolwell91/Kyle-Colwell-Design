@@ -31,6 +31,10 @@ const CHAPTER_LAYOUT: Record<
     sectionClass: styles.chapterKitchens,
     imageSizes: '(max-width: 768px) 100vw, 760px',
   },
+  outdoor: {
+    sectionClass: styles.chapterFeatured,
+    imageSizes: '(max-width: 768px) 100vw, 1180px',
+  },
 };
 
 export default function InteriorDesignPortfolio() {
@@ -97,7 +101,10 @@ export default function InteriorDesignPortfolio() {
                         fill
                         sizes={layout.imageSizes}
                         quality={92}
-                        className={styles.image}
+                        style={{ objectPosition: image.position }}
+                        className={`${styles.image} ${
+                          image.fit === 'contain' ? styles.imageContain : ''
+                        } ${image.crop === 'left-edge' ? styles.imageCropLeft : ''}`}
                       />
                     </div>
                   </div>

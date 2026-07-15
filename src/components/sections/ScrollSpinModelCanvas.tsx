@@ -7,7 +7,7 @@ import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
 const MODEL_PATH = '/models/closing-scroll-sculpture.glb';
-const MODEL_SIZE = 1.944;
+const MODEL_SIZE = 2.527;
 const ROTATIONS = 0.5;
 
 type ScrollSpinModelCanvasProps = {

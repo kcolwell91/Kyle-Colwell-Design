@@ -226,6 +226,15 @@
   transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.imageContain {
+  object-fit: contain;
+}
+
+.imageCropLeft {
+  transform: scale(1.08);
+  transform-origin: right center;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .card:hover .imageFrame {
     transform: translateY(-4px);
@@ -237,6 +246,10 @@
 
   .card:hover .image {
     transform: scale(1.025);
+  }
+
+  .card:hover .imageCropLeft {
+    transform: scale(1.1);
   }
 }
 
@@ -284,6 +297,11 @@
   .gridSingle {
     grid-template-columns: 1fr;
     max-width: 100%;
+  }
+
+  .chapterKitchens .gridSingle {
+    max-width: 100%;
+    margin: 0 auto;
   }
 
   .gridStagger .card:nth-child(even) {

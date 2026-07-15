@@ -47,7 +47,7 @@ export default function SiteNav() {
     };
   }, []);
 
-  if (pathname === '/work/website-development') return null;
+  if (pathname !== '/') return null;
 
   return (
     <header
