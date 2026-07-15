@@ -104,7 +104,7 @@ export default function ScrollSpinModelSection() {
       id="scroll-sculpture"
       className={styles.section}
       data-scroll-spin-model
-      aria-label="A study in regenerative form"
+      aria-label="A study in structural design in regenerative form"
     >
       <div ref={stageRef} className={styles.stage}>
         <div ref={whitePanelRef} className={styles.whitePanel} aria-hidden="true" />
@@ -119,7 +119,7 @@ export default function ScrollSpinModelSection() {
         </div>
         <p className={styles.caption}>
           <span>Object Study 01</span>
-          A study in regenerative form
+          A study in structural design in regenerative form
         </p>
       </div>
     </section>
