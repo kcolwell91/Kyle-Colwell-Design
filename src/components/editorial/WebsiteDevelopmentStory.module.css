@@ -125,6 +125,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #14110e;
 }
 
 .heroVisual {
@@ -133,6 +134,12 @@
   height: 100%;
   object-fit: cover;
   object-position: center 45%;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.heroVisualReady {
+  opacity: 1;
 }
 
 .heroMedia .placeholder {
@@ -312,6 +319,8 @@
   margin: 0;
   overflow: hidden;
   background: transparent;
+  border: 1px solid rgba(212, 184, 124, 0.72);
+  box-sizing: border-box;
 }
 
 .storyVideo {
@@ -405,11 +414,38 @@
   color: rgba(92, 85, 76, 0.72);
 }
 
-.outcomeBlock {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(40px, 6vw, 88px);
-  align-items: start;
+.craftLayout {
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.45fr);
+  align-items: center;
+}
+
+.craftMedia {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: #1c1814;
+}
+
+.craftImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
+  image-rendering: auto;
+}
+
+.outcomeCopy {
+  max-width: 34rem;
+  margin: clamp(24px, 4vh, 36px) auto 0;
+  text-align: center;
+}
+
+.outcomeCopy .prose {
+  margin: 0;
 }
 
 .pillarsHeader {
@@ -425,26 +461,97 @@
   text-wrap: balance;
 }
 
-.pillarsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(32px, 4vw, 56px);
+.pillarsSection .sectionInner {
+  width: min(1680px, 100%);
+}
+
+.pillarsList {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(96px, 14vh, 160px);
 }
 
 .pillar {
+  width: 100%;
+}
+
+.pillarInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.77fr) minmax(200px, 0.55fr);
+  gap: clamp(44px, 5vw, 80px);
+  align-items: center;
+}
+
+.pillarReversed .pillarInner {
+  grid-template-columns: minmax(200px, 0.55fr) minmax(0, 1.77fr);
+}
+
+.pillarReversed .pillarMedia {
+  order: 2;
+}
+
+.pillarReversed .pillarCopy {
+  order: 1;
+  text-align: right;
+  align-items: flex-end;
+}
+
+.pillar:last-child .pillarInner {
+  grid-template-columns: minmax(180px, 0.42fr) minmax(0, 2.3fr);
+}
+
+.pillarMedia {
+  margin: 0;
+  min-width: 0;
+  padding: clamp(10px, 1.2vw, 14px);
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.05),
+    0 8px 24px rgba(26, 22, 18, 0.06),
+    0 24px 56px rgba(26, 22, 18, 0.05);
+}
+
+.pillarMat {
+  overflow: hidden;
+  background: #f7f3ec;
+}
+
+.pillarImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.pillarCopy {
   display: flex;
   flex-direction: column;
-  gap: clamp(20px, 3vh, 28px);
+  gap: clamp(18px, 2.5vh, 24px);
+  padding: clamp(8px, 1.5vw, 16px) 0;
+}
+
+.pillarIndex {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--bronze);
 }
 
 .pillarTitle {
   margin: 0;
+  max-width: 16ch;
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
-  font-size: clamp(20px, 2vw, 26px);
-  line-height: 1.45;
-  color: var(--muted);
-  text-wrap: pretty;
+  font-size: clamp(28px, 3.8vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.pillarReversed .pillarTitle {
+  margin-left: auto;
 }
 
 .closingInner {
@@ -484,9 +591,30 @@
 @media (max-width: 900px) {
   .split,
   .splitReverse,
-  .outcomeBlock,
-  .pillarsGrid {
+  .craftLayout,
+  .pillarInner {
     grid-template-columns: 1fr;
+  }
+
+  .pillarReversed .pillarInner {
+    grid-template-columns: 1fr;
+  }
+
+  .pillarReversed .pillarMedia,
+  .pillarReversed .pillarCopy {
+    order: initial;
+  }
+
+  .pillarReversed .pillarCopy,
+  .pillarCopy {
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .pillarReversed .pillarTitle,
+  .pillarTitle {
+    margin-left: 0;
+    max-width: none;
   }
 
   .splitReverse {
@@ -497,12 +625,21 @@
     direction: ltr;
   }
 
+  .craftLayout {
+    direction: ltr;
+  }
+
   .heroTitle {
     max-width: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .heroVisual {
+    opacity: 1;
+    transition: none;
+  }
+
   .closingCta {
     transition: none;
   }

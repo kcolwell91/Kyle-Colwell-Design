@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEditorialReveal } from '@/hooks/useEditorialReveal';
@@ -9,7 +9,35 @@ import styles from './VolcanoHouseStory.module.css';
 
 export default function VolcanoHouseStory() {
   const rootRef = useRef<HTMLElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
   useEditorialReveal(rootRef);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const video = heroVideoRef.current;
+    if (!video) return;
+
+    const reveal = () => setHeroVideoReady(true);
+    const startPlayback = () => {
+      void video.play().catch(() => {});
+    };
+
+    video.addEventListener('playing', reveal, { once: true });
+    video.addEventListener('loadeddata', startPlayback, { once: true });
+
+    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      startPlayback();
+    } else {
+      video.load();
+    }
+
+    return () => {
+      video.removeEventListener('playing', reveal);
+      video.removeEventListener('loadeddata', startPlayback);
+    };
+  }, []);
 
   return (
     <main ref={rootRef} className={styles.story}>
@@ -23,13 +51,14 @@ export default function VolcanoHouseStory() {
       <section className={styles.hero} aria-label="Volcano House hero">
         <div className={styles.heroMedia} data-parallax="-36">
           <video
-            className={styles.heroVideo}
+            ref={heroVideoRef}
+            className={`${styles.heroVideo} ${heroVideoReady ? styles.heroVideoReady : ''}`}
             src={VOLCANO_HOUSE_VIDEO.src}
-            poster={VOLCANO_HOUSE_VIDEO.poster}
             autoPlay
             muted
             loop
             playsInline
+            preload="auto"
             aria-label="Volcano House"
           />
           <div className={styles.heroScrim} aria-hidden="true" />

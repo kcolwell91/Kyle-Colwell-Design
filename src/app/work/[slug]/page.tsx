@@ -29,9 +29,9 @@ export async function generateMetadata({ params }: WorkPageProps): Promise<Metad
 
   if (slug === 'website-development') {
     return {
-      title: 'Website Development — Kyle Colwell',
+      title: 'Digital Storytelling — Kyle Colwell',
       description:
-        'Cinematic digital environments built with modern frameworks, AI-accelerated development, and 3D design — websites that feel like places worth walking into.',
+        'Branded digital worlds for founders and creative businesses. Story, voice, and atmosphere first, with technology used to carry the narrative.',
     };
   }
 

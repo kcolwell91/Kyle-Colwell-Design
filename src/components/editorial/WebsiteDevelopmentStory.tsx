@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -13,6 +14,7 @@ import {
   WEBSITE_DEV_HERO_VIDEO,
   WEBSITE_DEV_OUTCOMES,
   WEBSITE_DEV_PILLARS,
+  WEBSITE_DEV_PILLARS_HEADER,
   WEBSITE_DEV_STATEMENT,
   WEBSITE_DEV_VISION,
 } from '@/data/websiteDevelopmentStory';
@@ -23,36 +25,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const HERO_FRAME_WIDTH = 720;
 const HERO_FRAME_ASPECT = 16 / 10;
 const HERO_MAT_PADDING = 20;
-
-type PlaceholderProps = {
-  label: string;
-  caption: string;
-  aspect: `${number} / ${number}`;
-  variant?: 'dark' | 'light';
-  fullBleed?: boolean;
-};
-
-function MediaPlaceholder({
-  label,
-  caption,
-  aspect,
-  variant = 'dark',
-  fullBleed = false,
-}: PlaceholderProps) {
-  return (
-    <figure
-      className={`${styles.placeholder} ${variant === 'light' ? styles.placeholderLight : ''}`}
-      style={fullBleed ? undefined : { aspectRatio: aspect }}
-      data-editorial-reveal={fullBleed ? undefined : true}
-    >
-      <div className={styles.placeholderInner}>
-        <span className={styles.placeholderMark} aria-hidden="true" />
-        <p className={styles.placeholderLabel}>{label}</p>
-        <p className={styles.placeholderCaption}>{caption}</p>
-      </div>
-    </figure>
-  );
-}
 
 export default function WebsiteDevelopmentStory() {
   const rootRef = useRef<HTMLElement>(null);
@@ -65,7 +37,26 @@ export default function WebsiteDevelopmentStory() {
   const heroCopyRef = useRef<HTMLDivElement>(null);
   const returnLinkRef = useRef<HTMLAnchorElement>(null);
   const visionSectionRef = useRef<HTMLElement>(null);
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
   useEditorialReveal(rootRef);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const video = heroVideoRef.current;
+    if (!video) return;
+
+    const reveal = () => setHeroVideoReady(true);
+    video.addEventListener('playing', reveal, { once: true });
+
+    if (!video.paused && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      setHeroVideoReady(true);
+    }
+
+    return () => {
+      video.removeEventListener('playing', reveal);
+    };
+  }, []);
 
   useGSAP(
     () => {
@@ -212,12 +203,11 @@ export default function WebsiteDevelopmentStory() {
                 <div className={styles.heroMedia}>
                   <video
                     ref={heroVideoRef}
-                    className={styles.heroVisual}
+                    className={`${styles.heroVisual} ${heroVideoReady ? styles.heroVisualReady : ''}`}
                     autoPlay
                     muted
                     playsInline
                     preload="auto"
-                    poster={WEBSITE_DEV_HERO_VIDEO.poster}
                     aria-hidden="true"
                   >
                     <source
@@ -240,7 +230,7 @@ export default function WebsiteDevelopmentStory() {
       <section
         ref={visionSectionRef}
         className={`${styles.section} ${styles.visionSection}`}
-        aria-label="The first heartbeat"
+        aria-label="What we are here to solve"
       >
         <div className={styles.sectionInner}>
           <div className={styles.visionLayout}>
@@ -267,7 +257,7 @@ export default function WebsiteDevelopmentStory() {
                 loop
                 playsInline
                 preload="metadata"
-                aria-label="The first heartbeat website experience"
+                aria-label="Branded digital story opening sequence"
               />
               <div className={styles.videoTextCover} aria-hidden="true" />
             </figure>
@@ -283,14 +273,21 @@ export default function WebsiteDevelopmentStory() {
         </div>
       </section>
 
-      <section className={styles.section} aria-label="The environment">
+      <section className={styles.section} aria-label="Brand environment">
         <div className={styles.sectionInner}>
-          <div className={styles.splitReverse}>
-            <MediaPlaceholder
-              label={WEBSITE_DEV_CRAFT.placeholder.label}
-              caption={WEBSITE_DEV_CRAFT.placeholder.caption}
-              aspect={WEBSITE_DEV_CRAFT.placeholder.aspect}
-            />
+          <div className={`${styles.splitReverse} ${styles.craftLayout}`}>
+            <figure className={styles.craftMedia} data-editorial-reveal>
+              <Image
+                src={WEBSITE_DEV_CRAFT.image.src}
+                alt={WEBSITE_DEV_CRAFT.image.alt}
+                width={WEBSITE_DEV_CRAFT.image.width}
+                height={WEBSITE_DEV_CRAFT.image.height}
+                sizes="(max-width: 900px) 100vw, 68vw"
+                quality={100}
+                unoptimized
+                className={styles.craftImage}
+              />
+            </figure>
             <div className={styles.splitCopy}>
               <p className={styles.kicker} data-editorial-reveal>
                 {WEBSITE_DEV_CRAFT.kicker}
@@ -310,39 +307,49 @@ export default function WebsiteDevelopmentStory() {
           <p className={`${styles.kicker} ${styles.kickerCenter}`} data-editorial-reveal>
             {WEBSITE_DEV_OUTCOMES.kicker}
           </p>
-          <div className={styles.outcomeBlock}>
-            <div className={styles.prose} data-editorial-reveal>
-              {WEBSITE_DEV_OUTCOMES.paragraphs.map((paragraph) => (
-                <p key={paragraph.slice(0, 32)}>{paragraph}</p>
-              ))}
-            </div>
-            <MediaPlaceholder
-              label={WEBSITE_DEV_OUTCOMES.placeholder.label}
-              caption={WEBSITE_DEV_OUTCOMES.placeholder.caption}
-              aspect={WEBSITE_DEV_OUTCOMES.placeholder.aspect}
-              variant="light"
-            />
+          <div className={styles.outcomeCopy} data-editorial-reveal>
+            {WEBSITE_DEV_OUTCOMES.paragraphs.map((paragraph) => (
+              <p key={paragraph.slice(0, 32)} className={styles.prose}>
+                {paragraph}
+              </p>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className={styles.section} aria-label="The craft behind the experience">
+      <section className={`${styles.section} ${styles.pillarsSection}`} aria-label="Four parts of the work">
         <div className={styles.sectionInner}>
           <h2 className={styles.pillarsHeader} data-editorial-reveal>
-            The craft behind the experience
+            {WEBSITE_DEV_PILLARS_HEADER}
           </h2>
-          <div className={styles.pillarsGrid}>
-            {WEBSITE_DEV_PILLARS.map((pillar) => (
-              <article key={pillar.title} className={styles.pillar}>
-                <MediaPlaceholder
-                  label={pillar.placeholder.label}
-                  caption={pillar.placeholder.caption}
-                  aspect={pillar.placeholder.aspect}
-                  variant="light"
-                />
-                <p className={styles.pillarTitle} data-editorial-reveal>
-                  {pillar.title}
-                </p>
+          <div className={styles.pillarsList}>
+            {WEBSITE_DEV_PILLARS.map((pillar, index) => (
+              <article
+                key={pillar.image.src}
+                className={`${styles.pillar} ${index % 2 === 1 ? styles.pillarReversed : ''}`}
+              >
+                <div className={styles.pillarInner}>
+                  <figure className={styles.pillarMedia} data-editorial-reveal>
+                    <div className={styles.pillarMat}>
+                      <Image
+                        src={pillar.image.src}
+                        alt={pillar.image.alt}
+                        width={pillar.image.width}
+                        height={pillar.image.height}
+                        sizes="(max-width: 900px) 100vw, 72vw"
+                        quality={100}
+                        unoptimized
+                        className={styles.pillarImage}
+                      />
+                    </div>
+                  </figure>
+                  <div className={styles.pillarCopy} data-editorial-reveal>
+                    <span className={styles.pillarIndex}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <p className={styles.pillarTitle}>{pillar.title}</p>
+                  </div>
+                </div>
               </article>
             ))}
           </div>

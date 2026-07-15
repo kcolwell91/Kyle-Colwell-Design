@@ -2,89 +2,89 @@ export const WEBSITE_DEV_INDEX = '02';
 
 export const WEBSITE_DEV_HERO_VIDEO = {
   src: '/work/website-development/hero-20260714.mp4',
-  poster: '/work/anna-naturalista.png',
 } as const;
 
 export const WEBSITE_DEV_HERO = {
-  eyebrow: 'Website Development',
-  title: 'Every great business deserves a digital home worth walking into.',
+  eyebrow: 'Brand & Digital Story',
+  title: 'Your brand deserves a world worth walking into.',
 } as const;
 
 export const WEBSITE_DEV_VISION = {
-  kicker: 'The first heartbeat',
+  kicker: 'What we are here to solve',
   paragraphs: [
-    'Picture a website that feels alive. One that greets a visitor with motion, depth, and intention within the first heartbeat of the page loading. One that guides them through your story like a hand on the small of their back, leading them exactly where you want them to go: toward trust, toward action, toward becoming a client.',
+    'Most businesses have a story worth telling. Few have a digital presence that tells it. I build branded worlds that carry who you are from the first second.',
   ],
   placeholder: {
-    label: 'Hero experience',
-    caption: 'Replace with motion, depth, or opening sequence demo',
+    label: 'Opening story',
+    caption: 'Replace with hero sequence or brand world demo',
     aspect: '16 / 10' as const,
   },
 };
 
-export const WEBSITE_DEV_STATEMENT = "That's the world I build." as const;
+export const WEBSITE_DEV_STATEMENT = 'Story first. Everything else follows.' as const;
 
 export const WEBSITE_DEV_CRAFT = {
-  kicker: 'The environment',
+  kicker: 'Brand environment',
   paragraphs: [
-    'Using modern frameworks, AI accelerated development, and cinematic 3D design crafted in Blender, I create digital experiences that feel less like a website and more like an environment. Something with texture. Something with movement. Something that lingers in a visitor\'s mind long after they close the tab.',
+    'Motion, texture, and pace in service of the story. The technology stays invisible.',
   ],
-  placeholder: {
-    label: '3D world & motion',
-    caption: 'Replace with Blender scene, WebGL, or cinematic reel',
-    aspect: '4 / 5' as const,
+  image: {
+    src: '/work/website-development/brand-environment.png',
+    alt: 'Minimalist villa interior with circular arch framing a sunset view over the sea',
+    width: 1024,
+    height: 576,
   },
-};
+} as const;
 
 export const WEBSITE_DEV_OUTCOMES = {
-  kicker: 'What this creates for your business',
+  kicker: 'What changes',
   paragraphs: [
-    'Visitors who arrive on your site step into a world that already feels premium, already feels trustworthy, already feels like the obvious choice. That feeling converts. It turns curiosity into inquiries, inquiries into clients, and clients into long term revenue.',
-    'Every integration, every animation, every line of code is placed with intention, built to carry weight toward one outcome: a stronger return on the investment you make in your online presence.',
+    'Visitors arrive already leaning in. Your brand does the emotional work before the first conversation.',
   ],
-  placeholder: {
-    label: 'Conversion journey',
-    caption: 'Replace with user flow, analytics story, or client outcome demo',
-    aspect: '16 / 9' as const,
-  },
-};
+} as const;
+
+export const WEBSITE_DEV_PILLARS_HEADER = 'Four parts of the work' as const;
 
 export const WEBSITE_DEV_PILLARS = [
   {
-    title: 'Full stack development across modern frameworks, engineered for speed and precision',
-    placeholder: {
-      label: 'Framework & architecture',
-      caption: 'Replace with stack diagram or build demo',
-      aspect: '3 / 2' as const,
+    title: 'Story and voice, defined first',
+    image: {
+      src: '/work/website-development/pillars/narrative-framework.png',
+      alt: 'Narrative framework booklet open to essence, perspective, promise, and voice',
+      width: 1024,
+      height: 682,
     },
   },
   {
-    title: 'Seamless integrations that connect your business tools into one fluid system',
-    placeholder: {
-      label: 'Integrations',
-      caption: 'Replace with API / tooling ecosystem visual',
-      aspect: '3 / 2' as const,
+    title: 'Visual worlds that feel authored',
+    image: {
+      src: '/work/website-development/pillars/visual-identity.png',
+      alt: 'Visual identity mood board with palette, layout study, and material samples',
+      width: 1024,
+      height: 682,
     },
   },
   {
-    title: 'Custom 3D worlds and motion design, sculpted in Blender to give your brand a signature feel',
-    placeholder: {
-      label: 'Blender & motion',
-      caption: 'Replace with 3D asset or animation preview',
-      aspect: '3 / 2' as const,
+    title: 'Motion and pacing that guide the narrative',
+    image: {
+      src: '/work/website-development/pillars/motion-rhythm.png',
+      alt: 'Seed to sanctuary progression diagram showing six stages of growth',
+      width: 1024,
+      height: 439,
     },
   },
   {
-    title: 'Scalable deployment and infrastructure, so the world you build today grows effortlessly tomorrow',
-    placeholder: {
-      label: 'Deployment & scale',
-      caption: 'Replace with infrastructure or performance demo',
-      aspect: '3 / 2' as const,
+    title: 'Built to grow without losing its character',
+    image: {
+      src: '/work/website-development/pillars/lasting-structure.png',
+      alt: 'Sanctuary Retreat Center brand map with purpose, offerings, values, and community',
+      width: 1024,
+      height: 576,
     },
   },
 ] as const;
 
 export const WEBSITE_DEV_CLOSING = {
-  line: 'Your website should feel like a place, not a page.',
-  cta: "Let's build yours.",
+  line: 'Your story deserves more than a page.',
+  cta: "Let's talk",
 } as const;
