@@ -5,6 +5,7 @@ import { Italianno } from 'next/font/google';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { SITE_CONTACT, SITE_CONTACT_MAILTO, SITE_CONTACT_TEL } from '@/data/siteContact';
 import styles from './ServicesClosingSection.module.css';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -16,10 +17,6 @@ const italianno = Italianno({
 
 const HEADLINE = "Let's build a more beautiful world together";
 const HEADLINE_LINES = ["Let's build a more", 'beautiful world together'] as const;
-
-const CONTACT_EMAIL = 'kyle@elevatedglobe.com';
-const CONTACT_PHONE = '+18082929604';
-const CONTACT_PHONE_DISPLAY = '(808) 292-9604';
 
 export default function ServicesClosingSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -142,7 +139,7 @@ export default function ServicesClosingSection() {
 
         <div className={styles.ctaWrap}>
           <a
-            href={`mailto:${CONTACT_EMAIL}`}
+            href={SITE_CONTACT_MAILTO}
             className={styles.ctaLink}
             data-closing-cta
           >
@@ -164,21 +161,21 @@ export default function ServicesClosingSection() {
           </p>
           <div className={styles.contactPrimary}>
             <a
-              href={`mailto:${CONTACT_EMAIL}`}
+              href={SITE_CONTACT_MAILTO}
               className={styles.contactEmail}
               data-closing-contact
             >
-              {CONTACT_EMAIL}
+              {SITE_CONTACT.email}
             </a>
           </div>
           <div className={styles.contactMeta} data-closing-contact>
-            <a href={`tel:${CONTACT_PHONE}`} className={styles.contactPhone}>
-              {CONTACT_PHONE_DISPLAY}
+            <a href={SITE_CONTACT_TEL} className={styles.contactPhone}>
+              {SITE_CONTACT.phoneDisplay}
             </a>
             <span className={styles.contactDivider} aria-hidden="true">
               ·
             </span>
-            <span className={styles.contactLocation}>Austin, Texas</span>
+            <span className={styles.contactLocation}>{SITE_CONTACT.location}</span>
           </div>
         </address>
       </div>

@@ -38,6 +38,7 @@
   z-index: 2;
   background: #ffffff;
   box-shadow: 0 -70px 120px rgba(255, 255, 255, 0.82);
+  transform: translateY(100%);
   will-change: transform;
   pointer-events: none;
 }
@@ -48,6 +49,7 @@
   z-index: 3;
   background: #dca08c;
   box-shadow: 70px 0 120px rgba(220, 160, 140, 0.35);
+  transform: translateX(-100%);
   will-change: transform;
   pointer-events: none;
 }

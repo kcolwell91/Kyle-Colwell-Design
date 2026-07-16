@@ -12,6 +12,7 @@ const ROTATIONS = 0.5;
 
 type ScrollSpinModelCanvasProps = {
   progressRef: MutableRefObject<number>;
+  isActive: boolean;
   onInvalidateReady: (invalidate: () => void) => void;
   onModelReady: () => void;
 };
@@ -76,13 +77,14 @@ function ScrollSpinModel({
 
 export default function ScrollSpinModelCanvas({
   progressRef,
+  isActive,
   onInvalidateReady,
   onModelReady,
 }: ScrollSpinModelCanvasProps) {
   return (
     <Canvas
       dpr={[1, 1.5]}
-      frameloop="demand"
+      frameloop={isActive ? 'always' : 'demand'}
       camera={{ fov: 30, near: 0.05, far: 100, position: [0, 0, 5.6] }}
       gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
       onCreated={({ gl, invalidate }) => {
@@ -91,6 +93,7 @@ export default function ScrollSpinModelCanvas({
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.05;
         onInvalidateReady(invalidate);
+        invalidate();
       }}
     >
       <ambientLight intensity={0.85} color="#f8f3ec" />

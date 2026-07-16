@@ -1,0 +1,100 @@
+.contact {
+  padding: var(--minimal-pad-y) var(--minimal-pad-x) clamp(160px, 22vh, 260px);
+  background: var(--minimal-warm-white);
+}
+
+.inner {
+  width: min(100%, 560px);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.kicker {
+  margin: 0 0 clamp(40px, 6vh, 64px);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: clamp(10px, 0.85vw, 11px);
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--minimal-muted);
+}
+
+.email {
+  display: inline-block;
+  margin: 0 0 clamp(16px, 2.5vh, 22px);
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--minimal-charcoal);
+  transition: color 0.8s var(--minimal-ease);
+}
+
+.email:hover,
+.email:focus-visible {
+  color: var(--minimal-muted);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: clamp(56px, 8vh, 88px);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: clamp(11px, 0.95vw, 12px);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.1em;
+  color: var(--minimal-muted);
+}
+
+.phone {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.8s var(--minimal-ease);
+}
+
+.phone:hover,
+.phone:focus-visible {
+  color: var(--minimal-charcoal);
+}
+
+.divider {
+  opacity: 0.5;
+}
+
+.cta {
+  display: inline-block;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: clamp(10px, 0.85vw, 11px);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--minimal-charcoal);
+  border-bottom: 1px solid var(--minimal-line);
+  padding-bottom: 4px;
+  transition:
+    color 0.8s var(--minimal-ease),
+    border-color 0.8s var(--minimal-ease);
+}
+
+.cta:hover,
+.cta:focus-visible {
+  color: var(--minimal-muted);
+  border-color: var(--minimal-stone);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .email,
+  .phone,
+  .cta {
+    transition: none;
+  }
+}

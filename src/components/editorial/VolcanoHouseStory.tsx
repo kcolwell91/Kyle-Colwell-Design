@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { IMMERSIVE_SELECTED_WORLDS_HREF } from '@/config/siteRoutes';
 import { useEditorialReveal } from '@/hooks/useEditorialReveal';
 import { VOLCANO_EXPERIENCE_GALLERY, VOLCANO_HOUSE_IMAGES, VOLCANO_HOUSE_VIDEO } from '@/data/volcanoHouseStory';
 import styles from './VolcanoHouseStory.module.css';
@@ -42,7 +43,7 @@ export default function VolcanoHouseStory() {
   return (
     <main ref={rootRef} className={styles.story}>
       <nav className={styles.nav} data-editorial-reveal>
-        <Link href="/#selected-worlds" className={styles.navLink}>
+        <Link href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.navLink}>
           ← Selected Worlds
         </Link>
         <span className={styles.navIndex}>01</span>

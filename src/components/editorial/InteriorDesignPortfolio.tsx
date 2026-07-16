@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { IMMERSIVE_SELECTED_WORLDS_HREF } from '@/config/siteRoutes';
 import { INTERIOR_PORTFOLIO_CHAPTERS } from '@/data/interiorPortfolio';
 import { useEditorialReveal } from '@/hooks/useEditorialReveal';
 import styles from './InteriorDesignPortfolio.module.css';
@@ -48,7 +49,7 @@ export default function InteriorDesignPortfolio() {
           ← Volcano House
         </Link>
         <span className={styles.headerMark}>Kyle Colwell</span>
-        <Link href="/#selected-worlds" className={styles.backLinkMuted}>
+        <Link href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.backLinkMuted}>
           Selected Worlds
         </Link>
       </header>
@@ -135,7 +136,7 @@ export default function InteriorDesignPortfolio() {
             <span className={styles.footerCtaUnderline} aria-hidden="true" />
           </Link>
         </div>
-        <Link href="/#selected-worlds" className={styles.footerBack}>
+        <Link href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.footerBack}>
           ← Go back
         </Link>
       </footer>

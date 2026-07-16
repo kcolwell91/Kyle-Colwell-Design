@@ -1,3 +1,5 @@
+import { IMMERSIVE_CONTACT_HREF } from '@/config/siteRoutes';
+
 const A = '/portfolio/art';
 
 export type ArtMedium = 'mural' | 'canvas';
@@ -37,7 +39,7 @@ export const ART_COMMISSION = {
   title: 'Interested in a commission?',
   copy: 'I take on a small number of mural and canvas projects each year. Share your space, timeline, and what you have in mind.',
   cta: 'Get in touch',
-  href: '/#contact',
+  href: IMMERSIVE_CONTACT_HREF,
 } as const;
 
 export const ART_WORKS: ArtWork[] = [

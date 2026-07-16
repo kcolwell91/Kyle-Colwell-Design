@@ -3,6 +3,10 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  IMMERSIVE_CONTACT_HREF,
+  IMMERSIVE_SELECTED_WORLDS_HREF,
+} from '@/config/siteRoutes';
 import { useEditorialReveal } from '@/hooks/useEditorialReveal';
 import {
   BESOS_CLOSING,
@@ -25,7 +29,7 @@ export default function BesosStory() {
   return (
     <main ref={rootRef} className={styles.story}>
       <nav className={styles.nav} aria-label="Project navigation">
-        <Link href="/#selected-worlds" className={styles.navLink}>
+        <Link href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.navLink}>
           ← Selected Worlds
         </Link>
         <span className={styles.navIndex}>{BESOS_INDEX}</span>
@@ -208,7 +212,7 @@ export default function BesosStory() {
           <p className={styles.closingLine} data-editorial-reveal>
             {BESOS_CLOSING.line}
           </p>
-          <Link href="/#contact" className={styles.closingCta} data-editorial-reveal>
+          <Link href={IMMERSIVE_CONTACT_HREF} className={styles.closingCta} data-editorial-reveal>
             {BESOS_CLOSING.cta} →
           </Link>
         </div>

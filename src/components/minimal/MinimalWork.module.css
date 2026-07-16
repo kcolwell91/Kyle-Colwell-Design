@@ -1,0 +1,126 @@
+.work {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(140px, 20vh, 240px) var(--minimal-pad-x);
+  background: var(--minimal-elevated-deep);
+  color: var(--minimal-elevated-text);
+}
+
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(154, 133, 112, 0.14) 0%, transparent 62%),
+    radial-gradient(ellipse 60% 45% at 82% 100%, rgba(245, 241, 234, 0.05) 0%, transparent 58%),
+    linear-gradient(180deg, #302a25 0%, var(--minimal-elevated-deep) 48%, #181513 100%);
+  pointer-events: none;
+}
+
+.atmosphere::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  background-image: url('/work/website-development/brand-environment.png');
+  background-position: center;
+  background-size: cover;
+  mix-blend-mode: luminosity;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 760px);
+  margin: 0 auto;
+}
+
+.kicker {
+  margin: 0 0 clamp(72px, 10vh, 120px);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: clamp(10px, 0.85vw, 11px);
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--minimal-elevated-muted);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  margin: 0;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: clamp(20px, 3vw, 32px);
+  align-items: start;
+  padding: clamp(40px, 5vh, 56px) 0;
+}
+
+.index {
+  padding-top: 0.35em;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0.24em;
+  color: var(--minimal-bronze);
+}
+
+.copy {
+  display: grid;
+  gap: clamp(12px, 2vh, 18px);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1.28;
+  letter-spacing: 0.03em;
+  color: rgba(245, 241, 234, 0.96);
+}
+
+.line {
+  margin: 0;
+  max-width: 34ch;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: clamp(11px, 0.95vw, 12px);
+  font-weight: 400;
+  line-height: 1.75;
+  letter-spacing: 0.1em;
+  color: var(--minimal-elevated-muted);
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(154, 133, 112, 0.42) 18%,
+    rgba(154, 133, 112, 0.42) 82%,
+    transparent 100%
+  );
+}
+
+@media (max-width: 640px) {
+  .kicker {
+    text-align: left;
+  }
+
+  .card {
+    grid-template-columns: 40px 1fr;
+  }
+
+  .line {
+    max-width: none;
+  }
+}

@@ -1,18 +1,16 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
-import dynamic from 'next/dynamic';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { useGLTF } from '@react-three/drei';
+import ScrollSpinModelCanvas from '@/components/sections/ScrollSpinModelCanvas';
 import styles from './ScrollSpinModelSection.module.css';
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+const MODEL_PATH = '/models/closing-scroll-sculpture.glb';
 
-const ScrollSpinModelCanvas = dynamic(
-  () => import('@/components/sections/ScrollSpinModelCanvas'),
-  { ssr: false }
-);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export default function ScrollSpinModelSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -21,6 +19,29 @@ export default function ScrollSpinModelSection() {
   const coralPanelRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const invalidateRef = useRef<(() => void) | null>(null);
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    useGLTF.preload(MODEL_PATH);
+  }, []);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsActive(entry.isIntersecting),
+      { rootMargin: '30% 0px', threshold: 0.01 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isActive) return;
+    invalidateRef.current?.();
+  }, [isActive]);
 
   const handleInvalidateReady = useCallback((invalidate: () => void) => {
     invalidateRef.current = invalidate;
@@ -30,6 +51,14 @@ export default function ScrollSpinModelSection() {
   const handleModelReady = useCallback(() => {
     invalidateRef.current?.();
     ScrollTrigger.refresh();
+
+    let frame = 0;
+    const warmFrames = () => {
+      invalidateRef.current?.();
+      frame += 1;
+      if (frame < 12) requestAnimationFrame(warmFrames);
+    };
+    requestAnimationFrame(warmFrames);
   }, []);
 
   useGSAP(
@@ -104,7 +133,7 @@ export default function ScrollSpinModelSection() {
       id="scroll-sculpture"
       className={styles.section}
       data-scroll-spin-model
-      aria-label="A study in structural design in regenerative form"
+      aria-label="Scroll-trigger movement with 3D form"
     >
       <div ref={stageRef} className={styles.stage}>
         <div ref={whitePanelRef} className={styles.whitePanel} aria-hidden="true" />
@@ -113,13 +142,14 @@ export default function ScrollSpinModelSection() {
         <div className={styles.modelViewport} aria-hidden="true">
           <ScrollSpinModelCanvas
             progressRef={progressRef}
+            isActive={isActive}
             onInvalidateReady={handleInvalidateReady}
             onModelReady={handleModelReady}
           />
         </div>
         <p className={styles.caption}>
           <span>Object Study 01</span>
-          A study in structural design in regenerative form
+          Scroll-trigger movement with 3D form
         </p>
       </div>
     </section>

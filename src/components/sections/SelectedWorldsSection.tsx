@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PROJECTS, type Project } from '@/data/projects';
+import { getProjectWorkHref } from '@/lib/projectMedia';
 import { useWorldsBeigeReveal } from '@/hooks/useWorldsBeigeReveal';
 import styles from './sections.module.css';
 
@@ -18,7 +19,7 @@ function ProjectCard({ project }: { project: Project }) {
   const floatClass = FLOAT_CLASSES[project.floatClass];
 
   return (
-    <Link href={`/work/${project.slug}`} className={styles.projectCard}>
+    <Link href={getProjectWorkHref(project.slug)} className={styles.projectCard}>
       <div className={`${styles.projectCardInner} ${floatClass}`}>
         <div className={styles.projectImageWrap}>
           {project.media.type === 'video' ? (

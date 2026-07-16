@@ -64,7 +64,7 @@ export default function CinematicHero() {
   const posterRef = useRef<HTMLDivElement>(null);
   const line1Ref = useRef<HTMLSpanElement>(null);
   const line2Ref = useRef<HTMLSpanElement>(null);
-  const line3Ref = useRef<HTMLSpanElement>(null);
+  const dekRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -150,13 +150,13 @@ export default function CinematicHero() {
 
     const updateHeadline = (p: number, uiFade: number) => {
       if (line1Ref.current) {
-        line1Ref.current.style.opacity = String(dramaticFade(p, 0.1, 0.24) * uiFade);
+        line1Ref.current.style.opacity = String(dramaticFade(p, 0.05, 0.16) * uiFade);
       }
       if (line2Ref.current) {
-        line2Ref.current.style.opacity = String(dramaticFade(p, 0.05, 0.16) * uiFade);
+        line2Ref.current.style.opacity = String(dramaticFade(p, 0.1, 0.22) * uiFade);
       }
-      if (line3Ref.current) {
-        line3Ref.current.style.opacity = String(dramaticFade(p, 0.01, 0.08) * uiFade);
+      if (dekRef.current) {
+        dekRef.current.style.opacity = String(dramaticFade(p, 0.14, 0.28) * uiFade);
       }
     };
 
@@ -368,15 +368,16 @@ export default function CinematicHero() {
         <div ref={contentRef} className={styles.content}>
           <h1 className={styles.headline}>
             <span ref={line1Ref} className={styles.headlineLine}>
-              Regenerative
+              Creative Director &amp;
             </span>
             <span ref={line2Ref} className={styles.headlineLine}>
-              Designer &amp;
-            </span>
-            <span ref={line3Ref} className={styles.headlineLine}>
-              Creative Director
+              Regenerative Designer
             </span>
           </h1>
+          <p ref={dekRef} className={styles.dek}>
+            Designing spaces, brands, and experiences that reconnect people with nature,
+            purpose, and place.
+          </p>
         </div>
 
         <div ref={scrollCueRef} className={styles.scrollCue} aria-hidden="true">

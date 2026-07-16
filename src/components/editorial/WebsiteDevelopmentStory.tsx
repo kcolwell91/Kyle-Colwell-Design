@@ -7,6 +7,11 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { useEditorialReveal } from '@/hooks/useEditorialReveal';
+import ScrollSpinModelSection from '@/components/sections/ScrollSpinModelSection';
+import {
+  IMMERSIVE_CONTACT_HREF,
+  IMMERSIVE_SELECTED_WORLDS_HREF,
+} from '@/config/siteRoutes';
 import {
   WEBSITE_DEV_CLOSING,
   WEBSITE_DEV_CRAFT,
@@ -184,7 +189,7 @@ export default function WebsiteDevelopmentStory() {
 
   return (
     <main ref={rootRef} className={styles.story}>
-      <Link ref={returnLinkRef} href="/#selected-worlds" className={styles.returnLink}>
+      <Link ref={returnLinkRef} href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.returnLink}>
         <span className={styles.returnArrow} aria-hidden="true">
           ←
         </span>
@@ -356,12 +361,14 @@ export default function WebsiteDevelopmentStory() {
         </div>
       </section>
 
+      <ScrollSpinModelSection />
+
       <section className={styles.sectionDark} aria-label="Closing">
         <div className={`${styles.sectionInner} ${styles.closingInner}`}>
           <p className={styles.closingLine} data-editorial-reveal>
             {WEBSITE_DEV_CLOSING.line}
           </p>
-          <Link href="/#contact" className={styles.closingCta} data-editorial-reveal>
+          <Link href={IMMERSIVE_CONTACT_HREF} className={styles.closingCta} data-editorial-reveal>
             {WEBSITE_DEV_CLOSING.cta} →
           </Link>
         </div>

@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { IMMERSIVE_HOME_PATH } from '@/config/siteRoutes';
 import {
   ART_COMMISSION,
   ART_PORTFOLIO_INTRO,
@@ -18,7 +19,7 @@ export default function ArtPortfolio() {
   return (
     <main ref={rootRef} className={styles.page}>
       <header className={styles.header} data-editorial-reveal>
-        <Link href="/" className={styles.backLink}>
+        <Link href={IMMERSIVE_HOME_PATH} className={styles.backLink}>
           ← Home
         </Link>
         <span className={styles.headerMark}>Kyle Colwell</span>

@@ -1,0 +1,25 @@
+/* Shared tokens for the /minimal visual system */
+.minimalPage {
+  --minimal-warm-white: #faf8f4;
+  --minimal-sand: #e8e2d8;
+  --minimal-stone: #b8afa3;
+  --minimal-charcoal: #2c2824;
+  --minimal-elevated: #2a2622;
+  --minimal-elevated-deep: #1f1c19;
+  --minimal-elevated-text: #f5f1ea;
+  --minimal-elevated-muted: rgba(245, 241, 234, 0.56);
+  --minimal-bronze: #9a8570;
+  --minimal-muted: #6f6760;
+  --minimal-line: rgba(44, 40, 36, 0.14);
+  --minimal-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --minimal-pad-x: clamp(32px, 8vw, 128px);
+  --minimal-pad-y: clamp(120px, 18vh, 220px);
+  --minimal-section-gap: clamp(56px, 9vh, 112px);
+
+  min-height: 100dvh;
+  background: var(--minimal-warm-white);
+  color: var(--minimal-charcoal);
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}

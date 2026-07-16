@@ -1,3 +1,5 @@
+import { SITE_CONTACT } from '@/data/siteContact';
+
 export type ProjectImageMedia = {
   type: 'image';
   src: string;
@@ -20,6 +22,8 @@ export type Project = {
   floatClass: 'projectFloat1' | 'projectFloat2' | 'projectFloat3' | 'projectFloat4';
   media: ProjectMedia;
   summary: string;
+  /** One-line caption for the /minimal project grid. */
+  minimalCaption: string;
   partnerInquiry?: {
     copy: string;
     email: string;
@@ -40,6 +44,7 @@ export const PROJECTS: Project[] = [
     },
     summary:
       'A biophilic hospitality environment shaped around light, material warmth, and the rhythm of the island — designed to feel like a five-star retreat rooted in place.',
+    minimalCaption: 'An off-grid sanctuary on the island of Hawai‘i.',
   },
   {
     slug: 'website-development',
@@ -54,6 +59,7 @@ export const PROJECTS: Project[] = [
     },
     summary:
       'A digital brand world built with editorial clarity, organic texture, and a calm conversion path for a natural wellness founder.',
+    minimalCaption: 'A calm digital world for a wellness founder.',
   },
   {
     slug: 'restaurant-project-management',
@@ -68,6 +74,7 @@ export const PROJECTS: Project[] = [
     },
     summary:
       'Project management and marketing for an ambitious hospitality launch — from bar to brand.',
+    minimalCaption: 'Launch, interiors, and brand for a new bar.',
   },
   {
     slug: 'retreat-center-development',
@@ -82,10 +89,11 @@ export const PROJECTS: Project[] = [
     },
     summary:
       'A regenerative retreat concept integrating biophilic interiors, land-based programming, and a long-view vision for wellness hospitality.',
+    minimalCaption: 'A biophilic retreat concept in the tropics.',
     partnerInquiry: {
       copy:
         'For those interested in shaping this vision as a partner, we welcome a private inquiry.',
-      email: 'kyle@elevatedglobe.com',
+      email: SITE_CONTACT.email,
       cta: 'Inquire by email',
     },
   },

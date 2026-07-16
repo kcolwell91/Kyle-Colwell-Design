@@ -6,7 +6,7 @@ export const WEBSITE_DEV_HERO_VIDEO = {
 
 export const WEBSITE_DEV_HERO = {
   eyebrow: 'Brand & Digital Story',
-  title: 'Your brand deserves a world worth walking into.',
+  title: 'I help visionary hospitality founders transform an idea into a world people want to enter.',
 } as const;
 
 export const WEBSITE_DEV_VISION = {

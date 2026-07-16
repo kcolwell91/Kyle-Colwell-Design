@@ -14,14 +14,14 @@ const cormorant = Cormorant_Garamond({
 
 const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500'],
+  weight: ['300', '400', '500'],
   variable: '--font-sans',
 });
 
 export const metadata: Metadata = {
-  title: 'Kyle Colwell — Regenerative Designer & Creative Director',
+  title: 'Kyle Colwell — Creative Director & Regenerative Designer',
   description:
-    'Places, brands, and experiences inspired by living systems, crafted for lasting impact.',
+    'Designing spaces, brands, and experiences that reconnect people with nature, purpose, and place.',
 };
 
 export default function RootLayout({
