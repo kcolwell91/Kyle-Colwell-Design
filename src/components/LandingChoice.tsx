@@ -1,5 +1,4 @@
-'use client';
-
+import Image from 'next/image';
 import Link from 'next/link';
 import { IMMERSIVE_HOME_PATH, MINIMAL_HOME_PATH } from '@/config/siteRoutes';
 import { LANDING_CHOICE } from '@/data/landingContent';
@@ -17,21 +16,21 @@ const CHOICES = [
 ] as const;
 
 export default function LandingChoice() {
+  const { image } = LANDING_CHOICE;
+
   return (
     <main className={styles.page}>
       <section className={styles.section} aria-label="Choose your journey">
         <div className={styles.media} aria-hidden="true">
-          <video
-            className={styles.video}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster={LANDING_CHOICE.video.poster}
-          >
-            <source src={LANDING_CHOICE.video.src} type={LANDING_CHOICE.video.type} />
-          </video>
+          <Image
+            src={image.src}
+            alt={image.alt}
+            fill
+            priority
+            quality={92}
+            sizes="100vw"
+            className={styles.image}
+          />
           <div className={styles.scrim} />
         </div>
 

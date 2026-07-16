@@ -4,6 +4,7 @@
   padding: clamp(140px, 20vh, 240px) var(--minimal-pad-x);
   background: var(--minimal-elevated-deep);
   color: var(--minimal-elevated-text);
+  border-top: 0.5px solid rgba(154, 133, 112, 0.22);
 }
 
 .atmosphere {
@@ -30,19 +31,19 @@
 .inner {
   position: relative;
   z-index: 1;
-  width: min(100%, 760px);
-  margin: 0 auto;
+  width: var(--minimal-content-width);
+  margin: 0;
 }
 
 .kicker {
   margin: 0 0 clamp(72px, 10vh, 120px);
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(10px, 0.85vw, 11px);
-  font-weight: 400;
+  font-family: var(--minimal-label-font);
+  font-size: 10px;
+  font-weight: 300;
   line-height: 1.8;
-  letter-spacing: 0.36em;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
-  text-align: center;
+  text-align: left;
   color: var(--minimal-elevated-muted);
 }
 
@@ -66,11 +67,11 @@
 
 .index {
   padding-top: 0.35em;
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 10px;
-  font-weight: 400;
+  font-family: var(--minimal-label-font);
+  font-size: 9px;
+  font-weight: 300;
   line-height: 1.6;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.28em;
   color: var(--minimal-bronze);
 }
 
@@ -92,11 +93,11 @@
 .line {
   margin: 0;
   max-width: 34ch;
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(11px, 0.95vw, 12px);
-  font-weight: 400;
+  font-family: var(--minimal-label-font);
+  font-size: 10px;
+  font-weight: 300;
   line-height: 1.75;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--minimal-elevated-muted);
 }
 

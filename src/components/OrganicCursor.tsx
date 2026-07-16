@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
+import { MINIMAL_HOME_PATH } from '@/config/siteRoutes';
 import styles from './OrganicCursor.module.css';
 
 const RING_LERP = 0.14;
@@ -44,6 +46,7 @@ function hoverTargets(mode: HoverMode) {
 }
 
 export default function OrganicCursor() {
+  const pathname = usePathname();
   const rootRef = useRef<HTMLDivElement>(null);
   const seedRef = useRef<HTMLSpanElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
@@ -66,6 +69,7 @@ export default function OrganicCursor() {
   const rafId = useRef<number | null>(null);
 
   useEffect(() => {
+    if (pathname === MINIMAL_HOME_PATH) return;
     if (!canUseOrganicCursor()) return;
 
     const root = rootRef.current;
@@ -162,7 +166,9 @@ export default function OrganicCursor() {
       pointerQuery.removeEventListener('change', onMediaChange);
       if (rafId.current !== null) cancelAnimationFrame(rafId.current);
     };
-  }, []);
+  }, [pathname]);
+
+  if (pathname === MINIMAL_HOME_PATH) return null;
 
   return (
     <div ref={rootRef} className={styles.root} aria-hidden="true">

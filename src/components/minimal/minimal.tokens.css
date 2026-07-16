@@ -11,10 +11,13 @@
   --minimal-bronze: #9a8570;
   --minimal-muted: #6f6760;
   --minimal-line: rgba(44, 40, 36, 0.14);
+  --minimal-hairline: rgba(154, 133, 112, 0.38);
+  --minimal-label-font: var(--font-minimal-sans), var(--font-sans), system-ui, sans-serif;
   --minimal-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --minimal-pad-x: clamp(32px, 8vw, 128px);
   --minimal-pad-y: clamp(120px, 18vh, 220px);
   --minimal-section-gap: clamp(56px, 9vh, 112px);
+  --minimal-content-width: min(100%, 1080px);
 
   min-height: 100dvh;
   background: var(--minimal-warm-white);

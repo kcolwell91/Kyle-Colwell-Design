@@ -1,20 +1,21 @@
 .intro {
   padding: var(--minimal-pad-y) var(--minimal-pad-x);
   background: var(--minimal-warm-white);
+  border-top: 0.5px solid var(--minimal-hairline);
 }
 
 .inner {
-  width: min(100%, 1080px);
-  margin: 0 auto;
+  width: var(--minimal-content-width);
+  margin: 0;
 }
 
 .kicker {
   margin: 0 0 var(--minimal-section-gap);
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(10px, 0.85vw, 11px);
-  font-weight: 400;
+  font-family: var(--minimal-label-font);
+  font-size: 10px;
+  font-weight: 300;
   line-height: 1.8;
-  letter-spacing: 0.36em;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--minimal-muted);
 }
@@ -49,15 +50,15 @@
   max-width: 38ch;
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
-  font-size: clamp(20px, 2.1vw, 26px);
-  line-height: 1.72;
+  font-size: clamp(17px, 1.75vw, 21px);
+  line-height: 1.78;
   letter-spacing: 0.01em;
   color: var(--minimal-charcoal);
 }
 
 .paragraph:first-child {
-  font-size: clamp(22px, 2.4vw, 30px);
-  line-height: 1.62;
+  font-size: clamp(18px, 1.9vw, 23px);
+  line-height: 1.7;
 }
 
 @media (max-width: 900px) {

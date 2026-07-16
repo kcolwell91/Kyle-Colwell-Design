@@ -6,7 +6,7 @@ export default function MinimalIntro() {
   const { portrait } = MINIMAL_ABOUT;
 
   return (
-    <section className={styles.intro} aria-label="About">
+    <section className={styles.intro} aria-label="About" id="about">
       <div className={styles.inner}>
         <p className={styles.kicker}>{MINIMAL_ABOUT.kicker}</p>
         <div className={styles.layout}>

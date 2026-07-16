@@ -17,17 +17,31 @@
   height: 100%;
   object-fit: cover;
   object-position: center center;
+  filter: brightness(0.94) contrast(1.04);
 }
 
 .scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(44, 40, 36, 0.68) 0%,
-    rgba(44, 40, 36, 0.22) 42%,
-    rgba(44, 40, 36, 0.04) 100%
-  );
+  background:
+    radial-gradient(
+      ellipse 90% 70% at 18% 88%,
+      rgba(18, 16, 14, 0.72) 0%,
+      rgba(18, 16, 14, 0.28) 48%,
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 120% 80% at 50% 0%,
+      rgba(18, 16, 14, 0.38) 0%,
+      transparent 58%
+    ),
+    linear-gradient(
+      to top,
+      rgba(18, 16, 14, 0.84) 0%,
+      rgba(18, 16, 14, 0.52) 34%,
+      rgba(18, 16, 14, 0.18) 68%,
+      rgba(18, 16, 14, 0.32) 100%
+    );
 }
 
 .copy {
@@ -38,32 +52,86 @@
   padding: clamp(64px, 11vh, 120px) var(--minimal-pad-x);
 }
 
+.copyBackdrop {
+  position: absolute;
+  inset: -12% -8% -28% -12%;
+  background: radial-gradient(
+    ellipse 85% 90% at 12% 88%,
+    rgba(18, 16, 14, 0.62) 0%,
+    rgba(18, 16, 14, 0.28) 42%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
 .eyebrow {
+  position: relative;
   margin: 0 0 clamp(24px, 4vh, 40px);
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(10px, 0.85vw, 11px);
-  font-weight: 400;
+  font-family: var(--minimal-label-font);
+  font-size: 10px;
+  font-weight: 300;
   line-height: 1.6;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: rgba(250, 248, 244, 0.68);
+  color: rgba(250, 248, 244, 0.88);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.42),
+    0 6px 24px rgba(0, 0, 0, 0.32);
 }
 
 .title {
+  position: relative;
   display: grid;
   gap: clamp(6px, 1vh, 10px);
-  margin: 0;
+  margin: 0 0 clamp(32px, 5vh, 48px);
   max-width: 14ch;
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
-  font-size: clamp(38px, 5.2vw, 64px);
-  line-height: 1.18;
+  font-size: clamp(32px, 4.2vw, 52px);
+  line-height: 1.28;
   letter-spacing: 0.01em;
-  color: rgba(250, 248, 244, 0.96);
+  color: rgba(250, 248, 244, 0.98);
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.45),
+    0 10px 36px rgba(0, 0, 0, 0.38);
 }
 
 .titleLine {
   display: block;
+}
+
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--minimal-label-font);
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(250, 248, 244, 0.9);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.42),
+    0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: color 0.8s var(--minimal-ease);
+}
+
+.ctaArrow {
+  letter-spacing: 0;
+  transition: transform 0.8s var(--minimal-ease);
+}
+
+.cta:hover,
+.cta:focus-visible {
+  color: rgba(250, 248, 244, 1);
+}
+
+.cta:hover .ctaArrow,
+.cta:focus-visible .ctaArrow {
+  transform: translateX(3px);
 }
 
 @media (max-width: 640px) {
@@ -78,8 +146,16 @@
   }
 
   .media {
-    background-image: url('/videos/sanctuary-poster.jpg');
-    background-position: center;
-    background-size: cover;
+    background: #2c2824;
+  }
+
+  .cta,
+  .ctaArrow {
+    transition: none;
+  }
+
+  .cta:hover .ctaArrow,
+  .cta:focus-visible .ctaArrow {
+    transform: none;
   }
 }

@@ -1,0 +1,25 @@
+.quote {
+  padding: clamp(72px, 10vh, 120px) var(--minimal-pad-x);
+  background: var(--minimal-warm-white);
+  border-top: 0.5px solid var(--minimal-hairline);
+}
+
+.inner {
+  width: var(--minimal-content-width);
+}
+
+.line {
+  margin: 0;
+  max-width: 20ch;
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(24px, 2.8vw, 36px);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--minimal-charcoal);
+}
+
+.line em {
+  font-style: italic;
+}

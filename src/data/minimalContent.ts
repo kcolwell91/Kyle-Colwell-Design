@@ -1,10 +1,13 @@
 export const MINIMAL_HERO = {
   name: 'Kyle Colwell',
-  title: ['Creative Direction for brands', 'and places people remember.'],
+  title: ['Brands and places', 'people remember.'],
+  selectedWork: {
+    label: 'Selected Work',
+    href: '#selected-work',
+  },
   video: {
     src: '/videos/minimal-hero.mp4',
     type: 'video/mp4',
-    poster: '/videos/sanctuary-poster.jpg',
   },
 } as const;
 
@@ -22,6 +25,21 @@ export const MINIMAL_ABOUT = {
     'Today, I help visionary hospitality founders turn their ideas into cohesive spaces, brands, and experiences people remember.',
   ],
 } as const;
+
+export const MINIMAL_PULL_QUOTE = {
+  line: 'Designed to be felt.',
+} as const;
+
+export const MINIMAL_FOOTER = {
+  name: 'Kyle Colwell',
+  locations: 'Austin · Hawaiʻi',
+} as const;
+
+export const MINIMAL_NAV = [
+  { label: 'Work', href: '#selected-work' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
+] as const;
 
 export const MINIMAL_CONTACT = {
   kicker: 'Contact',

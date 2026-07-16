@@ -1,0 +1,28 @@
+.footer {
+  padding: clamp(48px, 7vh, 72px) var(--minimal-pad-x) clamp(56px, 8vh, 88px);
+  background: var(--minimal-warm-white);
+  border-top: 0.5px solid var(--minimal-hairline);
+}
+
+.inner {
+  width: var(--minimal-content-width);
+}
+
+.line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--minimal-label-font);
+  font-size: 9px;
+  font-weight: 300;
+  line-height: 1.7;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--minimal-muted);
+}
+
+.divider {
+  opacity: 0.55;
+}

@@ -6,7 +6,7 @@ import styles from './MinimalProjectGrid.module.css';
 
 export default function MinimalProjectGrid() {
   return (
-    <section className={styles.grid} aria-label="Projects">
+    <section className={styles.grid} aria-label="Projects" id="selected-work">
       <div className={styles.inner}>
         <p className={styles.kicker}>Selected work</p>
         <ul className={styles.list}>

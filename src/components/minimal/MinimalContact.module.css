@@ -1,6 +1,7 @@
 .contact {
   padding: var(--minimal-pad-y) var(--minimal-pad-x) clamp(160px, 22vh, 260px);
   background: var(--minimal-warm-white);
+  border-top: 0.5px solid var(--minimal-hairline);
 }
 
 .inner {
