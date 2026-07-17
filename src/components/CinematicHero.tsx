@@ -10,7 +10,7 @@ const HERO_VIDEO_MOV = '/videos/hero.mov';
 const HERO_POSTER = '/hero-poster.JPEG';
 const HERO_VIDEO_DURATION = 22;
 const SCROLL_PX_PER_VIDEO_SECOND = 360;
-const MOBILE_SCROLL_PX_PER_VIDEO_SECOND = 120;
+const MOBILE_SCROLL_PX_PER_VIDEO_SECOND = 300;
 const POSTER_FADE_END = 0.015;
 const BOX_MORPH_START = 0.58;
 const BOX_FRAME_WIDTH = 666;
@@ -52,6 +52,10 @@ function isVideoReady(video: HTMLVideoElement) {
   return Number.isFinite(duration) && duration > 0;
 }
 
+function isMobileViewport() {
+  return window.matchMedia('(max-width: 768px)').matches;
+}
+
 export default function CinematicHero() {
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -59,6 +63,7 @@ export default function CinematicHero() {
   const frameMatRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const contentScrimRef = useRef<HTMLDivElement>(null);
   const scrollCueRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const posterRef = useRef<HTMLDivElement>(null);
@@ -73,6 +78,7 @@ export default function CinematicHero() {
     const frameMat = frameMatRef.current;
     const overlay = overlayRef.current;
     const content = contentRef.current;
+    const contentScrim = contentScrimRef.current;
     const scrollCue = scrollCueRef.current;
     const video = videoRef.current;
     const poster = posterRef.current;
@@ -83,6 +89,7 @@ export default function CinematicHero() {
       !frameMat ||
       !overlay ||
       !content ||
+      !contentScrim ||
       !scrollCue ||
       !video ||
       !poster
@@ -94,10 +101,11 @@ export default function CinematicHero() {
     let scrollReady = false;
     let usingFallback = false;
     let gsapCtx: { revert: () => void } | null = null;
-    let heroTrigger: { kill: () => void } | null = null;
+    let heroTrigger: { kill: () => void; progress: number } | null = null;
     let targetVideoTime = 0;
     let videoRafId: number | null = null;
-    let mobileMode = window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+    let mediaUnlocked = false;
+    let mobileMode = isMobileViewport();
 
     const getDuration = () =>
       isVideoReady(video) ? video.duration : HERO_VIDEO_DURATION;
@@ -109,12 +117,32 @@ export default function CinematicHero() {
       track.style.setProperty('--hero-scroll-px', `${scrollPx}px`);
     };
 
+    const ensurePaused = () => {
+      if (!video.paused) video.pause();
+    };
+
+    // iOS needs a user-gesture play/pause once before currentTime seeks paint frames.
+    // Never leave the video playing — this is scrub-only, like desktop.
+    const unlockSeeking = async () => {
+      if (mediaUnlocked) return;
+      try {
+        video.muted = true;
+        video.playsInline = true;
+        await video.play();
+      } catch {
+        /* Ignore — seeking may still work after interaction. */
+      }
+      ensurePaused();
+      mediaUnlocked = true;
+    };
+
     const smoothVideoFrame = () => {
       if (!isVideoReady(video)) {
         videoRafId = null;
         return;
       }
 
+      ensurePaused();
       const delta = targetVideoTime - video.currentTime;
       if (Math.abs(delta) > 0.015) {
         video.currentTime += delta * VIDEO_SMOOTHING;
@@ -126,21 +154,13 @@ export default function CinematicHero() {
       videoRafId = null;
     };
 
-    const startMobilePlayback = () => {
-      if (!mobileMode) return;
-      video.loop = true;
-      void video.play().catch(() => {
-        // Muted inline playback is supported on modern mobile browsers;
-        // the poster remains visible if a browser still blocks playback.
-      });
-    };
-
     const scrubVideo = (progress: number) => {
       const posterFade = clamp(progress / POSTER_FADE_END, 0, 1);
       poster.style.opacity = String(1 - posterFade);
 
-      if (mobileMode) return;
       if (!isVideoReady(video)) return;
+      ensurePaused();
+
       const videoProgress = clamp(progress / BOX_MORPH_START, 0, 1);
       targetVideoTime = videoProgress * video.duration;
       if (videoRafId === null) {
@@ -163,7 +183,9 @@ export default function CinematicHero() {
     const updateBoxMorph = (progress: number) => {
       const boxT = clamp((progress - BOX_MORPH_START) / (1 - BOX_MORPH_START), 0, 1);
       const eased = boxT < 0.5 ? 2 * boxT * boxT : 1 - Math.pow(-2 * boxT + 2, 2) / 2;
-      const uiFade = 1 - clamp(boxT * 1.35, 0, 1);
+      // Words leave first; scrim holds a beat longer, then dissolves.
+      const textFade = 1 - clamp(boxT * 1.55, 0, 1);
+      const scrimFade = 1 - clamp((boxT - 0.22) * 1.45, 0, 1);
 
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -181,10 +203,11 @@ export default function CinematicHero() {
 
       viewport.style.background = lerpRgb(HERO_BG_COLOR, SURFACE_COLOR, eased);
       overlay.style.opacity = String(lerp(1, 0, eased));
-      content.style.opacity = String(uiFade);
-      scrollCue.style.opacity = String(uiFade);
+      content.style.opacity = String(textFade);
+      contentScrim.style.opacity = String(scrimFade);
+      scrollCue.style.opacity = String(textFade);
 
-      updateHeadline(progress, uiFade);
+      updateHeadline(progress, textFade);
     };
 
     const setupScrollTrigger = async () => {
@@ -207,6 +230,7 @@ export default function CinematicHero() {
           pin: viewport,
           pinSpacing: true,
           pinReparent: false,
+          // Same scrub feel as desktop — video advances only with scroll.
           scrub: 1.1,
           anticipatePin: 1,
           invalidateOnRefresh: true,
@@ -216,25 +240,20 @@ export default function CinematicHero() {
             updateBoxMorph(self.progress);
           },
           onLeave: () => {
-            if (!mobileMode && isVideoReady(video)) {
+            if (isVideoReady(video)) {
+              targetVideoTime = video.duration;
+              ensurePaused();
               video.currentTime = video.duration;
             }
             updateBoxMorph(1);
-            video.pause();
+            ensurePaused();
           },
           onEnterBack: (self) => {
-            if (mobileMode) {
-              startMobilePlayback();
-            } else {
-              scrubVideo(self.progress);
-            }
+            scrubVideo(self.progress);
             updateBoxMorph(self.progress);
           },
           onLeaveBack: () => {
-            video.pause();
-            if (mobileMode && isVideoReady(video)) {
-              video.currentTime = 0;
-            }
+            ensurePaused();
             scrubVideo(0);
             updateBoxMorph(0);
           },
@@ -250,10 +269,9 @@ export default function CinematicHero() {
     const initScrollTrigger = () => {
       if (!mounted || scrollReady) return;
       scrollReady = true;
-      if (mobileMode) {
-        startMobilePlayback();
-      } else {
-        video.pause();
+      video.loop = false;
+      ensurePaused();
+      if (isVideoReady(video)) {
         video.currentTime = 0;
       }
       void setupScrollTrigger();
@@ -272,14 +290,28 @@ export default function CinematicHero() {
       video.load();
     };
 
+    const onFirstInteraction = () => {
+      void unlockSeeking().then(() => {
+        if (heroTrigger) scrubVideo(heroTrigger.progress);
+      });
+    };
+
     video.muted = true;
     video.playsInline = true;
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
     video.preload = 'auto';
-    video.pause();
+    video.loop = false;
+    video.autoplay = false;
+    video.removeAttribute('autoplay');
+    ensurePaused();
 
     video.addEventListener('loadedmetadata', onVideoReady);
     video.addEventListener('durationchange', onVideoReady);
     video.addEventListener('error', onVideoError);
+    window.addEventListener('touchstart', onFirstInteraction, { once: true, passive: true });
+    window.addEventListener('wheel', onFirstInteraction, { once: true, passive: true });
+    window.addEventListener('pointerdown', onFirstInteraction, { once: true });
 
     if (video.readyState >= HTMLMediaElement.HAVE_METADATA && isVideoReady(video)) {
       onVideoReady();
@@ -292,17 +324,12 @@ export default function CinematicHero() {
     }, 2000);
 
     const onResize = async () => {
-      const nextMobileMode = window.matchMedia(
-        '(max-width: 768px), (pointer: coarse)'
-      ).matches;
+      const nextMobileMode = isMobileViewport();
       if (nextMobileMode !== mobileMode) {
         mobileMode = nextMobileMode;
-        video.loop = mobileMode;
-        if (mobileMode) {
-          startMobilePlayback();
-        } else {
-          video.pause();
-        }
+        video.loop = false;
+        video.autoplay = false;
+        ensurePaused();
         await setupScrollTrigger();
         return;
       }
@@ -322,6 +349,9 @@ export default function CinematicHero() {
       video.removeEventListener('loadedmetadata', onVideoReady);
       video.removeEventListener('durationchange', onVideoReady);
       video.removeEventListener('error', onVideoError);
+      window.removeEventListener('touchstart', onFirstInteraction);
+      window.removeEventListener('wheel', onFirstInteraction);
+      window.removeEventListener('pointerdown', onFirstInteraction);
       window.removeEventListener('resize', onResize);
       if (videoRafId !== null) cancelAnimationFrame(videoRafId);
       heroTrigger?.kill();
@@ -365,6 +395,8 @@ export default function CinematicHero() {
 
         <div ref={overlayRef} className={styles.overlay} aria-hidden="true" />
 
+        <div ref={contentScrimRef} className={styles.contentScrim} aria-hidden="true" />
+
         <div ref={contentRef} className={styles.content}>
           <h1 className={styles.headline}>
             <span ref={line1Ref} className={styles.headlineLine}>
@@ -384,8 +416,8 @@ export default function CinematicHero() {
           <span className={styles.scrollCueText}>Scroll to discover</span>
           <svg
             className={styles.scrollCueArrow}
-            width="16"
-            height="22"
+            width="22"
+            height="30"
             viewBox="0 0 14 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

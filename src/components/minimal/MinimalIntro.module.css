@@ -1,34 +1,38 @@
 .intro {
-  padding: var(--minimal-pad-y) var(--minimal-pad-x);
+  padding:
+    clamp(140px, 22vh, 260px)
+    var(--minimal-pad-x)
+    clamp(160px, 24vh, 280px);
   background: var(--minimal-warm-white);
   border-top: 0.5px solid var(--minimal-hairline);
 }
 
 .inner {
-  width: var(--minimal-content-width);
+  width: min(100%, 1180px);
   margin: 0;
 }
 
 .kicker {
-  margin: 0 0 var(--minimal-section-gap);
+  margin: 0 0 clamp(72px, 12vh, 140px);
   font-family: var(--minimal-label-font);
   font-size: var(--minimal-kicker-size);
   font-weight: 300;
   line-height: 1.8;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.36em;
   text-transform: uppercase;
   color: var(--minimal-muted);
 }
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(120px, 190px) minmax(0, 1fr);
-  gap: clamp(72px, 10vw, 140px);
+  grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
+  gap: clamp(80px, 12vw, 168px);
   align-items: start;
 }
 
 .portrait {
   margin: 0;
+  width: 100%;
 }
 
 .portraitImage {
@@ -41,41 +45,61 @@
 
 .copy {
   display: grid;
-  gap: clamp(32px, 5vh, 48px);
-  padding-top: clamp(8px, 2vh, 24px);
+  gap: clamp(36px, 5.5vh, 56px);
+  padding-top: clamp(4px, 1vh, 12px);
+  max-width: 34rem;
 }
 
 .paragraph {
   margin: 0;
-  max-width: 38ch;
-  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  max-width: 42ch;
+  font-family: var(--minimal-label-font);
   font-weight: 300;
-  font-size: clamp(19px, 2vw, 24px);
-  line-height: 1.78;
-  letter-spacing: 0.01em;
-  color: var(--minimal-charcoal);
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.85;
+  letter-spacing: 0.035em;
+  color: var(--minimal-muted);
 }
 
 .paragraph:first-child {
-  font-size: clamp(20px, 2.15vw, 26px);
-  line-height: 1.7;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.85;
+  color: var(--minimal-charcoal);
 }
 
 @media (max-width: 900px) {
+  .intro {
+    padding:
+      clamp(100px, 16vh, 160px)
+      var(--minimal-pad-x)
+      clamp(120px, 18vh, 200px);
+  }
+
+  .kicker {
+    margin-bottom: clamp(48px, 8vh, 80px);
+  }
+
   .layout {
     grid-template-columns: 1fr;
-    gap: clamp(56px, 8vh, 80px);
+    gap: clamp(48px, 8vh, 72px);
   }
 
   .portrait {
-    width: min(100%, 210px);
+    width: min(100%, 280px);
   }
 
   .copy {
     padding-top: 0;
+    max-width: none;
+    gap: clamp(28px, 4.5vh, 40px);
   }
 
   .paragraph {
     max-width: none;
+    font-size: clamp(15px, 3.8vw, 16px);
+  }
+
+  .paragraph:first-child {
+    font-size: clamp(15px, 3.8vw, 16px);
   }
 }

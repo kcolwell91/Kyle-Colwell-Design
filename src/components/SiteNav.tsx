@@ -6,11 +6,10 @@ import { usePathname } from 'next/navigation';
 import { HERO_SCROLL_READY_EVENT } from '@/components/ScrollTriggerManager';
 import { IMMERSIVE_HOME_PATH } from '@/config/siteRoutes';
 import {
-  NAV_INTERIOR_DESIGN,
+  NAV_CONTACT,
   NAV_VIEW_ALL_WORLDS,
   NAV_WORK_ITEMS,
   NAV_WORK_LABEL,
-  NAV_WORK_TOGETHER,
 } from '@/data/siteNav';
 import styles from './SiteNav.module.css';
 
@@ -91,10 +90,6 @@ export default function SiteNav() {
         Kyle Colwell
       </Link>
       <nav className={styles.nav} aria-label="Primary">
-        <Link href={NAV_INTERIOR_DESIGN.href} className={styles.navLink}>
-          {NAV_INTERIOR_DESIGN.label}
-        </Link>
-
         <div
           ref={dropdownRef}
           className={`${styles.navDropdown} ${workOpen ? styles.navDropdownOpen : ''}`}
@@ -108,7 +103,7 @@ export default function SiteNav() {
             aria-controls={menuId}
             onClick={() => setWorkOpen((open) => !open)}
           >
-            {NAV_WORK_LABEL}
+            <span className={styles.navTitle}>{NAV_WORK_LABEL}</span>
             <span className={styles.navDropdownCaret} aria-hidden="true" />
           </button>
           <div
@@ -145,8 +140,8 @@ export default function SiteNav() {
           </div>
         </div>
 
-        <Link href={NAV_WORK_TOGETHER.href} className={styles.navLink}>
-          {NAV_WORK_TOGETHER.label}
+        <Link href={NAV_CONTACT.href} className={styles.navLink}>
+          <span className={styles.navTitle}>{NAV_CONTACT.label}</span>
         </Link>
       </nav>
     </header>

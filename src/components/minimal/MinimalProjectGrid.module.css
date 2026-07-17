@@ -1,5 +1,8 @@
 .grid {
-  padding: var(--minimal-pad-y) var(--minimal-pad-x);
+  padding:
+    clamp(160px, 24vh, 280px)
+    var(--minimal-pad-x)
+    clamp(180px, 26vh, 300px);
   background: var(--minimal-warm-white);
   border-top: 0.5px solid var(--minimal-hairline);
 }
@@ -10,12 +13,12 @@
 }
 
 .kicker {
-  margin: 0 0 clamp(80px, 11vh, 128px);
+  margin: 0 0 clamp(112px, 16vh, 180px);
   font-family: var(--minimal-label-font);
   font-size: var(--minimal-kicker-size);
   font-weight: 300;
   line-height: 1.8;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.36em;
   text-transform: uppercase;
   text-align: left;
   color: var(--minimal-muted);
@@ -24,7 +27,7 @@
 .list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(96px, 12vh, 160px);
+  gap: clamp(140px, 20vh, 240px);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -67,12 +70,12 @@
   grid-template-columns: 40px 1fr;
   gap: 18px;
   align-items: start;
-  margin-top: clamp(32px, 4vh, 44px);
+  margin-top: clamp(44px, 6vh, 64px);
 }
 
 .text {
   display: grid;
-  gap: 10px;
+  gap: 14px;
 }
 
 .title {
@@ -80,7 +83,7 @@
   display: inline-flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 10px;
+  gap: 12px;
   margin: 0;
   width: fit-content;
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
@@ -140,6 +143,27 @@
 
 .card:focus-visible {
   outline: none;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    padding:
+      clamp(120px, 18vh, 180px)
+      var(--minimal-pad-x)
+      clamp(140px, 20vh, 220px);
+  }
+
+  .kicker {
+    margin-bottom: clamp(80px, 12vh, 120px);
+  }
+
+  .list {
+    gap: clamp(100px, 16vh, 160px);
+  }
+
+  .meta {
+    margin-top: clamp(36px, 5vh, 48px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -7,7 +7,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: clamp(20px, 3vw, 36px) clamp(24px, 5vw, 64px);
+  height: clamp(64px, 8vw, 88px);
+  padding: 0 clamp(24px, 5vw, 64px);
   background: transparent;
   border-bottom: 0;
   box-shadow: none;
@@ -37,9 +38,13 @@
 }
 
 .logo {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
   font-size: clamp(14px, 1.4vw, 18px);
+  line-height: 1;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   text-decoration: none;
@@ -56,18 +61,28 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: clamp(10px, 1.8vw, 36px);
-  max-width: min(72vw, 760px);
+  flex-wrap: nowrap;
+  gap: clamp(28px, 3.2vw, 48px);
+  height: 100%;
+  max-width: none;
+}
+
+.navTitle {
+  display: inline-block;
+  line-height: 1;
 }
 
 .navLink {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
   font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(9px, 0.85vw, 11px);
+  font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   text-decoration: none;
+  white-space: nowrap;
   color: rgba(255, 255, 255, 0.78);
   transition: color 0.25s ease;
 }
@@ -78,20 +93,25 @@
 
 .navDropdown {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
 }
 
 .navDropdownTrigger {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
+  height: 100%;
   padding: 0;
   border: 0;
   background: transparent;
   font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(9px, 0.85vw, 11px);
+  font-size: 11px;
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: rgba(255, 255, 255, 0.78);
   cursor: pointer;
   transition: color 0.25s ease;
@@ -103,11 +123,13 @@
 }
 
 .navDropdownCaret {
+  display: block;
   width: 6px;
   height: 6px;
+  flex-shrink: 0;
   border-right: 1px solid currentColor;
   border-bottom: 1px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
+  transform: translateY(-1px) rotate(45deg);
   transition: transform 0.2s ease;
 }
 
@@ -117,7 +139,7 @@
 
 .navDropdownMenu {
   position: absolute;
-  top: calc(100% + 14px);
+  top: calc(100% - 8px);
   right: 0;
   z-index: 2;
   min-width: min(320px, 78vw);
@@ -193,19 +215,29 @@
 
 @media (max-width: 640px) {
   .header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
+    height: auto;
+    min-height: 64px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    gap: 14px;
+  }
+
+  .logo,
+  .nav,
+  .navLink,
+  .navDropdown,
+  .navDropdownTrigger {
+    height: auto;
   }
 
   .nav {
-    max-width: 100%;
-    gap: 10px 14px;
+    gap: 22px;
   }
 
   .navDropdownMenu {
     right: auto;
     left: 0;
+    top: calc(100% + 10px);
     min-width: min(300px, 92vw);
   }
 }

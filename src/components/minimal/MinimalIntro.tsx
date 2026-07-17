@@ -17,7 +17,7 @@ export default function MinimalIntro() {
               width={portrait.width}
               height={portrait.height}
               quality={92}
-              sizes="(max-width: 900px) 210px, 190px"
+              sizes="(max-width: 900px) 280px, 400px"
               className={styles.portraitImage}
             />
           </figure>
