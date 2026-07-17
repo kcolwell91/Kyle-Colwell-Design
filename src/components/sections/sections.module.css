@@ -17,7 +17,7 @@
 
 .mainStory {
   position: relative;
-  z-index: 20;
+  z-index: 2;
   isolation: isolate;
   width: 100%;
   overflow-x: clip;
@@ -151,7 +151,9 @@
 }
 
 .introSection {
-  padding-top: clamp(40px, 7vh, 72px);
+  /* Pull intro slightly into the hero exit so the handoff reads continuous. */
+  margin-top: clamp(-28px, -4vh, -16px);
+  padding-top: clamp(48px, 8vh, 88px);
   padding-bottom: clamp(20px, 3vh, 36px);
 }
 

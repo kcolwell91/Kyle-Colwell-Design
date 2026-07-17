@@ -25,10 +25,6 @@ export type ScrollWordRevealOptions = {
   onProgress?: (progress: number) => void;
 };
 
-function prefersScrollLinkedReveal() {
-  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-}
-
 export function useScrollWordReveal(
   sectionRef: RefObject<HTMLElement | null>,
   contentRef: RefObject<HTMLElement | null>,
@@ -69,29 +65,10 @@ export function useScrollWordReveal(
         return;
       }
 
-      if (!prefersScrollLinkedReveal()) {
-        setWordsFullyRevealed(wordEls, palette);
-
-        gsap.fromTo(
-          content,
-          { opacity: 0, y: 24 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.85,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              once: true,
-              invalidateOnRefresh: true,
-            },
-          }
-        );
-        ScrollTrigger.refresh();
-        return;
-      }
-
+      // Same scroll-linked word fade on mobile and desktop.
+      // (Previous mobile path used a one-shot opacity tween that often never fired
+      // after hero pin refreshes, leaving the copy invisible.)
+      gsap.set(content, { clearProps: 'opacity,transform' });
       updateReveal(0);
 
       const trigger = ScrollTrigger.create({
@@ -101,6 +78,7 @@ export function useScrollWordReveal(
         scrub: WORD_REVEAL_TUNING.scrub,
         invalidateOnRefresh: true,
         onUpdate: (self) => updateReveal(self.progress),
+        onRefresh: (self) => updateReveal(self.progress),
       });
 
       const onHeroReady = () => {
@@ -109,7 +87,7 @@ export function useScrollWordReveal(
       };
 
       window.addEventListener(HERO_SCROLL_READY_EVENT, onHeroReady);
-      ScrollTrigger.refresh();
+      updateReveal(trigger.progress);
 
       return () => {
         window.removeEventListener(HERO_SCROLL_READY_EVENT, onHeroReady);

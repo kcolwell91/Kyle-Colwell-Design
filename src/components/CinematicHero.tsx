@@ -9,10 +9,11 @@ const HERO_VIDEO_MP4 = '/videos/hero.mp4';
 const HERO_VIDEO_MOV = '/videos/hero.mov';
 const HERO_POSTER = '/hero-poster.JPEG';
 const HERO_VIDEO_DURATION = 22;
-const SCROLL_PX_PER_VIDEO_SECOND = 420;
-const MOBILE_SCROLL_PX_PER_VIDEO_SECOND = 340;
+const SCROLL_PX_PER_VIDEO_SECOND = 380;
+const MOBILE_SCROLL_PX_PER_VIDEO_SECOND = 320;
 const POSTER_FADE_END = 0.015;
-const BOX_MORPH_START = 0.58;
+// Morph occupies the final stretch only — keeps video pace even, then a short clean exit.
+const BOX_MORPH_START = 0.72;
 const BOX_FRAME_WIDTH = 666;
 const BOX_ASPECT = 16 / 10;
 const BOX_MAT_PADDING = 20;
@@ -121,7 +122,10 @@ export default function CinematicHero() {
       const scrollPx =
         getDuration() *
         (mobileMode ? MOBILE_SCROLL_PX_PER_VIDEO_SECOND : SCROLL_PX_PER_VIDEO_SECOND);
-      track.style.setProperty('--hero-scroll-px', `${scrollPx}px`);
+      const next = `${scrollPx}px`;
+      if (track.style.getPropertyValue('--hero-scroll-px') === next) return false;
+      track.style.setProperty('--hero-scroll-px', next);
+      return true;
     };
 
     // Set height immediately so mobile layout/scroll distance exists before GSAP mounts.
@@ -221,9 +225,10 @@ export default function CinematicHero() {
 
     const updateBoxMorph = (progress: number) => {
       const boxT = clamp((progress - BOX_MORPH_START) / (1 - BOX_MORPH_START), 0, 1);
-      const eased = boxT < 0.5 ? 2 * boxT * boxT : 1 - Math.pow(-2 * boxT + 2, 2) / 2;
-      const textFade = 1 - clamp(boxT * 1.55, 0, 1);
-      const scrimFade = 1 - clamp((boxT - 0.22) * 1.45, 0, 1);
+      // Near-linear ease keeps exit velocity even with the preceding video scrub.
+      const eased = boxT * boxT * (3 - 2 * boxT);
+      const textFade = 1 - clamp(boxT * 1.35, 0, 1);
+      const scrimFade = 1 - clamp((boxT - 0.18) * 1.35, 0, 1);
 
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -266,14 +271,18 @@ export default function CinematicHero() {
           start: 'top top',
           end: 'bottom bottom',
           pin: viewport,
-          pinSpacing: true,
+          // Track height already includes the full scrub distance — extra pin spacing
+          // was nearly doubling the hero scroll and creating a dead zone before intro.
+          pinSpacing: false,
           // iOS needs fixed pin type or touch scroll can stall inside the hero.
           pinType: mobileMode ? 'fixed' : 'transform',
-          anticipatePin: 1,
+          anticipatePin: 0.5,
           invalidateOnRefresh: true,
-          // True scrub + seek queue = smooth playhead without stacked seeks.
-          scrub: true,
-          onRefresh: () => setTrackHeight(),
+          // Light lag keeps wheel/touch pace even across video → morph → site.
+          scrub: 0.65,
+          onRefreshInit: () => {
+            setTrackHeight();
+          },
           onUpdate: (self) => {
             scrubVideo(self.progress);
             updateBoxMorph(self.progress);
@@ -298,7 +307,6 @@ export default function CinematicHero() {
 
         scrubVideo(heroTrigger.progress);
         updateBoxMorph(heroTrigger.progress);
-        ScrollTrigger.refresh();
         window.dispatchEvent(new Event(HERO_SCROLL_READY_EVENT));
       }, track);
     };
