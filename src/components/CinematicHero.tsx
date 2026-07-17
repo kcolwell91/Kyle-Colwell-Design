@@ -9,15 +9,14 @@ const HERO_VIDEO_MP4 = '/videos/hero.mp4';
 const HERO_VIDEO_MOV = '/videos/hero.mov';
 const HERO_POSTER = '/hero-poster.JPEG';
 const HERO_VIDEO_DURATION = 22;
-const SCROLL_PX_PER_VIDEO_SECOND = 380;
-const MOBILE_SCROLL_PX_PER_VIDEO_SECOND = 320;
+// Match sanctuary pacing density so scrub feels equally steady.
+const SCROLL_PX_PER_VIDEO_SECOND = 300;
+const MOBILE_SCROLL_PX_PER_VIDEO_SECOND = 280;
 const POSTER_FADE_END = 0.015;
-// Morph occupies the final stretch only — keeps video pace even, then a short clean exit.
 const BOX_MORPH_START = 0.72;
 const BOX_FRAME_WIDTH = 666;
 const BOX_ASPECT = 16 / 10;
 const BOX_MAT_PADDING = 20;
-const FRAME_STEP = 1 / 30;
 const SURFACE_COLOR = { r: 240, g: 233, b: 223 };
 const HERO_BG_COLOR = { r: 10, g: 8, b: 6 };
 
@@ -55,11 +54,6 @@ function isVideoReady(video: HTMLVideoElement) {
 
 function isMobileViewport() {
   return window.matchMedia('(max-width: 768px)').matches;
-}
-
-function snapFrame(time: number, duration: number) {
-  const snapped = Math.round(time / FRAME_STEP) * FRAME_STEP;
-  return clamp(snapped, 0, Math.max(duration - 0.001, 0));
 }
 
 export default function CinematicHero() {
@@ -110,9 +104,7 @@ export default function CinematicHero() {
     let heroTrigger: { kill: () => void; progress: number } | null = null;
     let mediaUnlocked = false;
     let unlockPromise: Promise<void> | null = null;
-    let seeking = false;
-    let pendingTime: number | null = null;
-    let lastAppliedTime = -1;
+    let morphAtRest = false;
     let mobileMode = isMobileViewport();
 
     const getDuration = () =>
@@ -122,20 +114,17 @@ export default function CinematicHero() {
       const scrollPx =
         getDuration() *
         (mobileMode ? MOBILE_SCROLL_PX_PER_VIDEO_SECOND : SCROLL_PX_PER_VIDEO_SECOND);
-      const next = `${scrollPx}px`;
-      if (track.style.getPropertyValue('--hero-scroll-px') === next) return false;
-      track.style.setProperty('--hero-scroll-px', next);
-      return true;
+      track.style.setProperty('--hero-scroll-px', `${scrollPx}px`);
     };
 
-    // Set height immediately so mobile layout/scroll distance exists before GSAP mounts.
     setTrackHeight();
 
     const ensurePaused = () => {
       if (!video.paused) video.pause();
     };
 
-    const unlockSeeking = async () => {
+    // Same unlock pattern as SanctuaryTransition — play once, pause, then scrub.
+    const unlockMedia = async () => {
       if (mediaUnlocked) return;
       if (unlockPromise) {
         await unlockPromise;
@@ -147,88 +136,68 @@ export default function CinematicHero() {
           video.muted = true;
           video.playsInline = true;
           await video.play();
+          video.pause();
+          mediaUnlocked = true;
         } catch {
-          /* Seeking may still work after a later gesture. */
+          mediaUnlocked = false;
+        } finally {
+          unlockPromise = null;
         }
-        ensurePaused();
-        mediaUnlocked = true;
-        unlockPromise = null;
       })();
 
       await unlockPromise;
     };
 
-    const flushSeek = () => {
-      if (!mounted || seeking || pendingTime === null || !isVideoReady(video)) return;
-
-      const nextTime = pendingTime;
-      pendingTime = null;
-
-      if (Math.abs(lastAppliedTime - nextTime) < FRAME_STEP * 0.45) return;
-
-      ensurePaused();
-      seeking = true;
-
-      let settled = false;
-      const settle = () => {
-        if (settled) return;
-        settled = true;
-        window.clearTimeout(seekFallback);
-        video.removeEventListener('seeked', onSeeked);
-        seeking = false;
-        lastAppliedTime = video.currentTime;
-        if (pendingTime !== null) flushSeek();
-      };
-
-      const onSeeked = () => settle();
-      const seekFallback = window.setTimeout(settle, 140);
-
-      video.addEventListener('seeked', onSeeked);
-
-      try {
-        video.currentTime = nextTime;
-      } catch {
-        settle();
-      }
-    };
-
-    const queueSeek = (time: number) => {
+    // Direct seek — identical to the smooth sanctuary/seed scrub.
+    const seekVideo = (videoTime: number) => {
       if (!isVideoReady(video)) return;
-      pendingTime = snapFrame(time, video.duration);
-      flushSeek();
-    };
+      if (Math.abs(video.currentTime - videoTime) <= 0.001) return;
 
-    const scrubVideo = (progress: number) => {
-      const posterFade = clamp(progress / POSTER_FADE_END, 0, 1);
-      poster.style.opacity = String(1 - posterFade);
-
-      if (!isVideoReady(video)) return;
-      if (progress > 0.001) {
-        void unlockSeeking();
+      video.currentTime = videoTime;
+      if (Math.abs(video.currentTime - videoTime) > 0.05 && !mediaUnlocked) {
+        void unlockMedia().then(() => {
+          video.currentTime = videoTime;
+        });
       }
-
-      const videoProgress = clamp(progress / BOX_MORPH_START, 0, 1);
-      queueSeek(videoProgress * video.duration);
     };
 
     const updateHeadline = (p: number, uiFade: number) => {
       if (line1Ref.current) {
-        line1Ref.current.style.opacity = String(dramaticFade(p, 0.05, 0.16) * uiFade);
+        line1Ref.current.style.opacity = String(dramaticFade(p, 0.1, 0.42) * uiFade);
       }
       if (line2Ref.current) {
-        line2Ref.current.style.opacity = String(dramaticFade(p, 0.1, 0.22) * uiFade);
+        line2Ref.current.style.opacity = String(dramaticFade(p, 0.16, 0.52) * uiFade);
       }
       if (dekRef.current) {
-        dekRef.current.style.opacity = String(dramaticFade(p, 0.14, 0.28) * uiFade);
+        dekRef.current.style.opacity = String(dramaticFade(p, 0.22, 0.62) * uiFade);
       }
     };
 
     const updateBoxMorph = (progress: number) => {
       const boxT = clamp((progress - BOX_MORPH_START) / (1 - BOX_MORPH_START), 0, 1);
-      // Near-linear ease keeps exit velocity even with the preceding video scrub.
       const eased = boxT * boxT * (3 - 2 * boxT);
-      const textFade = 1 - clamp(boxT * 1.35, 0, 1);
-      const scrimFade = 1 - clamp((boxT - 0.18) * 1.35, 0, 1);
+      const textFade = 1 - clamp(boxT * 1.2, 0, 1);
+      const scrimFade = 1 - clamp((boxT - 0.12) * 1.25, 0, 1);
+
+      if (boxT <= 0) {
+        if (!morphAtRest) {
+          frameShell.style.width = '100%';
+          frameShell.style.height = '100%';
+          frameMat.style.padding = '0px';
+          frameMat.style.borderRadius = '0px';
+          frameMat.style.boxShadow = '0 0 0 rgba(26, 22, 18, 0)';
+          viewport.style.background = lerpRgb(HERO_BG_COLOR, SURFACE_COLOR, 0);
+          overlay.style.opacity = '1';
+          morphAtRest = true;
+        }
+        content.style.opacity = '1';
+        contentScrim.style.opacity = '1';
+        scrollCue.style.opacity = '1';
+        updateHeadline(progress, 1);
+        return;
+      }
+
+      morphAtRest = false;
 
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -253,6 +222,21 @@ export default function CinematicHero() {
       updateHeadline(progress, textFade);
     };
 
+    const update = (progress: number) => {
+      const posterFade = clamp(progress / POSTER_FADE_END, 0, 1);
+      poster.style.opacity = String(1 - posterFade);
+
+      if (isVideoReady(video)) {
+        if (progress > 0.001) {
+          void unlockMedia();
+        }
+        const videoProgress = clamp(progress / BOX_MORPH_START, 0, 1);
+        seekVideo(videoProgress * video.duration);
+      }
+
+      updateBoxMorph(progress);
+    };
+
     const setupScrollTrigger = async () => {
       const gsap = (await import('gsap')).default;
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
@@ -265,48 +249,27 @@ export default function CinematicHero() {
       heroTrigger?.kill();
 
       gsapCtx = gsap.context(() => {
+        // Same scrub mechanics as SanctuaryTransition (direct seek + scrub: true).
+        // pinSpacing stays false — track height already owns the scrub distance.
         heroTrigger = ScrollTrigger.create({
           id: 'hero-video',
           trigger: track,
           start: 'top top',
           end: 'bottom bottom',
           pin: viewport,
-          // Track height already includes the full scrub distance — extra pin spacing
-          // was nearly doubling the hero scroll and creating a dead zone before intro.
           pinSpacing: false,
-          // iOS needs fixed pin type or touch scroll can stall inside the hero.
-          pinType: mobileMode ? 'fixed' : 'transform',
-          anticipatePin: 0.5,
+          scrub: true,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
-          // Light lag keeps wheel/touch pace even across video → morph → site.
-          scrub: 0.65,
-          onRefreshInit: () => {
-            setTrackHeight();
-          },
-          onUpdate: (self) => {
-            scrubVideo(self.progress);
-            updateBoxMorph(self.progress);
-          },
-          onLeave: () => {
-            if (isVideoReady(video)) {
-              queueSeek(video.duration);
-            }
-            updateBoxMorph(1);
-            ensurePaused();
-          },
-          onEnterBack: (self) => {
-            scrubVideo(self.progress);
-            updateBoxMorph(self.progress);
-          },
-          onLeaveBack: () => {
-            ensurePaused();
-            scrubVideo(0);
-            updateBoxMorph(0);
-          },
+          onRefresh: () => setTrackHeight(),
+          onUpdate: (self) => update(self.progress),
+          onEnter: (self) => update(self.progress),
+          onEnterBack: (self) => update(self.progress),
+          onLeave: () => update(1),
+          onLeaveBack: () => update(0),
         });
 
-        scrubVideo(heroTrigger.progress);
-        updateBoxMorph(heroTrigger.progress);
+        update(heroTrigger.progress);
         window.dispatchEvent(new Event(HERO_SCROLL_READY_EVENT));
       }, track);
     };
@@ -317,6 +280,7 @@ export default function CinematicHero() {
       video.loop = false;
       video.autoplay = false;
       ensurePaused();
+      void unlockMedia();
       if (isVideoReady(video) && video.currentTime > 0) {
         video.currentTime = 0;
       }
@@ -338,8 +302,9 @@ export default function CinematicHero() {
     };
 
     const onFirstInteraction = () => {
-      void unlockSeeking().then(() => {
-        if (heroTrigger) scrubVideo(heroTrigger.progress);
+      if (mediaUnlocked) return;
+      void unlockMedia().then(() => {
+        if (heroTrigger) update(heroTrigger.progress);
       });
     };
 
@@ -358,24 +323,25 @@ export default function CinematicHero() {
     video.addEventListener('error', onVideoError);
     window.addEventListener('touchstart', onFirstInteraction, { once: true, passive: true });
     window.addEventListener('wheel', onFirstInteraction, { once: true, passive: true });
+    window.addEventListener('scroll', onFirstInteraction, { once: true, passive: true });
     window.addEventListener('pointerdown', onFirstInteraction, { once: true });
 
     if (video.readyState >= HTMLMediaElement.HAVE_METADATA && isVideoReady(video)) {
       onVideoReady();
+    } else {
+      video.load();
     }
 
     const fallbackTimer = window.setTimeout(() => {
       if (!mounted || scrollReady) return;
       usingFallback = true;
       initScrollTrigger();
-    }, 1800);
+    }, 2500);
 
     const onResize = async () => {
       const nextMobileMode = isMobileViewport();
       if (nextMobileMode !== mobileMode) {
         mobileMode = nextMobileMode;
-        video.loop = false;
-        video.autoplay = false;
         ensurePaused();
         await setupScrollTrigger();
         return;
@@ -383,9 +349,8 @@ export default function CinematicHero() {
 
       setTrackHeight();
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      const hero = ScrollTrigger.getById('hero-video');
-      updateBoxMorph(hero?.progress ?? 0);
       ScrollTrigger.refresh();
+      if (heroTrigger) update(heroTrigger.progress);
     };
 
     window.addEventListener('resize', onResize);
@@ -399,6 +364,7 @@ export default function CinematicHero() {
       video.removeEventListener('error', onVideoError);
       window.removeEventListener('touchstart', onFirstInteraction);
       window.removeEventListener('wheel', onFirstInteraction);
+      window.removeEventListener('scroll', onFirstInteraction);
       window.removeEventListener('pointerdown', onFirstInteraction);
       window.removeEventListener('resize', onResize);
       window.removeEventListener('orientationchange', onResize);

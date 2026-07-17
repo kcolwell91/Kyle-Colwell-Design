@@ -14,7 +14,8 @@ export const WORD_REVEAL_PALETTES: Record<
   { pale: RgbaColor; dark: RgbaColor }
 > = {
   light: {
-    pale: { r: 240, g: 233, b: 223, a: 1 },
+    // Slightly darker than the surface so trailing lines stay just readable.
+    pale: { r: 196, g: 186, b: 172, a: 1 },
     dark: { r: 0, g: 0, b: 0, a: 1 },
   },
   dark: {
@@ -30,7 +31,8 @@ export const WORD_REVEAL_PALETTES: Record<
 export const WORD_REVEAL_TUNING = {
   scrollStart: 'top 88%',
   scrollEnd: 'bottom 12%',
-  scrub: true as const,
+  // Soft catch-up keeps word ink from stuttering on coarse wheel/touch steps.
+  scrub: 0.85 as const,
   fadeZonePhilosophy: 44,
   mobileBreakpoint: 768,
 } as const;

@@ -37,7 +37,7 @@
 }
 
 .wordRevealWord {
-  color: var(--surface);
+  color: rgb(196, 186, 172);
   will-change: color;
 }
 
@@ -153,8 +153,11 @@
 .introSection {
   /* Pull intro slightly into the hero exit so the handoff reads continuous. */
   margin-top: clamp(-28px, -4vh, -16px);
-  padding-top: clamp(48px, 8vh, 88px);
-  padding-bottom: clamp(20px, 3vh, 36px);
+  /* Extra vertical room so the word reveal has more scroll distance. */
+  padding-top: clamp(64px, 12vh, 128px);
+  /* Generous breath after the inherited-world copy, before the transition video. */
+  padding-bottom: clamp(180px, 40vh, 420px);
+  min-height: clamp(92vh, 108vh, 120vh);
 }
 
 .revealContent {
@@ -223,6 +226,8 @@
 
 #what-i-do {
   position: relative;
+  /* Extra white space after intro philosophy copy, before the transition video. */
+  margin-top: clamp(80px, 16vh, 180px);
 }
 
 /* ── Selected Worlds ───────────────────────────────────────── */
@@ -232,7 +237,7 @@
   overflow: hidden;
   background: #ffffff;
   padding: clamp(96px, 14vh, 160px) clamp(20px, 5vw, 72px)
-    clamp(46px, 6.7vh, 77px);
+    clamp(120px, 22vh, 240px);
 }
 
 .worldsBeigeLayer {
