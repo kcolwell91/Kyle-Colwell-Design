@@ -16,18 +16,44 @@ export default function MinimalReveal({ children, className }: MinimalRevealProp
     const element = ref.current;
     if (!element) return;
 
+    const reveal = () => setVisible(true);
+
+    // If this section (or a descendant) matches the URL hash, show immediately.
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const target = document.getElementById(hash);
+      if (target && element.contains(target)) {
+        reveal();
+      }
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setVisible(true);
+          reveal();
           observer.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+      { threshold: 0.01, rootMargin: '0px 0px -4% 0px' }
     );
 
     observer.observe(element);
-    return () => observer.disconnect();
+
+    const onHashChange = () => {
+      const nextHash = window.location.hash.replace('#', '');
+      if (!nextHash) return;
+      const target = document.getElementById(nextHash);
+      if (target && element.contains(target)) {
+        reveal();
+      }
+    };
+
+    window.addEventListener('hashchange', onHashChange);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('hashchange', onHashChange);
+    };
   }, []);
 
   return (

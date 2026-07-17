@@ -1,6 +1,5 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { IMMERSIVE_SELECTED_WORLDS_HREF } from '@/config/siteRoutes';
+import WorkBackLink from '@/components/work/WorkBackLink';
 import type { Project } from '@/data/projects';
 import styles from './GenericWorkPage.module.css';
 
@@ -12,9 +11,7 @@ export default function GenericWorkPage({ project }: GenericWorkPageProps) {
   return (
     <main className={styles.page}>
       <header className={styles.header}>
-        <Link href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.backLink}>
-          ← Selected Worlds
-        </Link>
+        <WorkBackLink className={styles.backLink} />
         <span className={styles.index}>{project.index}</span>
       </header>
 

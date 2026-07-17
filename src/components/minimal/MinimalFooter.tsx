@@ -8,7 +8,9 @@ export default function MinimalFooter() {
     <footer className={styles.footer} aria-label="Footer">
       <div className={styles.inner}>
         <p className={styles.line}>
-          <span>© {year} {MINIMAL_FOOTER.name}</span>
+          <span>
+            © {year} {MINIMAL_FOOTER.name}
+          </span>
           <span className={styles.divider} aria-hidden="true">
             ·
           </span>

@@ -9,8 +9,11 @@ const FALLBACK_STILL = {
   height: 682,
 } as const;
 
-export function getProjectWorkHref(slug: string) {
-  return `/work/${slug}`;
+export function getProjectWorkHref(
+  slug: string,
+  journey: 'immersive' | 'classic' = 'immersive'
+) {
+  return `/work/${slug}?from=${journey}`;
 }
 
 export function getProjectStillImage(project: Project): ProjectStillImage {

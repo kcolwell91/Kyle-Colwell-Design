@@ -19,7 +19,7 @@ function ProjectCard({ project }: { project: Project }) {
   const floatClass = FLOAT_CLASSES[project.floatClass];
 
   return (
-    <Link href={getProjectWorkHref(project.slug)} className={styles.projectCard}>
+    <Link href={getProjectWorkHref(project.slug, 'immersive')} className={styles.projectCard}>
       <div className={`${styles.projectCardInner} ${floatClass}`}>
         <div className={styles.projectImageWrap}>
           {project.media.type === 'video' ? (

@@ -12,17 +12,17 @@
 .kicker {
   margin: 0 0 var(--minimal-section-gap);
   font-family: var(--minimal-label-font);
-  font-size: 10px;
+  font-size: var(--minimal-kicker-size);
   font-weight: 300;
   line-height: 1.8;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--minimal-muted);
 }
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(240px, 380px) minmax(0, 1fr);
+  grid-template-columns: minmax(120px, 190px) minmax(0, 1fr);
   gap: clamp(72px, 10vw, 140px);
   align-items: start;
 }
@@ -50,14 +50,14 @@
   max-width: 38ch;
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
-  font-size: clamp(17px, 1.75vw, 21px);
+  font-size: clamp(19px, 2vw, 24px);
   line-height: 1.78;
   letter-spacing: 0.01em;
   color: var(--minimal-charcoal);
 }
 
 .paragraph:first-child {
-  font-size: clamp(18px, 1.9vw, 23px);
+  font-size: clamp(20px, 2.15vw, 26px);
   line-height: 1.7;
 }
 
@@ -68,7 +68,7 @@
   }
 
   .portrait {
-    width: min(100%, 420px);
+    width: min(100%, 210px);
   }
 
   .copy {

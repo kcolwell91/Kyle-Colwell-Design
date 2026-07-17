@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import { MINIMAL_HOME_PATH } from '@/config/siteRoutes';
+import { LANDING_HOME_PATH, CLASSIC_HOME_PATH } from '@/config/siteRoutes';
 import styles from './OrganicCursor.module.css';
 
 const RING_LERP = 0.14;
@@ -22,8 +22,13 @@ function canUseOrganicCursor() {
   return true;
 }
 
-function resolveHoverMode(target: EventTarget | null): HoverMode {
+function isQuietCursorPath(pathname: string) {
+  return pathname === LANDING_HOME_PATH || pathname === CLASSIC_HOME_PATH;
+}
+
+function resolveHoverMode(target: EventTarget | null, quietCursor: boolean): HoverMode {
   if (!(target instanceof Element)) return 'default';
+  if (quietCursor) return 'default';
   if (target.closest('[data-cursor="enter"]')) return 'enter';
   if (
     target.closest(
@@ -47,6 +52,7 @@ function hoverTargets(mode: HoverMode) {
 
 export default function OrganicCursor() {
   const pathname = usePathname();
+  const quietCursor = isQuietCursorPath(pathname);
   const rootRef = useRef<HTMLDivElement>(null);
   const seedRef = useRef<HTMLSpanElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
@@ -69,7 +75,6 @@ export default function OrganicCursor() {
   const rafId = useRef<number | null>(null);
 
   useEffect(() => {
-    if (pathname === MINIMAL_HOME_PATH) return;
     if (!canUseOrganicCursor()) return;
 
     const root = rootRef.current;
@@ -79,8 +84,18 @@ export default function OrganicCursor() {
     if (!root || !seed || !ringEl || !label) return;
 
     document.documentElement.classList.add('organic-cursor-active');
+    root.classList.toggle(styles.isSimple, quietCursor);
+    root.classList.remove(styles.isInteractive);
 
     const applyHoverMode = (mode: HoverMode) => {
+      if (quietCursor) {
+        targets.current.ringSize = RING_DEFAULT;
+        targets.current.seedSize = SEED_SIZE;
+        targets.current.label = '';
+        targets.current.labelOpacity = 0;
+        return;
+      }
+
       const next = hoverTargets(mode);
       targets.current.ringSize = next.ring;
       targets.current.seedSize = next.seed;
@@ -105,7 +120,7 @@ export default function OrganicCursor() {
     };
 
     const onPointerOver = (event: PointerEvent) => {
-      applyHoverMode(resolveHoverMode(event.target));
+      applyHoverMode(resolveHoverMode(event.target, quietCursor));
     };
 
     const onPointerLeave = () => {
@@ -131,20 +146,23 @@ export default function OrganicCursor() {
       ring.current.x += (pointer.current.x - ring.current.x) * RING_LERP;
       ring.current.y += (pointer.current.y - ring.current.y) * RING_LERP;
 
-      const seedScale = anim.current.seedSize / SEED_SIZE;
-      seed.style.width = `${SEED_SIZE}px`;
-      seed.style.height = `${SEED_SIZE}px`;
+      const seedSize = quietCursor ? 10 : SEED_SIZE;
+      const seedScale = quietCursor ? 1 : anim.current.seedSize / SEED_SIZE;
+      seed.style.width = `${seedSize}px`;
+      seed.style.height = `${seedSize}px`;
       seed.style.transform = `translate3d(${pointer.current.x}px, ${pointer.current.y}px, 0) translate(-50%, -50%) scale(${seedScale})`;
 
-      const ringSize = anim.current.ringSize;
-      ringEl.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%, -50%)`;
-      ringEl.style.width = `${ringSize}px`;
-      ringEl.style.height = `${ringSize}px`;
+      if (!quietCursor) {
+        const ringSize = anim.current.ringSize;
+        ringEl.style.transform = `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) translate(-50%, -50%)`;
+        ringEl.style.width = `${ringSize}px`;
+        ringEl.style.height = `${ringSize}px`;
 
-      if (label.textContent !== targets.current.label) {
-        label.textContent = targets.current.label;
+        if (label.textContent !== targets.current.label) {
+          label.textContent = targets.current.label;
+        }
+        label.style.opacity = String(anim.current.labelOpacity);
       }
-      label.style.opacity = String(anim.current.labelOpacity);
 
       rafId.current = requestAnimationFrame(tick);
     };
@@ -166,9 +184,7 @@ export default function OrganicCursor() {
       pointerQuery.removeEventListener('change', onMediaChange);
       if (rafId.current !== null) cancelAnimationFrame(rafId.current);
     };
-  }, [pathname]);
-
-  if (pathname === MINIMAL_HOME_PATH) return null;
+  }, [pathname, quietCursor]);
 
   return (
     <div ref={rootRef} className={styles.root} aria-hidden="true">

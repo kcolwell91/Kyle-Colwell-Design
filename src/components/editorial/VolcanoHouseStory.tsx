@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { IMMERSIVE_SELECTED_WORLDS_HREF } from '@/config/siteRoutes';
+import WorkBackLink from '@/components/work/WorkBackLink';
+import JourneyAwareLink from '@/components/work/JourneyAwareLink';
 import { useEditorialReveal } from '@/hooks/useEditorialReveal';
 import { VOLCANO_EXPERIENCE_GALLERY, VOLCANO_HOUSE_IMAGES, VOLCANO_HOUSE_VIDEO } from '@/data/volcanoHouseStory';
 import styles from './VolcanoHouseStory.module.css';
@@ -43,9 +43,7 @@ export default function VolcanoHouseStory() {
   return (
     <main ref={rootRef} className={styles.story}>
       <nav className={styles.nav} data-editorial-reveal>
-        <Link href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.navLink}>
-          ← Selected Worlds
-        </Link>
+        <WorkBackLink className={styles.navLink} />
         <span className={styles.navIndex}>01</span>
       </nav>
 
@@ -239,9 +237,9 @@ export default function VolcanoHouseStory() {
             Volcano House is still the root of how I work: hospitality, interiors, land, and the
             story around all of it. More projects below.
           </p>
-          <Link href="/portfolio/interior-design" className={styles.transitionButton}>
+          <JourneyAwareLink href="/portfolio/interior-design" className={styles.transitionButton}>
             View Interior Design Portfolio →
-          </Link>
+          </JourneyAwareLink>
         </div>
       </section>
     </main>

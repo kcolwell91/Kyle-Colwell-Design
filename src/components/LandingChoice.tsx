@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { IMMERSIVE_HOME_PATH, MINIMAL_HOME_PATH } from '@/config/siteRoutes';
+import { IMMERSIVE_HOME_PATH, CLASSIC_HOME_PATH } from '@/config/siteRoutes';
 import { LANDING_CHOICE } from '@/data/landingContent';
 import styles from './LandingChoice.module.css';
 
@@ -10,8 +10,8 @@ const CHOICES = [
     href: IMMERSIVE_HOME_PATH,
   },
   {
-    label: 'Minimal',
-    href: MINIMAL_HOME_PATH,
+    label: 'Classic',
+    href: CLASSIC_HOME_PATH,
   },
 ] as const;
 

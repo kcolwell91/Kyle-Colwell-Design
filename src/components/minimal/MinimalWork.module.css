@@ -38,10 +38,10 @@
 .kicker {
   margin: 0 0 clamp(72px, 10vh, 120px);
   font-family: var(--minimal-label-font);
-  font-size: 10px;
+  font-size: var(--minimal-kicker-size);
   font-weight: 300;
   line-height: 1.8;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   text-align: left;
   color: var(--minimal-elevated-muted);
@@ -68,10 +68,10 @@
 .index {
   padding-top: 0.35em;
   font-family: var(--minimal-label-font);
-  font-size: 9px;
+  font-size: var(--minimal-label-size);
   font-weight: 300;
   line-height: 1.6;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.24em;
   color: var(--minimal-bronze);
 }
 
@@ -94,10 +94,10 @@
   margin: 0;
   max-width: 34ch;
   font-family: var(--minimal-label-font);
-  font-size: 10px;
+  font-size: var(--minimal-subtext-size);
   font-weight: 300;
   line-height: 1.75;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: var(--minimal-elevated-muted);
 }
 

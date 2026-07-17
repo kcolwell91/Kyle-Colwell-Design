@@ -1,6 +1,6 @@
 .grid {
   padding: var(--minimal-pad-y) var(--minimal-pad-x);
-  background: var(--minimal-sand);
+  background: var(--minimal-warm-white);
   border-top: 0.5px solid var(--minimal-hairline);
 }
 
@@ -12,10 +12,10 @@
 .kicker {
   margin: 0 0 clamp(80px, 11vh, 128px);
   font-family: var(--minimal-label-font);
-  font-size: 10px;
+  font-size: var(--minimal-kicker-size);
   font-weight: 300;
   line-height: 1.8;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   text-align: left;
   color: var(--minimal-muted);
@@ -76,7 +76,13 @@
 }
 
 .title {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   margin: 0;
+  width: fit-content;
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
   font-size: clamp(24px, 2.6vw, 34px);
@@ -86,25 +92,38 @@
   transition: color 0.8s var(--minimal-ease);
 }
 
+.titleUnderline {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  opacity: 0.45;
+  transition:
+    transform 0.85s var(--minimal-ease),
+    opacity 0.7s ease;
+}
+
 .line {
   margin: 0;
   max-width: 42ch;
   font-family: var(--minimal-label-font);
-  font-size: 10px;
+  font-size: var(--minimal-subtext-size);
   font-weight: 300;
   line-height: 1.7;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: var(--minimal-muted);
   transition: color 0.8s var(--minimal-ease);
 }
 
 .index {
-  padding-top: 0.2em;
+  padding-top: 0.35em;
   font-family: var(--minimal-label-font);
-  font-size: 9px;
+  font-size: var(--minimal-label-size);
   font-weight: 300;
   line-height: 1.6;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.24em;
   color: var(--minimal-stone);
 }
 
@@ -113,19 +132,30 @@
   color: var(--minimal-muted);
 }
 
+.card:hover .titleUnderline,
+.card:focus-visible .titleUnderline {
+  transform: scaleX(1);
+  opacity: 0.72;
+}
+
 .card:focus-visible {
   outline: none;
 }
 
-.card:focus-visible .title {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .image,
-  .title {
+  .title,
+  .titleUnderline {
     transition: none;
+  }
+
+  .titleUnderline {
+    transform: scaleX(0.35);
+    opacity: 0.35;
+  }
+
+  .card:hover .titleUnderline,
+  .card:focus-visible .titleUnderline {
+    transform: scaleX(1);
   }
 }

@@ -1,5 +1,4 @@
 export const MINIMAL_HERO = {
-  name: 'Kyle Colwell',
   title: ['Brands and places', 'people remember.'],
   selectedWork: {
     label: 'Selected Work',
@@ -20,7 +19,7 @@ export const MINIMAL_ABOUT = {
     height: 1024,
   },
   paragraphs: [
-    'My journey began in 2018 with an off-grid Airbnb on the slopes of a volcano in Hawai‘i. The property reached 90% occupancy, earned five-star reviews, and led to twelve additional vacation rental commissions.',
+    'My journey began in 2018 with an off-grid Airbnb on the slopes of a volcano in Hawai‘i. The property reached 90% occupancy within the first 3 days of launching it on Airbnb, earned 5 star reviews, and led to twelve additional vacation rental commissions.',
     'Since then, my work has expanded into retreat centers, restaurants, branding, and guest experience.',
     'Today, I help visionary hospitality founders turn their ideas into cohesive spaces, brands, and experiences people remember.',
   ],

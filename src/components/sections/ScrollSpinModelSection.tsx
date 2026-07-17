@@ -20,9 +20,22 @@ export default function ScrollSpinModelSection() {
   const progressRef = useRef(0);
   const invalidateRef = useRef<(() => void) | null>(null);
   const [isActive, setIsActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 768px)').matches
+  );
 
   useEffect(() => {
     useGLTF.preload(MODEL_PATH);
+  }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 768px)');
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
   }, []);
 
   useEffect(() => {
@@ -41,7 +54,7 @@ export default function ScrollSpinModelSection() {
   useEffect(() => {
     if (!isActive) return;
     invalidateRef.current?.();
-  }, [isActive]);
+  }, [isActive, isMobile]);
 
   const handleInvalidateReady = useCallback((invalidate: () => void) => {
     invalidateRef.current = invalidate;
@@ -143,6 +156,7 @@ export default function ScrollSpinModelSection() {
           <ScrollSpinModelCanvas
             progressRef={progressRef}
             isActive={isActive}
+            isMobile={isMobile}
             onInvalidateReady={handleInvalidateReady}
             onModelReady={handleModelReady}
           />

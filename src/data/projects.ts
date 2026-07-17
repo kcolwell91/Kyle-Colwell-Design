@@ -22,7 +22,7 @@ export type Project = {
   floatClass: 'projectFloat1' | 'projectFloat2' | 'projectFloat3' | 'projectFloat4';
   media: ProjectMedia;
   summary: string;
-  /** One-line caption for the /minimal project grid. */
+  /** One-line caption for the /classic project grid. */
   minimalCaption: string;
   partnerInquiry?: {
     copy: string;
@@ -74,7 +74,7 @@ export const PROJECTS: Project[] = [
     },
     summary:
       'Project management and marketing for an ambitious hospitality launch — from bar to brand.',
-    minimalCaption: 'Launch, interiors, and brand for a new bar.',
+    minimalCaption: 'Launch, marketing, and socials for new celebrity chef restaurant.',
   },
   {
     slug: 'retreat-center-development',

@@ -3,10 +3,8 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {
-  IMMERSIVE_CONTACT_HREF,
-  IMMERSIVE_SELECTED_WORLDS_HREF,
-} from '@/config/siteRoutes';
+import { IMMERSIVE_CONTACT_HREF } from '@/config/siteRoutes';
+import WorkBackLink from '@/components/work/WorkBackLink';
 import { useEditorialReveal } from '@/hooks/useEditorialReveal';
 import {
   BESOS_CLOSING,
@@ -29,9 +27,7 @@ export default function BesosStory() {
   return (
     <main ref={rootRef} className={styles.story}>
       <nav className={styles.nav} aria-label="Project navigation">
-        <Link href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.navLink}>
-          ← Selected Worlds
-        </Link>
+        <WorkBackLink className={styles.navLink} />
         <span className={styles.navIndex}>{BESOS_INDEX}</span>
       </nav>
 

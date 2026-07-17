@@ -64,3 +64,15 @@
 .root.isInteractive .label {
   color: #b42318;
 }
+
+/* Landing + Classic: simple filled black circle */
+.root.isSimple .ringWrap {
+  display: none;
+}
+
+.root.isSimple .seed {
+  width: 10px;
+  height: 10px;
+  background: #101010;
+  border-radius: 50%;
+}

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import BesosStory from '@/components/editorial/BesosStory';
 import VolcanoHouseStory from '@/components/editorial/VolcanoHouseStory';
@@ -59,7 +60,11 @@ export default async function WorkProjectPage({ params }: WorkPageProps) {
   }
 
   if (slug === 'website-development') {
-    return <WebsiteDevelopmentStory />;
+    return (
+      <Suspense fallback={null}>
+        <WebsiteDevelopmentStory />
+      </Suspense>
+    );
   }
 
   if (slug === 'restaurant-project-management') {

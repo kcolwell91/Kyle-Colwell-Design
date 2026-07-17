@@ -15,7 +15,7 @@ export default function MinimalProjectGrid() {
 
             return (
               <li key={project.slug} className={styles.item}>
-                <Link href={getProjectWorkHref(project.slug)} className={styles.card}>
+                <Link href={getProjectWorkHref(project.slug, 'classic')} className={styles.card}>
                   <figure className={styles.media}>
                     <Image
                       src={image.src}
@@ -29,7 +29,10 @@ export default function MinimalProjectGrid() {
                   <div className={styles.meta}>
                     <span className={styles.index}>{project.index}</span>
                     <div className={styles.text}>
-                      <h2 className={styles.title}>{project.title}</h2>
+                      <h2 className={styles.title}>
+                        <span className={styles.titleLabel}>{project.title}</span>
+                        <span className={styles.titleUnderline} aria-hidden="true" />
+                      </h2>
                       <p className={styles.line}>{project.minimalCaption}</p>
                     </div>
                   </div>

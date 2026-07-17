@@ -10,7 +10,7 @@ export const NAV_WORK_LABEL = 'Work' as const;
 export const NAV_WORK_ITEMS = PROJECTS.map(({ index, title, slug }) => ({
   index,
   label: title,
-  href: getProjectWorkHref(slug),
+  href: getProjectWorkHref(slug, 'immersive'),
 }));
 
 export const NAV_VIEW_ALL_WORLDS = {

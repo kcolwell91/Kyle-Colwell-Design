@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -10,8 +11,13 @@ import { useEditorialReveal } from '@/hooks/useEditorialReveal';
 import ScrollSpinModelSection from '@/components/sections/ScrollSpinModelSection';
 import {
   IMMERSIVE_CONTACT_HREF,
-  IMMERSIVE_SELECTED_WORLDS_HREF,
 } from '@/config/siteRoutes';
+import {
+  getSelectedWorkHref,
+  getSelectedWorkLabel,
+  JOURNEY_QUERY,
+  parseSiteJourney,
+} from '@/lib/journey';
 import {
   WEBSITE_DEV_CLOSING,
   WEBSITE_DEV_CRAFT,
@@ -32,6 +38,10 @@ const HERO_FRAME_ASPECT = 16 / 10;
 const HERO_MAT_PADDING = 20;
 
 export default function WebsiteDevelopmentStory() {
+  const searchParams = useSearchParams();
+  const journey = parseSiteJourney(searchParams.get(JOURNEY_QUERY));
+  const selectedWorkHref = getSelectedWorkHref(journey);
+  const selectedWorkLabel = getSelectedWorkLabel(journey);
   const rootRef = useRef<HTMLElement>(null);
   const heroTrackRef = useRef<HTMLElement>(null);
   const heroViewportRef = useRef<HTMLDivElement>(null);
@@ -189,11 +199,11 @@ export default function WebsiteDevelopmentStory() {
 
   return (
     <main ref={rootRef} className={styles.story}>
-      <Link ref={returnLinkRef} href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.returnLink}>
+      <Link ref={returnLinkRef} href={selectedWorkHref} className={styles.returnLink}>
         <span className={styles.returnArrow} aria-hidden="true">
           ←
         </span>
-        <span>Return to Selected Worlds</span>
+        <span>Return to {selectedWorkLabel}</span>
       </Link>
 
       <section
@@ -307,6 +317,8 @@ export default function WebsiteDevelopmentStory() {
         </div>
       </section>
 
+      <ScrollSpinModelSection />
+
       <section className={styles.sectionMuted} aria-label="Business outcomes">
         <div className={styles.sectionInner}>
           <p className={`${styles.kicker} ${styles.kickerCenter}`} data-editorial-reveal>
@@ -360,8 +372,6 @@ export default function WebsiteDevelopmentStory() {
           </div>
         </div>
       </section>
-
-      <ScrollSpinModelSection />
 
       <section className={styles.sectionDark} aria-label="Closing">
         <div className={`${styles.sectionInner} ${styles.closingInner}`}>

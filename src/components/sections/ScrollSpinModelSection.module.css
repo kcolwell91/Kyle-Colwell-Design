@@ -129,16 +129,20 @@
 
   .stage {
     height: 100svh;
+    align-items: center;
+    padding-top: clamp(48px, 10svh, 72px);
+    box-sizing: border-box;
   }
 
   .modelViewport {
-    width: min(94vw, 620px);
-    height: min(58vh, 620px);
-    min-height: 340px;
+    width: min(92vw, 580px);
+    height: min(72svh, 720px);
+    min-height: 420px;
+    transform: translateY(-2svh);
   }
 
   .groundShadow {
-    top: calc(50% + min(17vh, 150px));
+    top: calc(50% + min(20svh, 170px));
     width: min(58vw, 320px);
   }
 

@@ -3,7 +3,8 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IMMERSIVE_SELECTED_WORLDS_HREF } from '@/config/siteRoutes';
+import WorkBackLink from '@/components/work/WorkBackLink';
+import JourneyAwareLink from '@/components/work/JourneyAwareLink';
 import { INTERIOR_PORTFOLIO_CHAPTERS } from '@/data/interiorPortfolio';
 import { useEditorialReveal } from '@/hooks/useEditorialReveal';
 import styles from './InteriorDesignPortfolio.module.css';
@@ -45,13 +46,11 @@ export default function InteriorDesignPortfolio() {
   return (
     <main ref={rootRef} className={styles.page}>
       <header className={styles.header} data-editorial-reveal>
-        <Link href="/work/hawaiian-airbnb" className={styles.backLink}>
+        <JourneyAwareLink href="/work/hawaiian-airbnb" className={styles.backLink}>
           ← Volcano House
-        </Link>
+        </JourneyAwareLink>
         <span className={styles.headerMark}>Kyle Colwell</span>
-        <Link href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.backLinkMuted}>
-          Selected Worlds
-        </Link>
+        <WorkBackLink className={styles.backLinkMuted} showArrow={false} />
       </header>
 
       <section className={styles.intro} aria-label="Interior design portfolio">
@@ -136,9 +135,7 @@ export default function InteriorDesignPortfolio() {
             <span className={styles.footerCtaUnderline} aria-hidden="true" />
           </Link>
         </div>
-        <Link href={IMMERSIVE_SELECTED_WORLDS_HREF} className={styles.footerBack}>
-          ← Go back
-        </Link>
+        <WorkBackLink className={styles.footerBack} />
       </footer>
     </main>
   );

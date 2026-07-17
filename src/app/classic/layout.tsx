@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function MinimalLayout({
+export default function ClassicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

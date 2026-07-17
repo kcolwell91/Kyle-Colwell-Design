@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { MINIMAL_HERO } from '@/data/minimalContent';
 import styles from './MinimalHero.module.css';
@@ -50,7 +49,6 @@ export default function MinimalHero() {
       </div>
       <header className={styles.copy}>
         <div className={styles.copyBackdrop} aria-hidden="true" />
-        <p className={styles.eyebrow}>{MINIMAL_HERO.name}</p>
         <h1 className={styles.title}>
           {title.map((line) => (
             <span key={line} className={styles.titleLine}>
@@ -58,12 +56,15 @@ export default function MinimalHero() {
             </span>
           ))}
         </h1>
-        <Link href={selectedWork.href} className={styles.cta}>
-          <span>{selectedWork.label}</span>
+        <a href={selectedWork.href} className={styles.cta}>
+          <span className={styles.ctaText}>
+            <span>{selectedWork.label}</span>
+            <span className={styles.ctaUnderline} aria-hidden="true" />
+          </span>
           <span className={styles.ctaArrow} aria-hidden="true">
             →
           </span>
-        </Link>
+        </a>
       </header>
     </section>
   );

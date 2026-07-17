@@ -1,7 +1,7 @@
-/* Shared tokens for the /minimal visual system */
+/* Shared tokens for the /classic visual system */
 .minimalPage {
-  --minimal-warm-white: #faf8f4;
-  --minimal-sand: #e8e2d8;
+  --minimal-warm-white: #ffffff;
+  --minimal-sand: #ffffff;
   --minimal-stone: #b8afa3;
   --minimal-charcoal: #2c2824;
   --minimal-elevated: #2a2622;
@@ -18,6 +18,9 @@
   --minimal-pad-y: clamp(120px, 18vh, 220px);
   --minimal-section-gap: clamp(56px, 9vh, 112px);
   --minimal-content-width: min(100%, 1080px);
+  --minimal-kicker-size: clamp(13px, 1.15vw, 15px);
+  --minimal-subtext-size: clamp(14px, 1.2vw, 16px);
+  --minimal-label-size: clamp(12px, 1.05vw, 14px);
 
   min-height: 100dvh;
   background: var(--minimal-warm-white);

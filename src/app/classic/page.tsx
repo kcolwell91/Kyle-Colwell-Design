@@ -9,7 +9,7 @@ import MinimalReveal from '@/components/minimal/MinimalReveal';
 import MinimalWork from '@/components/minimal/MinimalWork';
 import '@/components/minimal/minimal.tokens.css';
 
-export default function MinimalPage() {
+export default function ClassicPage() {
   return (
     <main className="minimalPage">
       <MinimalNav />

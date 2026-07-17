@@ -3,6 +3,10 @@
   transition: opacity 1.2s var(--minimal-ease);
 }
 
+.reveal :global([id]) {
+  scroll-margin-top: clamp(72px, 12vh, 112px);
+}
+
 .visible {
   opacity: 1;
 }

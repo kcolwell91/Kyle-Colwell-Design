@@ -1,5 +1,12 @@
 .contact {
-  padding: var(--minimal-pad-y) var(--minimal-pad-x) clamp(160px, 22vh, 260px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding:
+    var(--minimal-pad-y)
+    var(--minimal-pad-x)
+    clamp(120px, 16vh, 180px);
   background: var(--minimal-warm-white);
   border-top: 0.5px solid var(--minimal-hairline);
 }
@@ -12,17 +19,21 @@
 
 .kicker {
   margin: 0 0 clamp(40px, 6vh, 64px);
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(10px, 0.85vw, 11px);
-  font-weight: 400;
+  font-family: var(--minimal-label-font);
+  font-size: var(--minimal-kicker-size);
+  font-weight: 300;
   line-height: 1.8;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--minimal-muted);
 }
 
 .email {
-  display: inline-block;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   margin: 0 0 clamp(16px, 2.5vh, 22px);
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
@@ -46,15 +57,20 @@
   justify-content: center;
   gap: 10px;
   margin-bottom: clamp(56px, 8vh, 88px);
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(11px, 0.95vw, 12px);
-  font-weight: 400;
+  font-family: var(--minimal-label-font);
+  font-size: var(--minimal-subtext-size);
+  font-weight: 300;
   line-height: 1.6;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--minimal-muted);
 }
 
 .phone {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
   text-decoration: none;
   color: inherit;
   transition: color 0.8s var(--minimal-ease);
@@ -70,32 +86,188 @@
 }
 
 .cta {
-  display: inline-block;
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: clamp(10px, 0.85vw, 11px);
-  font-weight: 400;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  font-family: var(--minimal-label-font);
+  font-size: var(--minimal-kicker-size);
+  font-weight: 300;
   line-height: 1.6;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--minimal-charcoal);
-  border-bottom: 1px solid var(--minimal-line);
-  padding-bottom: 4px;
-  transition:
-    color 0.8s var(--minimal-ease),
-    border-color 0.8s var(--minimal-ease);
+  transition: color 0.8s var(--minimal-ease);
 }
 
 .cta:hover,
 .cta:focus-visible {
   color: var(--minimal-muted);
-  border-color: var(--minimal-stone);
+}
+
+.journey {
+  align-self: flex-end;
+  width: fit-content;
+  margin-top: clamp(96px, 14vh, 160px);
+  text-align: right;
+}
+
+.journeyLink {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  justify-items: end;
+  padding-bottom: 14px;
+  text-decoration: none;
+  color: var(--minimal-muted);
+  transition: color 0.85s var(--minimal-ease);
+}
+
+.journeyEyebrow {
+  font-family: var(--minimal-label-font);
+  font-size: clamp(9px, 0.72vw, 10px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.journeyDest {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.journeyName {
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--minimal-charcoal);
+  transition: color 0.85s var(--minimal-ease);
+}
+
+.journeyArrow {
+  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: 0.92em;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--minimal-stone);
+  transform: translateX(0);
+  transition:
+    transform 0.85s var(--minimal-ease),
+    color 0.85s var(--minimal-ease);
+}
+
+.journeyRule {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0.22);
+  transform-origin: right center;
+  opacity: 0.28;
+  transition:
+    transform 0.9s var(--minimal-ease),
+    opacity 0.7s ease;
+}
+
+.journeyLink:hover,
+.journeyLink:focus-visible {
+  color: var(--minimal-charcoal);
+}
+
+.journeyLink:hover .journeyName,
+.journeyLink:focus-visible .journeyName {
+  color: var(--minimal-muted);
+}
+
+.journeyLink:hover .journeyArrow,
+.journeyLink:focus-visible .journeyArrow {
+  color: var(--minimal-charcoal);
+  transform: translateX(6px);
+}
+
+.journeyLink:hover .journeyRule,
+.journeyLink:focus-visible .journeyRule {
+  transform: scaleX(1);
+  opacity: 0.55;
+}
+
+.journeyLink:focus-visible {
+  outline: none;
+}
+
+.linkUnderline {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: center;
+  opacity: 0.45;
+  transition:
+    transform 0.85s var(--minimal-ease),
+    opacity 0.7s ease;
+}
+
+.email:hover .linkUnderline,
+.email:focus-visible .linkUnderline,
+.phone:hover .linkUnderline,
+.phone:focus-visible .linkUnderline,
+.cta:hover .linkUnderline,
+.cta:focus-visible .linkUnderline {
+  transform: scaleX(1);
+  opacity: 0.72;
+}
+
+@media (max-width: 640px) {
+  .journey {
+    align-self: stretch;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: clamp(72px, 12vh, 112px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .email,
   .phone,
-  .cta {
+  .cta,
+  .journeyLink,
+  .journeyName,
+  .journeyArrow,
+  .journeyRule,
+  .linkUnderline {
     transition: none;
+  }
+
+  .linkUnderline,
+  .journeyRule {
+    transform: scaleX(0.35);
+    opacity: 0.35;
+  }
+
+  .email:hover .linkUnderline,
+  .email:focus-visible .linkUnderline,
+  .phone:hover .linkUnderline,
+  .phone:focus-visible .linkUnderline,
+  .cta:hover .linkUnderline,
+  .cta:focus-visible .linkUnderline,
+  .journeyLink:hover .journeyRule,
+  .journeyLink:focus-visible .journeyRule {
+    transform: scaleX(1);
+  }
+
+  .journeyLink:hover .journeyArrow,
+  .journeyLink:focus-visible .journeyArrow {
+    transform: none;
   }
 }

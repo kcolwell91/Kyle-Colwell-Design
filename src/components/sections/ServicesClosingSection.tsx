@@ -5,6 +5,7 @@ import { Italianno } from 'next/font/google';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { CLASSIC_HOME_PATH } from '@/config/siteRoutes';
 import { SITE_CONTACT, SITE_CONTACT_MAILTO, SITE_CONTACT_TEL } from '@/data/siteContact';
 import styles from './ServicesClosingSection.module.css';
 
@@ -172,12 +173,21 @@ export default function ServicesClosingSection() {
             <a href={SITE_CONTACT_TEL} className={styles.contactPhone}>
               {SITE_CONTACT.phoneDisplay}
             </a>
-            <span className={styles.contactDivider} aria-hidden="true">
-              ·
-            </span>
-            <span className={styles.contactLocation}>{SITE_CONTACT.location}</span>
           </div>
         </address>
+      </div>
+
+      <div className={styles.journey} data-closing-contact>
+        <a href={CLASSIC_HOME_PATH} className={styles.journeyLink}>
+          <span className={styles.journeyEyebrow}>Experience</span>
+          <span className={styles.journeyDest}>
+            <span className={styles.journeyName}>Classic</span>
+            <span className={styles.journeyArrow} aria-hidden="true">
+              →
+            </span>
+          </span>
+          <span className={styles.journeyRule} aria-hidden="true" />
+        </a>
       </div>
     </section>
   );

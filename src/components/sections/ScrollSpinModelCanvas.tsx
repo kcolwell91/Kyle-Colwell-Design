@@ -13,14 +13,16 @@ const ROTATIONS = 0.5;
 type ScrollSpinModelCanvasProps = {
   progressRef: MutableRefObject<number>;
   isActive: boolean;
+  isMobile: boolean;
   onInvalidateReady: (invalidate: () => void) => void;
   onModelReady: () => void;
 };
 
 function ScrollSpinModel({
   progressRef,
+  isMobile,
   onModelReady,
-}: Pick<ScrollSpinModelCanvasProps, 'progressRef' | 'onModelReady'>) {
+}: Pick<ScrollSpinModelCanvasProps, 'progressRef' | 'isMobile' | 'onModelReady'>) {
   const spinRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF(MODEL_PATH);
 
@@ -32,7 +34,8 @@ function ScrollSpinModel({
     const center = bounds.getCenter(new THREE.Vector3());
     const size = bounds.getSize(new THREE.Vector3());
     const longestSide = Math.max(size.x, size.y, size.z) || 1;
-    const scale = MODEL_SIZE / longestSide;
+    const scale = (isMobile ? MODEL_SIZE * 0.92 : MODEL_SIZE) / longestSide;
+    const mobileLift = isMobile ? size.y * scale * 0.16 : 0;
 
     model.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return;
@@ -42,13 +45,13 @@ function ScrollSpinModel({
 
     return {
       scale,
-      position: [-center.x * scale, -center.y * scale, -center.z * scale] as [
-        number,
-        number,
-        number,
-      ],
+      position: [
+        -center.x * scale,
+        -center.y * scale + mobileLift,
+        -center.z * scale,
+      ] as [number, number, number],
     };
-  }, [model]);
+  }, [isMobile, model]);
 
   useEffect(() => {
     onModelReady();
@@ -78,14 +81,19 @@ function ScrollSpinModel({
 export default function ScrollSpinModelCanvas({
   progressRef,
   isActive,
+  isMobile,
   onInvalidateReady,
   onModelReady,
 }: ScrollSpinModelCanvasProps) {
+  const camera = isMobile
+    ? { fov: 34, near: 0.05, far: 100, position: [0, 0.12, 6.9] as [number, number, number] }
+    : { fov: 30, near: 0.05, far: 100, position: [0, 0, 5.6] as [number, number, number] };
+
   return (
     <Canvas
-      dpr={[1, 1.5]}
+      dpr={isMobile ? [1, 1.25] : [1, 1.5]}
       frameloop={isActive ? 'always' : 'demand'}
-      camera={{ fov: 30, near: 0.05, far: 100, position: [0, 0, 5.6] }}
+      camera={camera}
       gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
       onCreated={({ gl, invalidate }) => {
         gl.setClearColor(0x000000, 0);
@@ -102,7 +110,11 @@ export default function ScrollSpinModelCanvas({
       <directionalLight position={[-4, 2, -4]} intensity={1.1} color="#d7c5b5" />
 
       <Suspense fallback={null}>
-        <ScrollSpinModel progressRef={progressRef} onModelReady={onModelReady} />
+        <ScrollSpinModel
+          progressRef={progressRef}
+          isMobile={isMobile}
+          onModelReady={onModelReady}
+        />
       </Suspense>
     </Canvas>
   );
