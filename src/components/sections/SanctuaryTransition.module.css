@@ -24,6 +24,9 @@
   pointer-events: none;
   z-index: 0;
   background: var(--surface);
+  /* Keep decode/paint on its own layer during scrub. */
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .poster {
@@ -32,7 +35,7 @@
   z-index: 1;
   pointer-events: none;
   will-change: opacity;
-  transition: opacity 0.35s ease;
+  /* Instant hide — CSS fade fought the scrub and felt choppy. */
 }
 
 .posterImage {

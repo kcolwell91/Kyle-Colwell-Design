@@ -10,9 +10,11 @@ const SANCTUARY_VIDEO = '/videos/sanctuary.mp4';
 const SANCTUARY_POSTER = '/videos/sanctuary-poster.jpg';
 const MANIFESTO_HEADLINE = 'Design is a field of influence.';
 
-const SCRUB_PX_PER_SECOND = 300;
+// Longer track = smaller time jumps per scroll pixel = steadier scrub.
+const SCRUB_PX_PER_SECOND = 420;
 const REVEAL_SECONDS = 3;
 const FALLBACK_DURATION = 15;
+const SEEK_EPSILON = 0.008;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -25,6 +27,21 @@ function smoother(t: number) {
 
 function isVideoReady(video: HTMLVideoElement) {
   return Number.isFinite(video.duration) && video.duration > 0;
+}
+
+function applyVideoTime(video: HTMLVideoElement, time: number) {
+  const next = clamp(time, 0, Math.max(video.duration - 0.001, 0));
+  // Safari exposes fastSeek for scrubbing without exact frame decode stalls.
+  const fastSeek = (video as HTMLVideoElement & { fastSeek?: (t: number) => void }).fastSeek;
+  if (typeof fastSeek === 'function') {
+    try {
+      fastSeek.call(video, next);
+      return;
+    } catch {
+      /* Fall through to currentTime. */
+    }
+  }
+  video.currentTime = next;
 }
 
 export default function SanctuaryTransition() {
@@ -71,15 +88,23 @@ export default function SanctuaryTransition() {
     let trigger: { kill: () => void; progress: number } | null = null;
     let mediaUnlocked = false;
     let unlockPromise: Promise<void> | null = null;
+    let targetVideoTime = 0;
+    let seekRafId: number | null = null;
+    let refreshTimer: number | null = null;
+    let lastTrackHeightKey = '';
 
     const getDuration = () => (isVideoReady(video) ? video.duration : FALLBACK_DURATION);
 
     const setTrackHeight = () => {
       const scrubPx = getDuration() * SCRUB_PX_PER_SECOND;
       const holdPx = window.innerHeight * 0.45;
+      const key = `${scrubPx}|${holdPx}`;
+      if (key === lastTrackHeightKey) return false;
+      lastTrackHeightKey = key;
       track.style.setProperty('--sanctuary-scroll-px', `${scrubPx + holdPx}px`);
       document.documentElement.style.setProperty('--sanctuary-hold-px', `${holdPx}px`);
       scrubEndRatio = scrubPx / (scrubPx + holdPx);
+      return true;
     };
 
     const hidePoster = () => {
@@ -97,7 +122,7 @@ export default function SanctuaryTransition() {
         try {
           await video.play();
           video.pause();
-          video.currentTime = 0;
+          if (video.currentTime > 0.001) video.currentTime = 0;
           mediaUnlocked = true;
         } catch {
           mediaUnlocked = false;
@@ -109,14 +134,33 @@ export default function SanctuaryTransition() {
       await unlockPromise;
     };
 
+    const flushSeek = () => {
+      seekRafId = null;
+      if (!mounted || !isVideoReady(video)) return;
+
+      // Wait out an in-flight seek, then apply the latest scroll target once.
+      if (video.seeking) {
+        seekRafId = window.requestAnimationFrame(flushSeek);
+        return;
+      }
+
+      if (Math.abs(video.currentTime - targetVideoTime) <= SEEK_EPSILON) return;
+      if (!video.paused) video.pause();
+      applyVideoTime(video, targetVideoTime);
+    };
+
     const seekVideo = (videoTime: number) => {
       if (!isVideoReady(video)) return;
-      if (Math.abs(video.currentTime - videoTime) <= 0.001) return;
-
-      video.currentTime = videoTime;
+      targetVideoTime = videoTime;
+      if (seekRafId === null) {
+        seekRafId = window.requestAnimationFrame(flushSeek);
+      }
       if (Math.abs(video.currentTime - videoTime) > 0.05 && !mediaUnlocked) {
         void unlockMedia().then(() => {
-          video.currentTime = videoTime;
+          targetVideoTime = videoTime;
+          if (seekRafId === null) {
+            seekRafId = window.requestAnimationFrame(flushSeek);
+          }
         });
       }
     };
@@ -152,6 +196,7 @@ export default function SanctuaryTransition() {
       const gsap = (await import('gsap')).default;
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
+      ScrollTrigger.config({ ignoreMobileResize: true });
       if (!mounted) return;
 
       setTrackHeight();
@@ -165,10 +210,13 @@ export default function SanctuaryTransition() {
           end: 'bottom bottom',
           pin: viewport,
           pinSpacing: true,
-          scrub: true,
+          // Soft scrub damps wheel/trackpad steps so the playhead feels continuous.
+          scrub: 0.7,
           anticipatePin: 1,
           invalidateOnRefresh: true,
-          onRefresh: () => setTrackHeight(),
+          onRefreshInit: () => {
+            setTrackHeight();
+          },
           onUpdate: (self) => update(self.progress),
           onEnter: (self) => update(self.progress),
           onEnterBack: (self) => update(self.progress),
@@ -176,7 +224,6 @@ export default function SanctuaryTransition() {
           onLeave: () => update(1),
         });
         update(trigger.progress);
-        ScrollTrigger.refresh();
       }, track);
     };
 
@@ -217,6 +264,7 @@ export default function SanctuaryTransition() {
     video.addEventListener('loadedmetadata', onReady);
     video.addEventListener('durationchange', onReady);
     video.addEventListener('loadeddata', onLoadedData);
+    video.addEventListener('canplaythrough', onReady, { once: true });
     video.addEventListener('error', onError);
 
     if (video.readyState >= HTMLMediaElement.HAVE_METADATA && isVideoReady(video)) {
@@ -234,27 +282,39 @@ export default function SanctuaryTransition() {
     window.addEventListener('scroll', onFirstInteraction, { once: true, passive: true });
     window.addEventListener('touchstart', onFirstInteraction, { once: true, passive: true });
 
-    const refresh = () => {
-      setTrackHeight();
-      void (async () => {
-        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-        ScrollTrigger.refresh();
-        if (trigger) update(trigger.progress);
-      })();
+    const scheduleRefresh = (delayMs = 100) => {
+      if (refreshTimer !== null) window.clearTimeout(refreshTimer);
+      refreshTimer = window.setTimeout(() => {
+        refreshTimer = null;
+        void (async () => {
+          const changed = setTrackHeight();
+          if (!changed) {
+            if (trigger) update(trigger.progress);
+            return;
+          }
+          const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+          ScrollTrigger.refresh();
+          if (trigger) update(trigger.progress);
+        })();
+      }, delayMs);
     };
 
-    const onHeroReady = () => refresh();
-    window.addEventListener('resize', refresh);
+    const onHeroReady = () => scheduleRefresh(120);
+    const onResize = () => scheduleRefresh(140);
+    window.addEventListener('resize', onResize);
     window.addEventListener(HERO_SCROLL_READY_EVENT, onHeroReady);
 
     return () => {
       mounted = false;
       window.clearTimeout(fallbackTimer);
+      if (refreshTimer !== null) window.clearTimeout(refreshTimer);
+      if (seekRafId !== null) window.cancelAnimationFrame(seekRafId);
       video.removeEventListener('loadedmetadata', onReady);
       video.removeEventListener('durationchange', onReady);
       video.removeEventListener('loadeddata', onLoadedData);
+      video.removeEventListener('canplaythrough', onReady);
       video.removeEventListener('error', onError);
-      window.removeEventListener('resize', refresh);
+      window.removeEventListener('resize', onResize);
       window.removeEventListener(HERO_SCROLL_READY_EVENT, onHeroReady);
       trigger?.kill();
       ctx?.revert();
