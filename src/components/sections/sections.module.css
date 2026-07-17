@@ -4,7 +4,15 @@
   z-index: 1;
   isolation: isolate;
   width: 100%;
-  overflow: clip;
+  overflow: visible;
+}
+
+@media (max-width: 768px) {
+  .heroShell {
+    /* Prevent iOS pin/scroll from getting clipped by the shell. */
+    overflow: visible;
+    touch-action: pan-y;
+  }
 }
 
 .mainStory {

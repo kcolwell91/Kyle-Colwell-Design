@@ -2,6 +2,7 @@
   position: relative;
   height: calc(100dvh + var(--hero-scroll-px, 7040px));
   isolation: isolate;
+  touch-action: pan-y;
 }
 
 .viewport {
@@ -10,7 +11,6 @@
   height: 100dvh;
   overflow: hidden;
   background: #0a0806;
-  will-change: background-color;
   touch-action: pan-y;
 }
 

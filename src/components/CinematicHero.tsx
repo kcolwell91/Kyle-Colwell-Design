@@ -9,14 +9,14 @@ const HERO_VIDEO_MP4 = '/videos/hero.mp4';
 const HERO_VIDEO_MOV = '/videos/hero.mov';
 const HERO_POSTER = '/hero-poster.JPEG';
 const HERO_VIDEO_DURATION = 22;
-const SCROLL_PX_PER_VIDEO_SECOND = 360;
-const MOBILE_SCROLL_PX_PER_VIDEO_SECOND = 300;
+const SCROLL_PX_PER_VIDEO_SECOND = 420;
+const MOBILE_SCROLL_PX_PER_VIDEO_SECOND = 340;
 const POSTER_FADE_END = 0.015;
 const BOX_MORPH_START = 0.58;
 const BOX_FRAME_WIDTH = 666;
 const BOX_ASPECT = 16 / 10;
 const BOX_MAT_PADDING = 20;
-const VIDEO_SMOOTHING = 0.14;
+const FRAME_STEP = 1 / 30;
 const SURFACE_COLOR = { r: 240, g: 233, b: 223 };
 const HERO_BG_COLOR = { r: 10, g: 8, b: 6 };
 
@@ -54,6 +54,11 @@ function isVideoReady(video: HTMLVideoElement) {
 
 function isMobileViewport() {
   return window.matchMedia('(max-width: 768px)').matches;
+}
+
+function snapFrame(time: number, duration: number) {
+  const snapped = Math.round(time / FRAME_STEP) * FRAME_STEP;
+  return clamp(snapped, 0, Math.max(duration - 0.001, 0));
 }
 
 export default function CinematicHero() {
@@ -102,9 +107,11 @@ export default function CinematicHero() {
     let usingFallback = false;
     let gsapCtx: { revert: () => void } | null = null;
     let heroTrigger: { kill: () => void; progress: number } | null = null;
-    let targetVideoTime = 0;
-    let videoRafId: number | null = null;
     let mediaUnlocked = false;
+    let unlockPromise: Promise<void> | null = null;
+    let seeking = false;
+    let pendingTime: number | null = null;
+    let lastAppliedTime = -1;
     let mobileMode = isMobileViewport();
 
     const getDuration = () =>
@@ -117,41 +124,74 @@ export default function CinematicHero() {
       track.style.setProperty('--hero-scroll-px', `${scrollPx}px`);
     };
 
+    // Set height immediately so mobile layout/scroll distance exists before GSAP mounts.
+    setTrackHeight();
+
     const ensurePaused = () => {
       if (!video.paused) video.pause();
     };
 
-    // iOS needs a user-gesture play/pause once before currentTime seeks paint frames.
-    // Never leave the video playing — this is scrub-only, like desktop.
     const unlockSeeking = async () => {
       if (mediaUnlocked) return;
-      try {
-        video.muted = true;
-        video.playsInline = true;
-        await video.play();
-      } catch {
-        /* Ignore — seeking may still work after interaction. */
+      if (unlockPromise) {
+        await unlockPromise;
+        return;
       }
-      ensurePaused();
-      mediaUnlocked = true;
+
+      unlockPromise = (async () => {
+        try {
+          video.muted = true;
+          video.playsInline = true;
+          await video.play();
+        } catch {
+          /* Seeking may still work after a later gesture. */
+        }
+        ensurePaused();
+        mediaUnlocked = true;
+        unlockPromise = null;
+      })();
+
+      await unlockPromise;
     };
 
-    const smoothVideoFrame = () => {
-      if (!isVideoReady(video)) {
-        videoRafId = null;
-        return;
-      }
+    const flushSeek = () => {
+      if (!mounted || seeking || pendingTime === null || !isVideoReady(video)) return;
+
+      const nextTime = pendingTime;
+      pendingTime = null;
+
+      if (Math.abs(lastAppliedTime - nextTime) < FRAME_STEP * 0.45) return;
 
       ensurePaused();
-      const delta = targetVideoTime - video.currentTime;
-      if (Math.abs(delta) > 0.015) {
-        video.currentTime += delta * VIDEO_SMOOTHING;
-        videoRafId = requestAnimationFrame(smoothVideoFrame);
-        return;
-      }
+      seeking = true;
 
-      video.currentTime = targetVideoTime;
-      videoRafId = null;
+      let settled = false;
+      const settle = () => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(seekFallback);
+        video.removeEventListener('seeked', onSeeked);
+        seeking = false;
+        lastAppliedTime = video.currentTime;
+        if (pendingTime !== null) flushSeek();
+      };
+
+      const onSeeked = () => settle();
+      const seekFallback = window.setTimeout(settle, 140);
+
+      video.addEventListener('seeked', onSeeked);
+
+      try {
+        video.currentTime = nextTime;
+      } catch {
+        settle();
+      }
+    };
+
+    const queueSeek = (time: number) => {
+      if (!isVideoReady(video)) return;
+      pendingTime = snapFrame(time, video.duration);
+      flushSeek();
     };
 
     const scrubVideo = (progress: number) => {
@@ -159,13 +199,12 @@ export default function CinematicHero() {
       poster.style.opacity = String(1 - posterFade);
 
       if (!isVideoReady(video)) return;
-      ensurePaused();
+      if (progress > 0.001) {
+        void unlockSeeking();
+      }
 
       const videoProgress = clamp(progress / BOX_MORPH_START, 0, 1);
-      targetVideoTime = videoProgress * video.duration;
-      if (videoRafId === null) {
-        videoRafId = requestAnimationFrame(smoothVideoFrame);
-      }
+      queueSeek(videoProgress * video.duration);
     };
 
     const updateHeadline = (p: number, uiFade: number) => {
@@ -183,7 +222,6 @@ export default function CinematicHero() {
     const updateBoxMorph = (progress: number) => {
       const boxT = clamp((progress - BOX_MORPH_START) / (1 - BOX_MORPH_START), 0, 1);
       const eased = boxT < 0.5 ? 2 * boxT * boxT : 1 - Math.pow(-2 * boxT + 2, 2) / 2;
-      // Words leave first; scrim holds a beat longer, then dissolves.
       const textFade = 1 - clamp(boxT * 1.55, 0, 1);
       const scrimFade = 1 - clamp((boxT - 0.22) * 1.45, 0, 1);
 
@@ -229,21 +267,20 @@ export default function CinematicHero() {
           end: 'bottom bottom',
           pin: viewport,
           pinSpacing: true,
-          pinReparent: false,
-          // Same scrub feel as desktop — video advances only with scroll.
-          scrub: 1.1,
+          // iOS needs fixed pin type or touch scroll can stall inside the hero.
+          pinType: mobileMode ? 'fixed' : 'transform',
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          // True scrub + seek queue = smooth playhead without stacked seeks.
+          scrub: true,
+          onRefresh: () => setTrackHeight(),
           onUpdate: (self) => {
-            if (!self.isActive) return;
             scrubVideo(self.progress);
             updateBoxMorph(self.progress);
           },
           onLeave: () => {
             if (isVideoReady(video)) {
-              targetVideoTime = video.duration;
-              ensurePaused();
-              video.currentTime = video.duration;
+              queueSeek(video.duration);
             }
             updateBoxMorph(1);
             ensurePaused();
@@ -259,8 +296,8 @@ export default function CinematicHero() {
           },
         });
 
-        scrubVideo(0);
-        updateBoxMorph(0);
+        scrubVideo(heroTrigger.progress);
+        updateBoxMorph(heroTrigger.progress);
         ScrollTrigger.refresh();
         window.dispatchEvent(new Event(HERO_SCROLL_READY_EVENT));
       }, track);
@@ -270,8 +307,9 @@ export default function CinematicHero() {
       if (!mounted || scrollReady) return;
       scrollReady = true;
       video.loop = false;
+      video.autoplay = false;
       ensurePaused();
-      if (isVideoReady(video)) {
+      if (isVideoReady(video) && video.currentTime > 0) {
         video.currentTime = 0;
       }
       void setupScrollTrigger();
@@ -279,6 +317,7 @@ export default function CinematicHero() {
 
     const onVideoReady = () => {
       if (!mounted || scrollReady || !isVideoReady(video)) return;
+      setTrackHeight();
       initScrollTrigger();
     };
 
@@ -321,7 +360,7 @@ export default function CinematicHero() {
       if (!mounted || scrollReady) return;
       usingFallback = true;
       initScrollTrigger();
-    }, 2000);
+    }, 1800);
 
     const onResize = async () => {
       const nextMobileMode = isMobileViewport();
@@ -342,6 +381,7 @@ export default function CinematicHero() {
     };
 
     window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', onResize);
 
     return () => {
       mounted = false;
@@ -353,7 +393,7 @@ export default function CinematicHero() {
       window.removeEventListener('wheel', onFirstInteraction);
       window.removeEventListener('pointerdown', onFirstInteraction);
       window.removeEventListener('resize', onResize);
-      if (videoRafId !== null) cancelAnimationFrame(videoRafId);
+      window.removeEventListener('orientationchange', onResize);
       heroTrigger?.kill();
       gsapCtx?.revert();
     };
