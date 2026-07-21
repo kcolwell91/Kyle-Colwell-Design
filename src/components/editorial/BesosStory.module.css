@@ -100,14 +100,13 @@
 
 .heroTitle {
   margin: 0;
-  max-width: 18ch;
+  max-width: 12ch;
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
-  font-size: clamp(42px, 6.5vw, 88px);
-  line-height: 0.96;
-  letter-spacing: -0.025em;
+  font-size: clamp(56px, 10vw, 120px);
+  line-height: 0.92;
+  letter-spacing: 0.08em;
   color: #f7f2ea;
-  text-wrap: balance;
 }
 
 .heroSubtitle {
@@ -244,34 +243,14 @@
   background: transparent;
 }
 
-.videoBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: min(100%, 1040px);
-}
-
 .videoBelow {
   position: relative;
   margin: 0;
-  width: 100%;
+  width: min(100%, 1040px);
   aspect-ratio: 16 / 9;
   min-height: clamp(360px, 52vh, 620px);
   overflow: hidden;
   background: transparent;
-}
-
-.videoCaption {
-  margin: 0 0 clamp(48px, 7vh, 80px);
-  max-width: 42ch;
-  width: 100%;
-  font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
-  font-weight: 300;
-  font-size: clamp(20px, 2vw, 26px);
-  line-height: 1.68;
-  color: var(--muted);
-  text-align: center;
-  text-wrap: pretty;
 }
 
 .mediaVideo {
@@ -352,6 +331,7 @@
 
   .heroTitle {
     max-width: none;
+    letter-spacing: 0.06em;
   }
 }
 

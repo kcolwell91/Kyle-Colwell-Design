@@ -193,9 +193,9 @@
   max-width: 16ch;
   font-family: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
-  font-size: clamp(42px, 6.5vw, 88px);
-  line-height: 0.96;
-  letter-spacing: -0.025em;
+  font-size: clamp(40px, 6.2vw, 84px);
+  line-height: 0.98;
+  letter-spacing: -0.024em;
   color: #f7f2ea;
   text-wrap: balance;
 }

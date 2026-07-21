@@ -17,10 +17,7 @@ export default function IntroSection() {
 
   useScrollWordReveal(sectionRef, contentRef, {
     fadeZone: philosophyRevealFadeZone(WORD_COUNT),
-    progressOffset: 0.04,
-    scrollStart: 'top 92%',
-    scrollEnd: 'bottom top',
-    progressScale: 0.88,
+    progressOffset: 0.12,
   });
 
   return (

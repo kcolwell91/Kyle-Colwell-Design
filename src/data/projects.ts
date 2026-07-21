@@ -63,7 +63,7 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: 'restaurant-project-management',
-    title: 'Project Management & Marketing',
+    title: 'Restaurant Management & Marketing',
     index: '03',
     floatClass: 'projectFloat3',
     media: {

@@ -8,43 +8,44 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const HERO_SCROLL_READY_EVENT = 'hero-scroll-ready';
 
-let refreshTimer: number | null = null;
-
 function refreshScrollTriggers() {
   ScrollTrigger.refresh();
 }
 
-/** Debounced refresh — avoids mid-scroll layout jumps from stacked refresh calls. */
-function scheduleRefresh(delayMs = 0) {
-  if (refreshTimer !== null) window.clearTimeout(refreshTimer);
-  refreshTimer = window.setTimeout(() => {
-    refreshTimer = null;
-    requestAnimationFrame(() => {
-      requestAnimationFrame(refreshScrollTriggers);
-    });
-  }, delayMs);
+function refreshAfterLayout() {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(refreshScrollTriggers);
+  });
 }
 
 export default function ScrollTriggerManager() {
   useEffect(() => {
-    scheduleRefresh(0);
+    refreshAfterLayout();
 
-    const onLoad = () => scheduleRefresh(50);
-    const onResize = () => scheduleRefresh(120);
-    const onHeroReady = () => scheduleRefresh(80);
+    window.addEventListener('load', refreshAfterLayout);
+    window.addEventListener('resize', refreshAfterLayout);
 
-    window.addEventListener('load', onLoad);
-    window.addEventListener('resize', onResize);
+    const timers: number[] = [];
+
+    const onHeroReady = () => {
+      refreshAfterLayout();
+      for (const ms of [100, 600, 1500]) {
+        timers.push(window.setTimeout(refreshAfterLayout, ms));
+      }
+    };
+
     window.addEventListener(HERO_SCROLL_READY_EVENT, onHeroReady);
 
+    timers.push(window.setTimeout(refreshAfterLayout, 600));
+
     if (document.fonts?.ready) {
-      void document.fonts.ready.then(() => scheduleRefresh(60));
+      void document.fonts.ready.then(refreshAfterLayout);
     }
 
     return () => {
-      if (refreshTimer !== null) window.clearTimeout(refreshTimer);
-      window.removeEventListener('load', onLoad);
-      window.removeEventListener('resize', onResize);
+      for (const id of timers) window.clearTimeout(id);
+      window.removeEventListener('load', refreshAfterLayout);
+      window.removeEventListener('resize', refreshAfterLayout);
       window.removeEventListener(HERO_SCROLL_READY_EVENT, onHeroReady);
     };
   }, []);
