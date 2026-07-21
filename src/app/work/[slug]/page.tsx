@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: WorkPageProps): Promise<Metad
 
   if (slug === 'restaurant-project-management') {
     return {
-      title: 'BESOS — Kyle Colwell',
+      title: 'Project Management & Marketing — Kyle Colwell',
       description:
         'Project management and marketing for an ambitious hospitality launch — coordinating design, construction, operations, and brand storytelling.',
     };

@@ -1,8 +1,8 @@
 export const BESOS_INDEX = '03';
 
 export const BESOS_HERO = {
-  eyebrow: 'Project Management & Marketing',
-  title: 'BESOS',
+  eyebrow: 'Hospitality launch',
+  title: 'Project Management & Marketing',
   subtitle: 'From construction site to opening night.',
 } as const;
 
@@ -16,7 +16,7 @@ export const BESOS_STATEMENT =
 
 export const BESOS_CONSTRUCTION = {
   kicker: 'Building the space',
-  copy: 'On site and across teams — coordinating contractors, vendors, and timelines as the bar took shape.',
+  copy: 'From the beginning — coordinating contractors, vendors, and timelines as the restaurant took shape.',
 } as const;
 
 export const BESOS_MARKETING = {
@@ -32,6 +32,7 @@ export const BESOS_MENU = {
 export const BESOS_DIGITAL = {
   kicker: 'Digital experience',
   copy: 'The website carried the same atmosphere as the space — bridging physical hospitality with a digital presence worth walking into.',
+  videoCaption: 'Adapted for both Web and Mobile',
 } as const;
 
 export const BESOS_CLOSING = {

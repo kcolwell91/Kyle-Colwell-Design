@@ -31,7 +31,7 @@ export default function BesosStory() {
         <span className={styles.navIndex}>{BESOS_INDEX}</span>
       </nav>
 
-      <section className={styles.hero} aria-label="BESOS hero">
+      <section className={styles.hero} aria-label="Project management and marketing">
         <div className={styles.heroMedia} data-parallax="-28">
           <Image
             src={BESOS_MEDIA.hero.src}
@@ -186,19 +186,22 @@ export default function BesosStory() {
                 />
               </div>
             </figure>
-            <figure className={styles.videoBelow} data-editorial-reveal data-parallax="-10">
-              <video
-                className={styles.mediaVideo}
-                src={BESOS_MEDIA.walkthrough.src}
-                poster={BESOS_MEDIA.walkthrough.poster}
-                autoPlay
-                muted
-                loop
-                playsInline
-                controls
-                aria-label="BESOS space walkthrough"
-              />
-            </figure>
+            <div className={styles.videoBlock} data-editorial-reveal>
+              <p className={styles.videoCaption}>{BESOS_DIGITAL.videoCaption}</p>
+              <figure className={styles.videoBelow} data-parallax="-10">
+                <video
+                  className={styles.mediaVideo}
+                  src={BESOS_MEDIA.walkthrough.src}
+                  poster={BESOS_MEDIA.walkthrough.poster}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  controls
+                  aria-label="Space walkthrough"
+                />
+              </figure>
+            </div>
           </div>
         </div>
       </section>

@@ -12,9 +12,10 @@ const MANIFESTO_HEADLINE = 'Design is a field of influence.';
 
 // Longer track = smaller time jumps per scroll pixel = steadier scrub.
 const SCRUB_PX_PER_SECOND = 420;
-const REVEAL_SECONDS = 3;
+const REVEAL_SECONDS = 4.5;
 const FALLBACK_DURATION = 15;
 const SEEK_EPSILON = 0.008;
+const REVEAL_LERP = 0.1;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -68,6 +69,7 @@ export default function SanctuaryTransition() {
     const applyReveal = (revealProgress: number) => {
       const m = smoother(revealProgress);
       manifesto.style.opacity = String(m);
+      manifesto.style.transform = `translate3d(0, ${(1 - m) * -28}px, 0)`;
       whiteBackdrop.style.opacity = String(m);
       glow.style.opacity = String(0.42 * m);
     };
@@ -92,6 +94,30 @@ export default function SanctuaryTransition() {
     let seekRafId: number | null = null;
     let refreshTimer: number | null = null;
     let lastTrackHeightKey = '';
+    let revealTarget = 0;
+    let revealCurrent = 0;
+    let revealRafId: number | null = null;
+
+    const tickReveal = () => {
+      revealRafId = null;
+      if (!mounted) return;
+
+      const delta = revealTarget - revealCurrent;
+      if (Math.abs(delta) < 0.001) {
+        revealCurrent = revealTarget;
+      } else {
+        revealCurrent += delta * REVEAL_LERP;
+        revealRafId = window.requestAnimationFrame(tickReveal);
+      }
+      applyReveal(revealCurrent);
+    };
+
+    const setRevealProgress = (next: number) => {
+      revealTarget = clamp(next, 0, 1);
+      if (revealRafId === null) {
+        revealRafId = window.requestAnimationFrame(tickReveal);
+      }
+    };
 
     const getDuration = () => (isVideoReady(video) ? video.duration : FALLBACK_DURATION);
 
@@ -189,7 +215,7 @@ export default function SanctuaryTransition() {
 
       const revealStart = duration - REVEAL_SECONDS;
       const revealProgress = clamp((videoTime - revealStart) / REVEAL_SECONDS, 0, 1);
-      applyReveal(revealProgress);
+      setRevealProgress(revealProgress);
     };
 
     const setup = async () => {
@@ -309,6 +335,7 @@ export default function SanctuaryTransition() {
       window.clearTimeout(fallbackTimer);
       if (refreshTimer !== null) window.clearTimeout(refreshTimer);
       if (seekRafId !== null) window.cancelAnimationFrame(seekRafId);
+      if (revealRafId !== null) window.cancelAnimationFrame(revealRafId);
       video.removeEventListener('loadedmetadata', onReady);
       video.removeEventListener('durationchange', onReady);
       video.removeEventListener('loadeddata', onLoadedData);

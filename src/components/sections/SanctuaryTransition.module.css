@@ -107,8 +107,9 @@
   width: 100%;
   color: var(--ink);
   opacity: 0;
-  transform: translateY(clamp(-56px, -5vh, -32px));
-  will-change: opacity;
+  transform: translate3d(0, -28px, 0);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
 }
 
 .manifestoHeadline {
