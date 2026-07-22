@@ -17,7 +17,7 @@
 
 .mainStory {
   position: relative;
-  z-index: 20;
+  z-index: 2;
   isolation: isolate;
   width: 100%;
   overflow-x: clip;
