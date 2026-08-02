@@ -11,6 +11,17 @@
   height: 100dvh;
   overflow: hidden;
   background: var(--surface);
+  /*
+   * .glow uses mix-blend-mode below, and without an isolation boundary a
+   * blend group's compositing scope isn't limited to this subtree (this
+   * element has no z-index, so it isn't a stacking context on its own).
+   * That lets the browser fall back to flattening/repainting a much wider
+   * region — including the manifesto text several layers below — on every
+   * scroll tick that touches glow's opacity, which is measurably the case
+   * during the fade-in (see SanctuaryTransition.tsx applyReveal). Isolating
+   * here contains that repaint cost to the pinned viewport only.
+   */
+  isolation: isolate;
 }
 
 .video {
@@ -104,26 +115,21 @@
   width: 100%;
   color: var(--ink);
   opacity: 0;
-  transform: translateY(clamp(-56px, -5vh, -32px));
+  /*
+   * translateZ(0) + backface-visibility: hidden promote this layer onto its
+   * own stable GPU compositing layer so the per-tick opacity write (see
+   * applyReveal in the .tsx) never re-rasterizes the text against the fractional
+   * (sub-pixel) translateY value above at a slightly different offset each
+   * frame — that re-rasterization is what reads as the manifesto line
+   * "shaking" while it fades in. This previously only applied on
+   * `(hover: hover) and (pointer: fine)` devices, which excludes every
+   * touchscreen (i.e. all mobile/tablet devices never got this promotion at
+   * all) — applying it unconditionally here fixes both. It doesn't change
+   * the reveal's timing, trigger points, duration, or mobile scrollability.
+   */
+  transform: translateY(clamp(-56px, -5vh, -32px)) translateZ(0);
+  backface-visibility: hidden;
   will-change: opacity;
-}
-
-/*
- * Desktop-only: the reveal transform above resolves to a fractional (sub-pixel)
- * value at most viewport heights (e.g. -5vh on an 834px-tall viewport = -41.7px).
- * Because opacity is written on every scroll tick (see applyReveal in the .tsx),
- * a layer that isn't pixel-snapped to its own GPU compositing layer gets its text
- * re-rasterized at slightly different sub-pixel offsets each frame, which reads
- * as the manifesto line "shaking" while it fades in. Promoting to a stable,
- * pixel-snapped compositor layer eliminates the re-rasterization without
- * changing the reveal's timing, trigger points, or duration. Scoped to
- * fine-pointer/hover-capable devices so mobile scroll/timing is untouched.
- */
-@media (hover: hover) and (pointer: fine) {
-  .manifestoLayer {
-    transform: translateY(clamp(-56px, -5vh, -32px)) translateZ(0);
-    backface-visibility: hidden;
-  }
 }
 
 .manifestoHeadline {
