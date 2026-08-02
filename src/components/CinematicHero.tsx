@@ -6,8 +6,10 @@ import styles from './CinematicHero.module.css';
 import { HERO_SCROLL_READY_EVENT } from '@/components/ScrollTriggerManager';
 
 const HERO_VIDEO_MP4 = '/videos/hero.mp4';
+const HERO_VIDEO_MOBILE_MP4 = '/videos/hero-mobile.mp4';
 const HERO_VIDEO_MOV = '/videos/hero.mov';
 const HERO_POSTER = '/hero-poster.JPEG';
+const MOBILE_VIDEO_MEDIA = '(max-width: 768px) and (pointer: coarse)';
 const HERO_VIDEO_DURATION = 22;
 // Match sanctuary pacing density so scrub feels equally steady.
 const SCROLL_PX_PER_VIDEO_SECOND = 300;
@@ -384,12 +386,18 @@ export default function CinematicHero() {
                   ref={videoRef}
                   id="heroVideo"
                   className={styles.video}
-                  src={HERO_VIDEO_MP4}
                   muted
                   playsInline
                   preload="auto"
                   aria-hidden="true"
-                />
+                >
+                  <source
+                    src={HERO_VIDEO_MOBILE_MP4}
+                    type="video/mp4"
+                    media={MOBILE_VIDEO_MEDIA}
+                  />
+                  <source src={HERO_VIDEO_MP4} type="video/mp4" />
+                </video>
                 <div ref={posterRef} className={styles.poster}>
                   <Image
                     src={HERO_POSTER}

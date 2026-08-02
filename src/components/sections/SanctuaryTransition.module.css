@@ -108,6 +108,24 @@
   will-change: opacity;
 }
 
+/*
+ * Desktop-only: the reveal transform above resolves to a fractional (sub-pixel)
+ * value at most viewport heights (e.g. -5vh on an 834px-tall viewport = -41.7px).
+ * Because opacity is written on every scroll tick (see applyReveal in the .tsx),
+ * a layer that isn't pixel-snapped to its own GPU compositing layer gets its text
+ * re-rasterized at slightly different sub-pixel offsets each frame, which reads
+ * as the manifesto line "shaking" while it fades in. Promoting to a stable,
+ * pixel-snapped compositor layer eliminates the re-rasterization without
+ * changing the reveal's timing, trigger points, or duration. Scoped to
+ * fine-pointer/hover-capable devices so mobile scroll/timing is untouched.
+ */
+@media (hover: hover) and (pointer: fine) {
+  .manifestoLayer {
+    transform: translateY(clamp(-56px, -5vh, -32px)) translateZ(0);
+    backface-visibility: hidden;
+  }
+}
+
 .manifestoHeadline {
   margin-bottom: 0;
 }
